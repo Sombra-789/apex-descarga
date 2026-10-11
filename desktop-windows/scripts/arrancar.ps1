@@ -74,7 +74,9 @@ if (Test-Path -LiteralPath $pythonExe -PathType Leaf) {
 if (-not (Test-Path -LiteralPath $pythonExe -PathType Leaf)) {
   $py = Get-UsablePython
   Write-Host ("Preparando entorno aislado con Python {0}..." -f $py.Version) -ForegroundColor Cyan
-  & $py.Exe @($py.Args) -m venv $venv
+  $pythonCommand = $py.Exe
+  $pythonArgs = @($py.Args)
+  & $pythonCommand @pythonArgs -m venv $venv
   if ($LASTEXITCODE -ne 0) { throw 'No se pudo crear el entorno Python.' }
 }
 
