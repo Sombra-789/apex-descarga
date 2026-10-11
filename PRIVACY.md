@@ -8,6 +8,6 @@
 - **Brave Native Messaging:** los mensajes fluyen entre la extensión y el componente local; el host invoca yt-dlp sin pasar los enlaces por un servidor de Apex. La extensión declara `activeTab`, `nativeMessaging`, `storage`.
 - **Android:** permisos para Internet, estado de red, servicio de primer plano y notificaciones; no se solicitaron permisos amplios de ubicación, acceso a toda la biblioteca multimedia ni credenciales de otros servicios.
 - **Contenido y terceros:** solo descarga archivos autorizados. El comportamiento de cada web y motor externo puede cambiar. Los archivos pueden ser peligrosos: examínalos antes de abrirlos.
-- **Datos y soporte:** antes de habilitar canales de reporte público, añade datos de contacto oficiales y explica cómo se recibirán y borrarán registros de errores, si los solicitas.
+- **Datos y soporte:** se reciben avisos de fallos y sugerencias en [angelrlpz030207@gmail.com](mailto:angelrlpz030207@gmail.com). Evita incluir tokens, cookies, enlaces privados o archivos sensibles. Los correos se gestionan a través del proveedor de email del destinatario; el plazo de conservación y procedimiento de borrado deben definirse antes del lanzamiento estable.
 
 Esta política **no** garantiza que proveedores externos no traten datos. Requiere revisión final del responsable del proyecto antes de publicar.
