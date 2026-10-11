@@ -118,15 +118,18 @@ class StorageTests(unittest.TestCase):
             store=AppStore(Path(d))
             self.assertEqual(store.jobs,[])
             self.assertEqual(store.settings["theme"],"Violeta")
+            self.assertFalse(store.settings["compact_mode"])
 
     def test_persistence(self):
         with tempfile.TemporaryDirectory() as d:
             store=AppStore(Path(d))
             store.add_job(DownloadJob("https://example.com/abc",title="Guardado"))
             store.settings["theme"]="Coral"
+            store.settings["compact_mode"]=True
             store.save_settings()
             loaded=AppStore(Path(d))
             self.assertEqual(loaded.settings["theme"],"Coral")
+            self.assertTrue(loaded.settings["compact_mode"])
             self.assertEqual(loaded.jobs[0].title,"Guardado")
             self.assertEqual(loaded.jobs[0].state,"interrumpido")
 

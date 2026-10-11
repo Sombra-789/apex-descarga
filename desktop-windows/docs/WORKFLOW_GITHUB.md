@@ -1,14 +1,12 @@
-# Descargar el EXE de GitHub Actions
+# Compilar y descargar Apex Descarga Desktop 0.2 UI Pro
 
-Este proyecto genera un EXE para Windows en GitHub Actions, con dependencias de Python/yt-dlp empaquetadas, pero **sin FFmpeg ni Deno**.
+GitHub Actions usa un **runner Windows**, Python 3.12 y PyInstaller para generar un ejecutable independiente. El workflow también ejecuta pruebas y el autochequeo del `.exe` empaquetado.
 
-1. Abre `https://github.com/Sombra-789/apex-descarga/actions`.
-2. Selecciona el flujo **Apex Descarga Desktop — Windows 11**.
-3. Abre la ejecución verde más reciente.
-4. Descarga el artefacto **`ApexDescargaDesktop-0.1-Windows11-BETA-NO-FIRMADO`** (ZIP).
-5. Extrae el archivo y ejecuta `ApexDescargaDesktop.exe` en Windows 11, después de revisarlo con el antivirus.
-6. Si necesitas MP3 o combinación de video HD, asegúrate de tener FFmpeg en PATH, o coloca `ffmpeg.exe` en la carpeta `bin` al lado del EXE. Para ciertos sitios instala Deno.
+1. [Abre las Actions de Desktop](https://github.com/Sombra-789/apex-descarga/actions/workflows/desktop-windows.yml).
+2. Busca la ejecución verde cuyo commit incluya **0.2 UI Pro**.
+3. Descarga el artefacto ZIP `ApexDescargaDesktop-0.2-Windows11-UI-PRO-BETA-NO-FIRMADO` desde **Artifacts**.
+4. Extrae, analiza con Windows Defender y ejecuta `ApexDescargaDesktop.exe`. No necesitas Python instalado.
+5. FFmpeg es necesario para MP3 o video de alta definición con audio separado; debe estar en `PATH` o en `bin` junto al ejecutable.
+6. Si la app indica que falta el entorno JS, instala Deno desde su sitio oficial.
 
-No tiene firma digital de Windows, ni es una versión estable. Evita desactivar SmartScreen o Defender; reporta cualquier alerta inesperada al desarrollador.
-
-**Contacto:** angelrlpz030207@gmail.com.
+El `.exe` no está firmado digitalmente. Evita ignorar alertas inesperadas o desactivar Windows Defender. Reportes: **angelrlpz030207@gmail.com**.

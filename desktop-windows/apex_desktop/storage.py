@@ -51,6 +51,7 @@ class AppStore:
             "theme": "Violeta",
             "accent": THEMES["Violeta"],
             "show_logo": True,
+            "compact_mode": False,
         }
         if isinstance(raw, dict):
             self.settings.update({k: raw[k] for k in self.settings if k in raw})
@@ -61,6 +62,7 @@ class AppStore:
         if not isinstance(self.settings["folder"], str) or not self.settings["folder"].strip():
             self.settings["folder"] = str(default_download_dir())
         self.settings["show_logo"] = bool(self.settings["show_logo"])
+        self.settings["compact_mode"] = bool(self.settings["compact_mode"])
         self.jobs: list[DownloadJob] = []
         jobs_data = load_json(self.base / "jobs.json", [])
         if isinstance(jobs_data, list):

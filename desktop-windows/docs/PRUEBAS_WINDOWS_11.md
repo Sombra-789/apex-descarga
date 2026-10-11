@@ -1,17 +1,22 @@
-# Plan de pruebas Windows 11 — Apex Descarga Desktop 0.1
+# Matriz de validación — Apex Descarga Desktop 0.2 UI Pro
 
-- [ ] Abrir desde INICIAR_APEX.cmd, sin Brave abierto.
-- [ ] Probar enlace público autorizado YouTube: vista previa con miniatura, título y duración.
-- [ ] Descargar MP4 720p y 1080p; comprobar codec, audio y duración de archivo.
-- [ ] Descargar MP3; comprobar reproducción y bitrate.
-- [ ] Poner tres enlaces en cola; confirmar orden, progreso, velocidad y ETA.
-- [ ] Cancelar y reintentar un trabajo; verificar que el archivo final no quede corrupto.
-- [ ] Cambiar carpeta destino, cerrar y reabrir, comprobar persistencia.
-- [ ] Aplicar color HEX y paletas, comprobar persistencia después de cerrar/abrir.
-- [ ] Probar biblioteca, búsqueda, botón abrir archivo y abrir carpeta.
-- [ ] Simular pérdida de Internet y error de sitio no compatible; revisar mensajes.
-- [ ] Intentar abrir sin FFmpeg y comprobar que MP3 da diagnóstico útil.
-- [ ] Generar `.exe` usando BUILD_EXE_WINDOWS.cmd y ejecutarlo en equipo Windows limpio con yt-dlp dentro del EXE.
-- [ ] Revisar antivirus/SmartScreen, SHA-256 y firmas antes de distribución.
+## Automáticas
+- [x] 22 pruebas de motor, seguridad básica de URLs, almacenamiento y cola del proyecto original (local).
+- [x] Apertura y navegación entre Inicio, Descargas, Biblioteca, Ajustes, Acerca de en entorno gráfico virtual (local).
+- [x] Capturas reales del escritorio guardadas en `docs/preview_*.png` (entorno gráfico de pruebas).
+- [ ] Compilación de `ApexDescargaDesktop.exe` en GitHub Actions de Windows 11 con la versión 0.2.
+- [ ] Prueba del `.exe` en EliteBook Windows 11 del responsable.
 
-**No marques la beta como estable sin comprobar estas pruebas en una instalación real de Windows.**
+## Manuales Windows 11
+- [ ] Ejecutar EXE sin Python ni Brave, y comprobar icono y cinco pantallas.
+- [ ] Analizar video propio autorizado: portada, título, autor y duración.
+- [ ] Descargar MP4 1080p y reproducir con audio.
+- [ ] Descargar MP3 y comprobar reproducción con otro programa.
+- [ ] Agregar 3 trabajos, cancelar uno y reintentarlo; comprobar progresos y mensajes.
+- [ ] Biblioteca: abrir, filtrar Video/Audio, copiar ruta y quitar registro sin borrar el fichero.
+- [ ] Cambiar HEX, tema, modo compacto y logotipo; cerrar/reabrir y confirmar persistencia.
+- [ ] Cambiar carpeta y comprobar persistencia después de reiniciar la aplicación.
+- [ ] Probar pérdida de conexión, error de URL y respuesta del programa.
+- [ ] Examinar EXE con Windows Defender. Revisar SHA-256.
+
+**Nota:** no se certifican aquí funciones aún no implementadas como pausa exacta, paralelismo, bandeja del sistema o control solo-Wi-Fi en Windows.

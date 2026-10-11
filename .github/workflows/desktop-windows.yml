@@ -14,34 +14,40 @@ permissions:
 jobs:
   windows-exe:
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Comprobar sintaxis de iniciadores PowerShell
+      - name: Comprobar sintaxis de scripts PowerShell
         working-directory: desktop-windows
         shell: pwsh
         run: |
           foreach ($file in @('scripts/arrancar.ps1', 'scripts/compilar.ps1')) {
             $errors = $null
             $tokens = $null
-            [void][System.Management.Automation.Language.Parser]::ParseFile(
-              (Resolve-Path $file).Path, [ref]$tokens, [ref]$errors
-            )
+            [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $file).Path, [ref]$tokens, [ref]$errors)
             if ($errors.Count -gt 0) {
               $errors | ForEach-Object { Write-Host $_.ToString() }
-              throw ("Error de sintaxis de PowerShell en " + $file)
+              throw ("Error de sintaxis PowerShell: " + $file)
             }
-            Write-Host ("Sintaxis OK: " + $file)
+            Write-Host "Sintaxis verificada: $file"
           }
       - name: Instalar dependencias
         working-directory: desktop-windows
         run: python -m pip install -r requirements-build.txt
-      - name: Ejecutar tests de motor, historial y cola
+      - name: Ejecutar pruebas unitarias
         working-directory: desktop-windows
         run: python -m unittest discover -s tests -v
-      - name: Compilar EXE autónomo para Windows 11
+      - name: Verificar entrada 0.2 UI Pro
+        working-directory: desktop-windows
+        shell: pwsh
+        run: |
+          python -c "from apex_desktop import __version__; from apex_desktop.ui_pro import DesktopApp; assert __version__ == '0.2.0'; print('UI Pro 0.2 OK')"
+          if ($LASTEXITCODE -ne 0) { throw 'UI Pro no se pudo importar' }
+      - name: Compilar EXE independiente para Windows 11
         working-directory: desktop-windows
         shell: pwsh
         run: |
@@ -51,27 +57,46 @@ jobs:
             --add-data "assets/apex_icon.png;assets" `
             --collect-all yt_dlp main.py
           if ($LASTEXITCODE -ne 0) { throw 'PyInstaller falló' }
-      - name: Autocomprobación del ejecutable empaquetado
+      - name: Verificar ejecutable empaquetado
         working-directory: desktop-windows
         shell: pwsh
         run: |
-          # En aplicaciones Windows --windowed, PowerShell (&) puede no esperar
-          # la terminación: usar Start-Process -Wait y leer su ExitCode.
           $executable = (Resolve-Path .\dist\ApexDescargaDesktop.exe).Path
           $proc = Start-Process -FilePath $executable -ArgumentList '--self-check' -Wait -PassThru
           if ($proc.ExitCode -ne 0) {
             if (Test-Path .\self-check-error.txt) { Get-Content .\self-check-error.txt }
-            throw ('El EXE no superó el self-check: ' + $proc.ExitCode)
+            throw ('El EXE falló la autocomprobación: ' + $proc.ExitCode)
           }
-      - name: Comprobar SHA-256
+      - name: Generar SHA-256
         working-directory: desktop-windows
         shell: pwsh
         run: |
-          (Get-FileHash .\dist\ApexDescargaDesktop.exe -Algorithm SHA256).Hash | Out-File -FilePath .\dist\ApexDescargaDesktop.exe.sha256 -Encoding ascii
+          $h=(Get-FileHash .\dist\ApexDescargaDesktop.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$h  ApexDescargaDesktop.exe" | Out-File -FilePath .\dist\ApexDescargaDesktop.exe.sha256 -Encoding ascii
       - uses: actions/upload-artifact@v4
         with:
-          name: ApexDescargaDesktop-0.1-Windows11-BETA-NO-FIRMADO
+          name: ApexDescargaDesktop-0.2-Windows11-UI-PRO-BETA-NO-FIRMADO
           path: |
             desktop-windows/dist/ApexDescargaDesktop.exe
             desktop-windows/dist/ApexDescargaDesktop.exe.sha256
           retention-days: 14
+      - name: Publicar pre-release 0.2 para pruebas
+        if: github.ref == 'refs/heads/main'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          $tag = 'desktop-v0.2.0-beta'
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host 'La pre-release ya existe; no se reemplazan sus binarios.'
+            exit 0
+          }
+          gh release create $tag `
+            'desktop-windows/dist/ApexDescargaDesktop.exe' `
+            'desktop-windows/dist/ApexDescargaDesktop.exe.sha256' `
+            --target "$env:GITHUB_SHA" `
+            --title 'Apex Descarga Desktop 0.2 UI Pro — Windows 11 Beta' `
+            --notes-file 'desktop-windows/docs/NOTAS_RELEASE_0.2.md' `
+            --prerelease
