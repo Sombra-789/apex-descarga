@@ -2,12 +2,13 @@
 
 **Estado: 1.0.0-rc1 — versión de pruebas (APK debug), todavía no versión estable de producción.**
 
-Proyecto de **Apex Visual Studio** para gestionar descargas de medios **propios o autorizados**. Contiene dos productos relacionados con bases de código distintas:
+Proyecto de **Apex Visual Studio** para gestionar descargas de medios **propios o autorizados**. Contiene tres productos relacionados con bases de código distintas:
 
 | Producto | Ruta | Versión del código incluido |
 |---|---|---|
 | Aplicación nativa Android | [`android/`](android/) | **1.0.0-rc1** basada en la 0.6 verificada manualmente |
 | Extensión Brave/Chromium + host local Windows | [`brave-windows/`](brave-windows/) | **1.2.2** (última actualización aportada por el propietario) |
+| Aplicación independiente Windows 11 | [`desktop-windows/`](desktop-windows/) | **0.2.0 UI Pro** (beta de escritorio) |
 | **Aplicación independiente Windows 11** | [`desktop-windows/`](desktop-windows/) | **Beta 0.1.0** (EXE en validación) |
 
 > Android utiliza su propia numeración 1.0.0-rc1; la extensión Brave conserva su numeración independiente **1.2.2**. El paquete Brave 1.2.2 es una actualización sobre una instalación previa y no garantiza instalación completamente nueva sin registrar Native Messaging.
@@ -27,6 +28,13 @@ Proyecto de **Apex Visual Studio** para gestionar descargas de medios **propios 
 - Cola secuencial, vista previa y portadas, progreso y cancelación/reintento, carpeta de destino configurable e historial local.
 - **Beta 0.1.0**: 22 pruebas unitarias aprobadas. El ejecutable PyInstaller está en proceso de validación mediante [GitHub Actions](https://github.com/Sombra-789/apex-descarga/actions/workflows/desktop-windows.yml); todavía **no es una versión Windows firmada ni estable**.
 - Ejecutar el código con `desktop-windows/INICIAR_APEX.cmd` o compilar usando `desktop-windows/BUILD_EXE_WINDOWS.cmd`. [Manual de Desktop](desktop-windows/README.md). 
+
+### Windows 11 — aplicación independiente
+
+- **Apex Descarga Desktop 0.2 UI Pro** funciona sin tener Brave abierto: navegación de cinco pantallas, cola, miniaturas, biblioteca, filtros, ajustes de apariencia y pantalla Acerca de.
+- Descarga MP4/MP3 mediante yt-dlp, y requiere FFmpeg instalado para MP3 y para unir pistas de video HD cuando sea necesario.
+- Código: [desktop-windows/](desktop-windows/) · [Guía de inicio](desktop-windows/README.md) · [Capturas](desktop-windows/docs/UI_PRO_VISTA_GENERAL.jpg).
+- [Descargar beta Windows](https://github.com/Sombra-789/apex-descarga/releases/tag/desktop-v0.2.0-beta) cuando GitHub Actions haya terminado; archivo `ApexDescargaDesktop.exe` **sin firma Authenticode**, para pruebas exclusivamente.
 
 ### Brave + Windows
 - Popup Manifest V3 y Native Messaging con host Python.
@@ -55,6 +63,12 @@ Busca la **pre-release** [Apex Descarga 1.0 RC1 — APK de prueba](https://githu
 ## Instalación Brave
 
 Lee [`brave-windows/README_PRIMERO.md`](brave-windows/README_PRIMERO.md): registra el componente local y carga la carpeta `extension/` desde Brave Developer Mode. Esta fuente corresponde a la **actualización 1.2.2** facilitada por el propietario, no a una publicación de tienda. Requiere configuración previa del componente local y Native Messaging.
+
+## Versión Desktop 0.2 UI Pro
+
+- Diseño visual profesional basado en el estilo Apex, funciones originales preservadas y datos locales compatibles con Desktop 0.1.
+- Requiere Windows 11; el `.exe` empaqueta Python/yt-dlp pero **no FFmpeg ni Deno**.
+- Errores y sugerencias: **angelrlpz030207@gmail.com**.
 
 ## Versión Brave 1.2.2: novedades
 
@@ -88,6 +102,8 @@ La compilación automatizada **1.0 RC1** con Gradle y SDK 35 se completó con é
 - [Créditos y marca](BRANDING.md)
 - [Android: README](android/README_PRIMERO.md)
 - [Brave: README](brave-windows/README_PRIMERO.md)
+- [Desktop 0.2: README](desktop-windows/README.md)
+- [Desktop 0.2: historial de cambios](desktop-windows/CHANGELOG.md)
 - [Brave 1.2.2: cambios](brave-windows/CAMBIOS_1.2.2.md)
 - [Brave 1.2.2: privacidad y condiciones](brave-windows/PRIVACIDAD_Y_CONDICIONES.md)
 
