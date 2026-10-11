@@ -19,6 +19,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Comprobar sintaxis de iniciadores PowerShell
+        working-directory: desktop-windows
+        shell: pwsh
+        run: |
+          foreach ($file in @('scripts/arrancar.ps1', 'scripts/compilar.ps1')) {
+            $errors = $null
+            $tokens = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              (Resolve-Path $file).Path, [ref]$tokens, [ref]$errors
+            )
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object { Write-Host $_.ToString() }
+              throw ("Error de sintaxis de PowerShell en " + $file)
+            }
+            Write-Host ("Sintaxis OK: " + $file)
+          }
       - name: Instalar dependencias
         working-directory: desktop-windows
         run: python -m pip install -r requirements-build.txt
