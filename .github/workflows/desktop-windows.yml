@@ -39,10 +39,13 @@ jobs:
         working-directory: desktop-windows
         shell: pwsh
         run: |
-          & .\dist\ApexDescargaDesktop.exe --self-check
-          if ($LASTEXITCODE -ne 0) {
+          # En aplicaciones Windows --windowed, PowerShell (&) puede no esperar
+          # la terminación: usar Start-Process -Wait y leer su ExitCode.
+          $executable = (Resolve-Path .\dist\ApexDescargaDesktop.exe).Path
+          $proc = Start-Process -FilePath $executable -ArgumentList '--self-check' -Wait -PassThru
+          if ($proc.ExitCode -ne 0) {
             if (Test-Path .\self-check-error.txt) { Get-Content .\self-check-error.txt }
-            throw 'El EXE no superó el self-check.'
+            throw ('El EXE no superó el self-check: ' + $proc.ExitCode)
           }
       - name: Comprobar SHA-256
         working-directory: desktop-windows
