@@ -8,6 +8,7 @@ Proyecto de **Apex Visual Studio** para gestionar descargas de medios **propios 
 |---|---|---|
 | Aplicación nativa Android | [`android/`](android/) | **1.0.0-rc1** basada en la 0.6 verificada manualmente |
 | Extensión Brave/Chromium + host local Windows | [`brave-windows/`](brave-windows/) | **1.2.2** (última actualización aportada por el propietario) |
+| **Aplicación independiente Windows 11** | [`desktop-windows/`](desktop-windows/) | **Beta 0.1.0** (EXE en validación) |
 
 > Android utiliza su propia numeración 1.0.0-rc1; la extensión Brave conserva su numeración independiente **1.2.2**. El paquete Brave 1.2.2 es una actualización sobre una instalación previa y no garantiza instalación completamente nueva sin registrar Native Messaging.
 
@@ -19,6 +20,13 @@ Proyecto de **Apex Visual Studio** para gestionar descargas de medios **propios 
 - Cola secuencial, notificaciones, historial/biblioteca, compartir enlaces a Apex, apertura/compartición de archivos.
 - Paletas personalizables y colores HEX, logotipo opcional, modo solo Wi-Fi, comprobaciones de almacenamiento y actualización programada de motor.
 - Diseño nativo inspirado en [Apex UI Pro (Figma)](https://www.figma.com/design/tnVTpd2xcdL4XqrEuWmNUH).
+
+### Desktop — Windows 11
+- Aplicación independiente de Brave y Android con interfaz oscura Apex, temas HEX, Inicio/Cola/Biblioteca/Ajustes.
+- Descargas MP4 y MP3 con yt-dlp incorporable al ejecutable, FFmpeg/Deno externos cuando sean necesarios.
+- Cola secuencial, vista previa y portadas, progreso y cancelación/reintento, carpeta de destino configurable e historial local.
+- **Beta 0.1.0**: 22 pruebas unitarias aprobadas. El ejecutable PyInstaller está en proceso de validación mediante [GitHub Actions](https://github.com/Sombra-789/apex-descarga/actions/workflows/desktop-windows.yml); todavía **no es una versión Windows firmada ni estable**.
+- Ejecutar el código con `desktop-windows/INICIAR_APEX.cmd` o compilar usando `desktop-windows/BUILD_EXE_WINDOWS.cmd`. [Manual de Desktop](desktop-windows/README.md). 
 
 ### Brave + Windows
 - Popup Manifest V3 y Native Messaging con host Python.
