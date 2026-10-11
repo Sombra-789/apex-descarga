@@ -40,7 +40,10 @@ jobs:
         shell: pwsh
         run: |
           & .\dist\ApexDescargaDesktop.exe --self-check
-          if ($LASTEXITCODE -ne 0) { throw 'El EXE no superó el self-check.' }
+          if ($LASTEXITCODE -ne 0) {
+            if (Test-Path .\self-check-error.txt) { Get-Content .\self-check-error.txt }
+            throw 'El EXE no superó el self-check.'
+          }
       - name: Comprobar SHA-256
         working-directory: desktop-windows
         shell: pwsh
