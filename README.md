@@ -1,6 +1,6 @@
 # APEX DESCARGA — Android + Brave/Windows 11
 
-**Estado: 1.0.0-rc1 — candidato de lanzamiento, no publicación estable firmada.**
+**Estado: 1.0.0-rc1 — versión de pruebas (APK debug), todavía no versión estable de producción.**
 
 Proyecto de **Apex Visual Studio** para gestionar descargas de medios **propios o autorizados**. Contiene dos productos relacionados con bases de código distintas:
 
@@ -26,6 +26,14 @@ Proyecto de **Apex Visual Studio** para gestionar descargas de medios **propios 
 - Cola secuencial, cancelación, historial local, selector nativo de carpeta Windows y persistencia de la ruta en `settings.json`.
 - Solicitud de aceptación de las condiciones revisadas en 1.2.2, con política de privacidad local y avisos sobre contenido de terceros.
 - Depende de Python, yt-dlp, FFmpeg y del entorno JS compatible (por ejemplo Deno para ciertos sitios).
+
+## 📦 Descargar APK de pruebas (Android 1.0 RC1)
+
+Busca la **pre-release** [Apex Descarga 1.0 RC1 — APK de prueba](https://github.com/Sombra-789/apex-descarga/releases/tag/v1.0.0-rc1) cuando haya terminado su compilación/publicación. Descarga el archivo `Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk` y verifica el SHA-256 publicado junto a él.
+
+> ⚠️ El APK está firmado con **certificado de depuración de CI**, no con una clave release de Apex Visual Studio. Es una distribución para pruebas técnicas; puede requerir un dispositivo o perfil sin otra versión instalada con una firma diferente. No desinstales versiones anteriores con datos importantes solo por solucionar un conflicto de firma. No incluye garantía de compatibilidad para todos los sitios o dispositivos.
+
+**Contacto para reportar fallos o sugerencias:** [angelrlpz030207@gmail.com](mailto:angelrlpz030207@gmail.com). Incluye modelo, versión de Android/Windows, pasos para reproducir y mensaje de error, **sin enviar contraseñas, cookies, tokens, enlaces privados ni información sensible**. También puedes abrir una [incidencia en GitHub](https://github.com/Sombra-789/apex-descarga/issues) cuando el repositorio esté accesible.
 
 ## Compilación Android (Windows 11)
 
@@ -58,7 +66,9 @@ Lee [`brave-windows/README_PRIMERO.md`](brave-windows/README_PRIMERO.md): regist
 
 ## Estado de validación
 
-Las versiones Android previas hasta 0.6 fueron probadas manualmente por el creador en Galaxy S23, con descargas correctas en varias plataformas. **Esta compilación candidata 1.0 no ha sido firmada ni verificada en dispositivo o Android SDK dentro de este entorno**. El pipeline de Actions intenta construir un APK de depuración para pruebas, no un lanzamiento de producción.
+La compilación automatizada **1.0 RC1** con Gradle y SDK 35 se completó con éxito en GitHub Actions; Brave superó las pruebas automatizadas Python/JavaScript. El creador confirmó en **Galaxy S23** la actualización de 0.6 a 1.0 RC1 conservando datos, descargas MP4 y MP3 y pruebas básicas de cola, segundo plano, Solo Wi-Fi, interrupción de red, cancelación y reintento. También confirmó el funcionamiento de **Brave 1.2.2 en Windows 11**. Detalles: [seguimiento de validación #1](https://github.com/Sombra-789/apex-descarga/issues/1).
+
+**El APK descargable es de DEPURACIÓN (DEBUG), para pruebas exclusivamente.** Es posible que no se pueda actualizar una instalación firmada con otra clave sin perder los datos de la app. No usar como APK estable ni publicarlo en tiendas. Sigue pendiente probarlo en otros modelos Android, comprobar las licencias de FFmpeg y generar una versión release firmada.
 
 ## Documentación
 
@@ -72,6 +82,10 @@ Las versiones Android previas hasta 0.6 fueron probadas manualmente por el cread
 - [Brave: README](brave-windows/README_PRIMERO.md)
 - [Brave 1.2.2: cambios](brave-windows/CAMBIOS_1.2.2.md)
 - [Brave 1.2.2: privacidad y condiciones](brave-windows/PRIVACIDAD_Y_CONDICIONES.md)
+
+## Contacto y colaboración
+
+Correo del proyecto: **angelrlpz030207@gmail.com**. Se aceptan avisos de errores, reportes reproducibles y sugerencias de mejora.
 
 ## Sobre la autoría
 
