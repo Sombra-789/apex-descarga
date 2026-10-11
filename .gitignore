@@ -1,0 +1,20 @@
+# Build artifacts and user/local secrets
+**/.gradle/
+**/.idea/
+**/build/
+**/local.properties
+**/*.iml
+**/*.apk
+**/*.aab
+**/*.keystore
+**/*.jks
+**/*.p12
+**/*.key
+**/*.pem
+**/*.env
+**/.env
+**/__pycache__/
+**/.pytest_cache/
+**/*.pyc
+.DS_Store
+Thumbs.db

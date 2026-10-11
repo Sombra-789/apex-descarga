@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Apex Descarga 1.2.2</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="halo" aria-hidden="true"></div>
+  <main>
+    <header class="topbar">
+      <div class="brandmark" aria-hidden="true"><img src="icons/brand.png" alt=""></div>
+      <div class="brand"><div class="brandname">APEX <span>DESCARGA</span></div><div class="subtitle">BY APEX VISUAL STUDIO <span class="version">V1.2.2</span></div></div>
+      <div class="connection-dot" id="health" title="Comprobando conexión"></div>
+    </header>
+    <section class="topstatus" aria-label="Estado del sistema">
+      <div><span class="spark">✦</span> MULTISITIO <span class="chip">LOCAL</span></div>
+      <span class="connection" id="connection">Conectando…</span>
+    </section>
+
+    <section class="panel download-panel">
+      <div class="heading"><span class="index">01</span><div><h2>Descargar contenido</h2><p>Pega un enlace y elige las opciones.</p></div></div>
+      <label for="video-url" class="label">Enlace del video</label>
+      <div class="url-row">
+        <input id="video-url" type="url" maxlength="2000" spellcheck="false" autocomplete="off" placeholder="https://www.youtube.com/watch?..." />
+        <button class="iconbtn" id="current-tab" type="button" title="Usar enlace de la pestaña activa" aria-label="Usar pestaña actual">↗</button>
+      </div>
+      <div class="link-actions"><span>Compatible con numerosos sitios mediante yt-dlp.</span><button id="analyze" type="button" class="textbutton">◈ Analizar enlace</button></div>
+
+      <div id="preview" class="preview" hidden>
+        <div class="preview-media"><img id="preview-image" alt="Miniatura del contenido" hidden/><div id="preview-fallback" class="preview-fallback">▶</div></div>
+        <div class="preview-info"><span id="preview-site" class="preview-site">VISTA PREVIA</span><div id="preview-title" class="preview-title"></div><div id="preview-description" class="preview-description"></div><div id="preview-formats" class="preview-formats"></div></div>
+      </div>
+      <div class="separator"></div>
+      <div class="label">Tipo de archivo</div>
+      <div class="format-grid" role="group" aria-label="Tipo de archivo">
+        <button id="format-mp4" class="format selected" aria-pressed="true" type="button"><span class="format-icon">▣</span><span><strong>Video</strong><small>MP4 preferido</small></span></button>
+        <button id="format-mp3" class="format" aria-pressed="false" type="button"><span class="format-icon">♫</span><span><strong>Audio</strong><small>Convertir a MP3</small></span></button>
+      </div>
+      <div class="two-col">
+        <div><label class="label" for="quality">Resolución máxima</label><select id="quality"><option value="best">Mejor disponible</option><option value="480">480p</option><option value="720">720p HD</option><option value="1080" selected>1080p Full HD</option><option value="2160">2160p 4K</option></select></div>
+        <div><label class="label" for="mode">Compatibilidad</label><select id="mode"><option value="stable">MP4 estable</option><option value="compatible">Transporte HLS</option></select></div>
+      </div>
+      <p id="mode-help" class="explain">Prioridad H.264 + AAC; alternativa HLS cuando exista.</p>
+
+      <div class="terms-box">
+        <label class="terms-check"><input id="accept-terms" type="checkbox"> <span>Acepto las condiciones de uso de Apex Descarga.</span></label>
+        <details class="terms-details">
+          <summary>Ver condiciones de uso</summary>
+          <div class="terms-copy">
+            <p><strong>Uso autorizado:</strong> Apex Descarga se destina únicamente a guardar contenido propio o aquel que tengas permiso de descargar. No permite eludir DRM ni otras restricciones de acceso.</p>
+            <p><strong>Privacidad:</strong> Apex Descarga y Apex Visual Studio no recopilan información personal para sus propios servidores, no incorporan telemetría ni venden datos de uso. Los enlaces procesados, la cola, el historial, las preferencias, la aceptación de estas condiciones y la ruta de descarga se guardan localmente en tu navegador o computadora para que la aplicación funcione. No se envían a servidores de Apex.</p>
+            <p><strong>Sitios externos:</strong> al analizar o descargar contenido, yt-dlp contacta los sitios de origen, que pueden recibir solicitudes técnicas y aplicar sus propias políticas de privacidad. Las miniaturas también pueden cargarse desde servidores externos.</p>
+            <p><strong>Seguridad:</strong> los archivos de terceros pueden contener contenido malicioso. Apex Visual Studio no garantiza que los archivos descargados estén libres de virus o malware y no asume responsabilidad por daños derivados de archivos de terceros, en la medida permitida por la ley. Revisa los archivos con tu antivirus antes de abrirlos. Este aviso no elimina los derechos de protección aplicables al usuario.</p>
+          </div>
+        </details>
+      </div>
+
+      <button id="download" class="primary" type="button"><span class="downicon">↓</span><span id="cta-label">Añadir a descargas</span><span class="arrow">→</span></button>
+      <p class="legal">Para contenido propio o autorizado. Sin evasión de DRM.</p>
+    </section>
+
+    <section class="panel active-panel">
+      <div class="heading horizontal"><span class="index">02</span><h2>Actividad</h2><span class="pill" id="job-pill">EN ESPERA</span></div>
+      <div class="job-line"><span id="job-state">Listo para comenzar</span><span id="percent">0%</span></div>
+      <div class="progress" role="progressbar" aria-label="Progreso de descarga" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress"><span id="bar"></span></div>
+      <p id="job-detail" class="detail">No hay descargas en curso.</p>
+      <div id="error" class="error" role="alert" hidden></div>
+      <div id="file" class="file" hidden></div>
+      <button id="cancel" type="button" class="outline danger" hidden>✕ Cancelar descarga actual</button>
+      <div class="destination"><div class="destination-title">CARPETA DE DESTINO</div><div class="destination-row"><span id="folder" title="Ubicación de descargas">Descargas / Apex Descarga</span></div><div class="destination-actions"><button id="choose-folder" type="button" class="smallbtn choose-folder">▤ Cambiar carpeta</button><button id="open-folder" type="button" class="smallbtn">Abrir ↗</button></div><p class="destination-tip" id="folder-tip">Windows te permitirá elegir una carpeta; si el panel se cierra, vuelve a abrir Apex para ver la ruta guardada.</p></div>
+    </section>
+
+    <section class="panel queue-panel">
+      <div class="heading horizontal"><span class="index">03</span><h2>Cola de descargas</h2><span id="queue-count" class="queue-count">0 pendientes</span></div>
+      <div id="queue" class="queue-list"><p class="empty">Sin archivos en espera.</p></div>
+      <div class="queue-tools"><button id="resume-queue" class="textbutton" type="button" hidden>▶ Reanudar cola</button><button id="clear-queue" class="textbutton muted" type="button" hidden>Vaciar cola</button></div>
+    </section>
+
+    <section class="panel history-panel">
+      <div class="heading horizontal"><span class="index">04</span><h2>Recientes</h2><button id="clear-history" type="button" class="smallbtn">Limpiar</button></div>
+      <div id="history" class="history"><p class="empty">Todavía no hay descargas recientes.</p></div>
+    </section>
+    <footer><span>APEX DESCARGA · BY APEX VISUAL STUDIO</span><span><i class="privacy-dot"></i> PROCESAMIENTO LOCAL</span></footer>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

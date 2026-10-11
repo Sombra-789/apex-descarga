@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Apex Descarga",
+  "version": "1.2.2",
+  "description": "Descarga contenido autorizado con MP4/MP3, selector de carpeta y procesamiento local, sin analítica propia.",
+  "permissions": [
+    "activeTab",
+    "nativeMessaging",
+    "storage"
+  ],
+  "action": {
+    "default_title": "Apex Descarga 1.2.2",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/16.png",
+      "48": "icons/48.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; img-src 'self' https: data:"
+  },
+  "minimum_chrome_version": "105"
+}
