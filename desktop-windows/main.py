@@ -18,7 +18,13 @@ def self_check() -> int:
 
 if __name__ == "__main__":
     if "--self-check" in sys.argv:
-        raise SystemExit(self_check())
+        try:
+            raise SystemExit(self_check())
+        except Exception:
+            import traceback
+            # Un EXE Windows --windowed no muestra tracebacks en la consola.
+            Path("self-check-error.txt").write_text(traceback.format_exc(), encoding="utf-8")
+            raise SystemExit(1)
     if "--version" in sys.argv:
         from apex_desktop import __version__
         print(f"Apex Descarga Desktop {__version__}")
