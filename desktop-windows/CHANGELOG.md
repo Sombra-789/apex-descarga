@@ -1,3 +1,10 @@
+# Changelog
+
+## 0.2.1 UI Pro — correcciones de diseño y soporte
+- Corrige paneles y botones superpuestos en Windows 11.
+- Rediseña Acerca de y arregla contacto mediante correo con alternativa.
+- Conserva motor, historial y ajustes de la versión 0.2.
+
 # Historial de cambios — Apex Descarga Desktop
 
 ## 0.2.0 — UI Pro (beta)
