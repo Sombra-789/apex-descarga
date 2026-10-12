@@ -12,6 +12,7 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
 import webbrowser
+import urllib.parse
 
 from PIL import Image, ImageDraw, ImageFilter, ImageTk, ImageColor
 
@@ -75,44 +76,17 @@ def rounded_image(width, height, background, border=None, radius=18, border_widt
     return img.resize((width,height),Image.Resampling.LANCZOS)
 
 
-class RoundedCard(tk.Canvas):
-    """Superficie adaptable a contenido Tk y esquinas redondeadas PIL."""
+class RoundedCard(tk.Frame):
+    """Tarjeta de altura natural: evita superposiciones al calcular la geometría.
+
+    El Canvas anterior intentaba redimensionarse desde callbacks de <Configure>.
+    Tk podía medirlo antes de que el contenido fuese distribuido por el layout.
+    """
     def __init__(self,parent,background=SURFACE,border=OUTLINE,radius=20,pad=22,gradient=None,**kwargs):
-        super().__init__(parent,bg=parent.cget('bg'),bd=0,highlightthickness=0,
-                         relief='flat',height=90,**kwargs)
+        super().__init__(parent,bg=border or background,bd=0,highlightthickness=0,**kwargs)
         self.background=background
-        self.border=border
-        self.radius=radius
-        self.pad=pad
-        self.gradient=gradient
-        self._paint_photo=None
-        self._paint_key=None
-        self._bg=self.create_image(0,0,anchor='nw')
-        self.inner=tk.Frame(self,bg=background)
-        self.window=self.create_window(pad,pad,anchor='nw',window=self.inner)
-        self.inner.bind('<Configure>',lambda _e:self.after_idle(self._measure))
-        self.bind('<Configure>',self._size_changed)
-
-    def _size_changed(self,e):
-        self.itemconfigure(self.window,width=max(80,e.width-2*self.pad))
-        self._measure()
-        self._paint(e.width,e.height)
-
-    def _measure(self):
-        if not self.winfo_exists():return
-        self.inner.update_idletasks()
-        desired=max(self.pad*2+12,self.inner.winfo_reqheight()+self.pad*2)
-        if abs(self.winfo_height()-desired)>2 and int(self.cget('height'))!=desired:
-            self.configure(height=desired)
-        self.itemconfigure(self.window,width=max(80,self.winfo_width()-2*self.pad))
-
-    def _paint(self,w,h):
-        key=(int(w),int(h),self.background,self.border,self.gradient)
-        if key==self._paint_key:return
-        self._paint_key=key
-        self._paint_photo=ImageTk.PhotoImage(rounded_image(w,h,self.background,self.border,self.radius,gradient=self.gradient))
-        self.itemconfigure(self._bg,image=self._paint_photo)
-        self.tag_lower(self._bg)
+        self.inner=tk.Frame(self,bg=background,padx=pad,pady=pad)
+        self.inner.pack(fill='both',expand=True,padx=1,pady=1)
 
 
 def card(parent,pad=22,background=SURFACE,border=OUTLINE,gradient=None):
@@ -226,7 +200,7 @@ class DesktopApp(LegacyDesktopApp):
     def __init__(self,engine=None,store=None):
         self._keep_images={}
         super().__init__(engine=engine,store=store)
-        self.title('Apex Descarga Desktop 0.2 UI Pro — Apex Visual Studio')
+        self.title('Apex Descarga Desktop 0.2.1 UI Pro — Apex Visual Studio')
         self.geometry('1280x850')
         self.minsize(980,675)
 
@@ -255,7 +229,7 @@ class DesktopApp(LegacyDesktopApp):
         small[0].pack(fill='x',pady=(0,15))
         label(small[1],'●  TODO BAJO CONTROL',size=9,color=GREEN,weight='bold').pack(anchor='w')
         label(small[1],'Privado y almacenado en tu PC',size=9,color=MUTED).pack(anchor='w',pady=(7,0))
-        label(self.sidebar,'APEX VISUAL STUDIO  ·  v0.2',size=9,color=SOFT).pack(anchor='w',padx=11)
+        label(self.sidebar,'APEX VISUAL STUDIO  ·  v0.2.1',size=9,color=SOFT).pack(anchor='w',padx=11)
         self.content=tk.Frame(self.shell,bg=BG)
         self.content.pack(side='left',fill='both',expand=True)
         self._header()
@@ -620,21 +594,55 @@ class DesktopApp(LegacyDesktopApp):
     def _copy_support(self):
         self.clipboard_clear();self.clipboard_append('angelrlpz030207@gmail.com');self._say('Correo copiado al portapapeles.')
 
+    def _write_support(self):
+        """Intenta abrir cliente de correo; si falta, copia el correo y avisa."""
+        mail='angelrlpz030207@gmail.com'
+        params=urllib.parse.urlencode({
+            'subject':'Apex Descarga Desktop — Reporte o sugerencia',
+            'body':'Versión: 0.2.1 UI Pro\nWindows: 11\n\nDescripción del problema o sugerencia:\n',
+        })
+        link='mailto:'+mail+'?'+params
+        try:
+            if os.name=='nt':
+                os.startfile(link)
+                self._say('Abriendo aplicación de correo...')
+                return
+            if webbrowser.open(link):
+                self._say('Abriendo correo...')
+                return
+        except (OSError,ValueError,RuntimeError):
+            pass
+        self.clipboard_clear()
+        self.clipboard_append(mail)
+        self.update()
+        messagebox.showinfo('Sin aplicación de correo',
+            'Windows no tiene una aplicación de correo asociada o no pudo abrirla.\n\n'
+            'El correo se copió al portapapeles:\n'+mail+'\n\n'
+            'Puedes pegarlo en Gmail, Outlook o tu servicio preferido.',parent=self)
+        self._say('Correo de soporte copiado; abre Gmail o Outlook.')
+
     def _about(self,parent):
-        hero=HeroBanner(parent,self.accent,self._icon_asset() if self.store.settings.get('show_logo',True) else None)
-        hero.pack(fill='x',pady=(0,16))
+        box,p=card(parent,pad=26)
+        box.pack(fill='x',pady=(8,18))
+        label(p,'APEX  /  DESKTOP EDITION',size=10,weight='bold',color=self.accent).pack(anchor='w',pady=(0,11))
+        label(p,'Una aplicación. Tus descargas.',size=22,weight='bold').pack(anchor='w',pady=(0,12))
+        label(p,'Apex Descarga Desktop 0.2.1 UI Pro para Windows 11.',size=11,color=MUTED).pack(anchor='w',pady=(0,8))
+        label(p,'Descarga y organiza medios propios o autorizados, sin necesidad de abrir el navegador.',size=10,color=MUTED,wrap=780).pack(anchor='w')
+        tk.Frame(p,bg=OUTLINE,height=1).pack(fill='x',pady=(19,16))
+        label(p,'yt-dlp   •   FFmpeg externo   •   Cola secuencial   •   Sin cuenta   •   Datos locales',size=10,color=MUTED).pack(anchor='w')
+
         box,p=card(parent,pad=25)
-        box.pack(fill='x',pady=(0,14))
-        label(p,'APEX DESCARGA DESKTOP  ·  0.2 UI PRO',size=10,color=self.accent,weight='bold').pack(anchor='w')
-        label(p,'Una aplicación. Tus descargas.',size=21,weight='bold').pack(anchor='w',pady=(12,9))
-        label(p,'Gestor multimedia de escritorio para contenido propio o autorizado.\nDesarrollado por Apex Visual Studio con yt-dlp, Python y Tkinter.',size=11,color=MUTED).pack(anchor='w')
-        tk.Frame(p,bg=OUTLINE,height=1).pack(fill='x',pady=17)
-        label(p,'Motor: yt-dlp y FFmpeg (externo)   •   Cola secuencial   •   Sin cuenta   •   Datos locales',size=10,color=MUTED).pack(anchor='w')
-        row=tk.Frame(p,bg=SURFACE);row.pack(fill='x',pady=(18,2))
-        action(row,'Código fuente GitHub',lambda:webbrowser.open('https://github.com/Sombra-789/apex-descarga'),width=225,accent=self.accent,filled=True,side='left')
-        action(row,'Escribir al soporte',lambda:webbrowser.open('mailto:angelrlpz030207@gmail.com'),width=190,accent=self.accent,side='left',padx=10)
-        label(p,'© 2026 Apex Visual Studio. Las marcas y programas externos pertenecen a sus titulares.',size=9,color=SOFT).pack(anchor='w',pady=(20,0))
-        label(p,'Solo contenido autorizado. No elude DRM ni garantiza disponibilidad de formatos.',size=9,color=SOFT).pack(anchor='w',pady=(5,0))
+        box.pack(fill='x',pady=(0,18))
+        label(p,'SOPORTE Y SUGERENCIAS',size=10,color=self.accent,weight='bold').pack(anchor='w')
+        label(p,'¿Encontraste un problema?',size=18,weight='bold').pack(anchor='w',pady=(12,8))
+        label(p,'angelrlpz030207@gmail.com',size=12,color=MUTED).pack(anchor='w',pady=(0,10))
+        label(p,'Al reportar, incluye versión, pasos para reproducir y el mensaje de error. Nunca envíes contraseñas ni cookies.',size=10,color=SOFT,wrap=790).pack(anchor='w')
+        row=tk.Frame(p,bg=SURFACE);row.pack(fill='x',pady=(16,1))
+        action(row,'Escribir al soporte',self._write_support,width=200,accent=self.accent,filled=True,side='left')
+        action(row,'Copiar correo',self._copy_support,width=156,accent=self.accent,side='left',padx=10)
+        action(row,'Código fuente GitHub',lambda:webbrowser.open('https://github.com/Sombra-789/apex-descarga'),width=200,accent=self.accent,side='left')
+
+        label(parent,'© 2026 Apex Visual Studio. Solo contenido autorizado; no evita DRM. Los programas externos pertenecen a sus respectivos titulares.',size=9,color=SOFT,wrap=900).pack(anchor='w',pady=(4,20))
 
     def _empty(self,parent,message):
         outer,p=card(parent,pad=22)
