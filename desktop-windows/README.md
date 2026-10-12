@@ -1,4 +1,4 @@
-# Apex Descarga Desktop 0.2 UI Pro — Windows 11
+# Apex Descarga Desktop 0.2.1.1 UI Pro — Windows 11
 
 **Aplicación independiente de Brave**, desarrollada por **Apex Visual Studio**. Esta entrega cambia la experiencia visual conservando la descarga con yt-dlp/FFmpeg, la cola, el historial local y las preferencias previas de Desktop 0.1.
 
@@ -59,3 +59,11 @@ Dependencias: **yt-dlp** (Unlicense), **Pillow** (HPND), **PyInstaller** (GPL co
 **Proyecto:** https://github.com/Sombra-789/apex-descarga
 **Cambios:** [CHANGELOG.md](CHANGELOG.md)
 **Pruebas:** [PRUEBAS_WINDOWS_11.md](docs/PRUEBAS_WINDOWS_11.md)
+
+## Corrección visual y soporte 0.2.1
+
+- Se corrigieron las tarjetas superpuestas reemplazando el sistema de medición Canvas por paneles de tamaño natural.
+- «Acerca de» tiene botones para abrir el correo de Windows, copiar la dirección y abrir GitHub.
+- Sin un cliente de correo configurado, Apex copia la dirección y muestra cómo usar Gmail u Outlook.
+- Diseño editable en Figma: https://www.figma.com/design/3bk5fsYXv0S8IVox5emltv
+- Las descargas, el historial y los ajustes de la 0.2 se conservan.
