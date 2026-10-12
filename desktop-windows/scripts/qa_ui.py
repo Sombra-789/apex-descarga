@@ -44,6 +44,14 @@ def run():
             app._set_compact()
             assert AppStore(Path(dirname)).settings["compact_mode"] is True
             print("OK GUI ajustes, datos y filtros")
+            import unittest.mock as mock
+            with mock.patch('apex_desktop.ui_pro.webbrowser.open', return_value=False), \
+                 mock.patch('apex_desktop.ui_pro.messagebox.showinfo') as message:
+                app._write_support()
+                assert app.clipboard_get() == 'angelrlpz030207@gmail.com'
+                message.assert_called_once()
+                print("OK GUI soporte sin cliente de correo")
+
         finally:
             app.destroy()
 
