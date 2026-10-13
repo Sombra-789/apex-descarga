@@ -1,0 +1,43 @@
+name: Apex Descarga 2.0 Alpha UI Preview
+on:
+  pull_request:
+    paths:
+      - 'prototypes/apex-descarga-2.0/**'
+      - '.github/workflows/apex-2-alpha-preview.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify HTML/CSS/JS and automated alpha tests
+        run: |
+          set -euo pipefail
+          cd prototypes/apex-descarga-2.0
+          test -s index.html
+          test -s styles.css
+          test -s core.js
+          test -s app.js
+          node --check core.js
+          node --check app.js
+          node --test tests/*.test.cjs
+      - name: Build standalone offline preview ZIP
+        run: |
+          set -euo pipefail
+          cd prototypes
+          zip -q -r ../Apex-Descarga-2.0-Alpha1-Preview.zip apex-descarga-2.0 -x '*/.DS_Store'
+          cd ..
+          sha256sum Apex-Descarga-2.0-Alpha1-Preview.zip > SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apex-descarga-2-alpha1-preview
+          path: |
+            Apex-Descarga-2.0-Alpha1-Preview.zip
+            SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 30
