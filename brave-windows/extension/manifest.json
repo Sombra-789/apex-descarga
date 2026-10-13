@@ -9,7 +9,7 @@
     "storage"
   ],
   "action": {
-    "default_title": "Apex Descarga 1.2.2",
+    "default_title": "Apex Descarga 1.2.3",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/16.png",
