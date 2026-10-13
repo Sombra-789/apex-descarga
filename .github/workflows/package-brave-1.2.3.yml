@@ -1,0 +1,65 @@
+name: Package Apex Descarga Brave 1.2.3
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'brave-windows/**'
+      - '.github/workflows/package-brave-1.2.3.yml'
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Brave extension and update package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = 'brave-windows'
+          $manifest = Get-Content "$root/extension/manifest.json" -Raw | ConvertFrom-Json
+          if ($manifest.version -ne '1.2.3' -or $manifest.action.default_title -ne 'Apex Descarga 1.2.3') { throw 'Extension version/title mismatch' }
+          $required = @(
+            'ACTUALIZAR_APEX.cmd', 'REPARAR_APEX.cmd', 'README_PRIMERO.md',
+            'CAMBIOS_1.2.3.md', 'windows/upgrade.ps1',
+            'windows/diagnostico.ps1', 'windows/host.py',
+            'extension/manifest.json', 'extension/background.js',
+            'extension/popup.html', 'extension/popup.css', 'extension/popup.js',
+            'extension/icons/16.png', 'extension/icons/48.png',
+            'extension/icons/128.png', 'extension/icons/brand.png'
+          )
+          foreach ($item in $required) {
+            if (-not (Test-Path -LiteralPath (Join-Path $root $item) -PathType Leaf)) { throw "Missing package file: $item" }
+          }
+          $node = Get-Command node -ErrorAction Stop
+          & $node.Source --check "$root/extension/background.js"
+          if ($LASTEXITCODE -ne 0) { throw 'Invalid background.js syntax' }
+          & $node.Source --check "$root/extension/popup.js"
+          if ($LASTEXITCODE -ne 0) { throw 'Invalid popup.js syntax' }
+      - name: Verify native-messaging diagnostic regression tests
+        shell: powershell
+        run: .\brave-windows\tests\test_diagnostico.ps1
+      - name: Build ZIP without Android/desktop or local user data
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force dist | Out-Null
+          $source = Resolve-Path brave-windows
+          $stage = Join-Path $env:RUNNER_TEMP 'Apex-Descarga-Brave-1.2.3'
+          New-Item -ItemType Directory -Force $stage | Out-Null
+          Copy-Item -LiteralPath (Join-Path $source 'extension') -Destination $stage -Recurse
+          Copy-Item -LiteralPath (Join-Path $source 'windows') -Destination $stage -Recurse
+          foreach ($item in @('ACTUALIZAR_APEX.cmd','REPARAR_APEX.cmd','README_PRIMERO.md','CAMBIOS_1.2.3.md','PRIVACIDAD_Y_CONDICIONES.md')) {
+            Copy-Item -LiteralPath (Join-Path $source $item) -Destination $stage
+          }
+          $zip = Join-Path (Resolve-Path dist) 'Apex-Descarga-Brave-1.2.3-Actualizacion.zip'
+          Compress-Archive -LiteralPath $stage -DestinationPath $zip -Force
+          Get-FileHash -Algorithm SHA256 -LiteralPath $zip |
+            ForEach-Object { "$($_.Hash)  $(Split-Path $zip -Leaf)" } |
+            Set-Content -Encoding ascii (Join-Path (Resolve-Path dist) 'SHA256SUMS.txt')
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apex-descarga-brave-1.2.3-actualizacion
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 30
