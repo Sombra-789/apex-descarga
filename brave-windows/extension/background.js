@@ -1,5 +1,5 @@
 'use strict';
-// Apex Descarga 1.2.2 - native process and queue live in the service worker.
+// Apex Descarga 1.2.3 - native process and queue live in the service worker.
 // connectNative keeps the service worker alive while a task is active.
 const HOST = 'com.apex.video_downloader';
 const MAX_PENDING = 15;
