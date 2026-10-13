@@ -31,6 +31,9 @@ try {
     if ((Get-Content $manifest -Raw | ConvertFrom-Json).allowed_origins[0] -cne $next) {
         throw 'Un ID invalido modifico el manifiesto.'
     }
+    # El caso negativo anterior devolvio 1 como se esperaba. Limpiar ese codigo
+    # evita que GitHub Actions marque como fallida una prueba que paso.
+    $global:LASTEXITCODE = 0
     Write-Host 'PASS: diagnostico de solo lectura, reparacion consentida, respaldo, rechazo ID invalido.' -ForegroundColor Green
 } finally {
     Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue
