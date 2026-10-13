@@ -1,0 +1,23 @@
+name: Brave Native Messaging diagnostic tests
+on:
+  pull_request:
+    paths:
+      - 'brave-windows/windows/diagnostico.ps1'
+      - 'brave-windows/tests/test_diagnostico.ps1'
+      - '.github/workflows/brave-native-diagnostic.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'brave-windows/windows/diagnostico.ps1'
+      - 'brave-windows/tests/test_diagnostico.ps1'
+      - '.github/workflows/brave-native-diagnostic.yml'
+permissions:
+  contents: read
+jobs:
+  native-diagnostics:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test diagnostics and authorized repair
+        shell: powershell
+        run: .\brave-windows\tests\test_diagnostico.ps1
