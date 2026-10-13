@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Apex Descarga 2.0 · Alpha 1</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand" aria-label="Apex Descarga">
+        <div class="brand-icon" aria-hidden="true"><span>▲</span></div>
+        <div><strong>APEX<span>DESCARGA</span></strong><small>VISUAL STUDIO / NEXT</small></div>
+      </div>
+      <div class="sidebar-label">ESPACIO DE TRABAJO</div>
+      <nav class="side-nav" aria-label="Navegación principal">
+        <button type="button" class="nav-item active" data-nav="overview" aria-current="page"><span class="nav-icon">◈</span> Panel general <span class="nav-shortcut">01</span></button>
+        <button type="button" class="nav-item" data-nav="downloads"><span class="nav-icon">⇣</span> Descargas <span class="nav-shortcut">02</span></button>
+        <button type="button" class="nav-item" data-nav="settings"><span class="nav-icon">⚙</span> Preferencias <span class="nav-shortcut">03</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="system-tile">
+          <div class="system-icon">◎</div>
+          <div><strong>Entorno aislado</strong><small>Sin conexión con Windows</small></div>
+          <span class="system-light"></span>
+        </div>
+        <div class="side-footer">APEX DESCARGA <span>2.0.0-alpha.1</span></div>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="toolbar">
+        <div class="breadcrumb"><span>APEX WORKSPACE</span><span class="slash">/</span><strong id="page-name">Resumen</strong></div>
+        <div class="toolbar-right">
+          <span class="simulation-indicator"><span class="indicator-dot"></span> MODO DEMO</span>
+          <div class="avatar" title="Apex Visual Studio">AV</div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="page-intro">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> LA NUEVA GENERACIÓN</div>
+            <h1 id="page-heading">Tus descargas.<br><span>Sin perder el control.</span></h1>
+            <p id="page-subheading">Una experiencia renovada para organizar, supervisar y controlar tu flujo de archivos.</p>
+          </div>
+          <div class="alpha-stamp"><span class="stamp-spark">✦</span><div><strong>VERSION 2.0</strong><small>ALPHA 01 · PREVIEW</small></div></div>
+        </div>
+
+        <div class="notice" role="status"><span class="notice-mark">i</span><div><strong>Vista previa interactiva.</strong> Todas las descargas, velocidades y tiempos son simulados. No se descarga ningún archivo, no se contactan sitios y tu versión 1.2.3 permanece intacta.</div></div>
+
+        <section id="overview-page" data-page="overview" class="page">
+          <div class="section-heading"><div><span class="section-kicker">INICIO RÁPIDO</span><h2>Centro de descargas</h2></div><span class="section-end">01 / CONTROL</span></div>
+          <div class="composer card">
+            <label for="url" class="field-label">Enlace del contenido</label>
+            <div class="url-field"><span class="url-icon">↗</span><input id="url" autocomplete="off" spellcheck="false" maxlength="2000" type="url" placeholder="https://ejemplo.com/video"><span class="field-tag">HTTP / HTTPS</span></div>
+            <div class="composer-options">
+              <div class="format-switch" role="group" aria-label="Formato simulado">
+                <button class="format-option selected" type="button" data-format="mp4" aria-pressed="true"><span>▣</span> Vídeo <small>MP4</small></button>
+                <button class="format-option" type="button" data-format="mp3" aria-pressed="false"><span>♫</span> Audio <small>MP3</small></button>
+              </div>
+              <label class="quality-wrap" for="quality"><span>CALIDAD</span><select id="quality"><option value="best">Mejor disponible</option><option value="1080" selected>1080p Full HD</option><option value="720">720p HD</option><option value="480">480p</option><option value="2160">4K / 2160p</option></select></label>
+            </div>
+            <div class="composer-bottom"><label class="consent"><input type="checkbox" id="consent"><span>Confirmo que tengo permiso para descargar el contenido.</span></label><button type="button" id="add-btn" class="primary-btn"><span>＋</span> Añadir a la cola demo <span>→</span></button></div>
+          </div>
+          <div class="metrics-grid" id="metrics">
+            <div class="metric card"><span class="metric-label">EN COLA <span class="metric-symbol">↗</span></span><strong id="count-pending">0</strong><span class="metric-caption">Por iniciar o pausadas</span></div>
+            <div class="metric card"><span class="metric-label">EN PROGRESO <span class="metric-symbol">◉</span></span><strong id="count-active">0</strong><span class="metric-caption">Simulación activa</span></div>
+            <div class="metric card"><span class="metric-label">FINALIZADAS <span class="metric-symbol">✓</span></span><strong id="count-done">0</strong><span class="metric-caption">En este navegador (demo)</span></div>
+            <div class="metric card"><span class="metric-label">VELOCIDAD DEMO <span class="metric-symbol">≈</span></span><strong id="speed">0 <small>MB/s</small></strong><span class="metric-caption">Dato simulado, no medido</span></div>
+          </div>
+        </section>
+
+        <section id="downloads-page" data-page="downloads" class="page" hidden>
+          <div class="section-heading"><div><span class="section-kicker">ADMINISTRACIÓN</span><h2>Todas las descargas demo</h2></div><span class="section-end">02 / ACTIVIDAD</span></div>
+        </section>
+
+        <section class="activity-layout" id="activity-layout">
+          <div class="activity-column">
+            <div class="section-heading activity-heading"><div><span class="section-kicker">MONITOR EN VIVO</span><h2 id="activity-title">Actividad reciente</h2></div><button type="button" id="clear-finished" class="link-btn">Limpiar finalizadas ↗</button></div>
+            <div class="activity-card card">
+              <div class="activity-tools"><div class="filter-tabs" role="group" aria-label="Filtrar trabajos"><button type="button" class="filter active" data-filter="all" aria-pressed="true">Todo</button><button type="button" class="filter" data-filter="active" aria-pressed="false">En curso</button><button type="button" class="filter" data-filter="pending" aria-pressed="false">Pendiente</button><button type="button" class="filter" data-filter="done" aria-pressed="false">Listo</button></div><label class="search-field"><span>⌕</span><input id="search" type="search" placeholder="Buscar URL..." aria-label="Buscar descargas"></label></div>
+              <div id="jobs" class="jobs-list" aria-live="polite"></div>
+              <div class="activity-footer"><span id="jobs-counter">0 elementos</span><span>SESIÓN DEMO LOCAL</span></div>
+            </div>
+          </div>
+
+          <aside class="insights-column">
+            <div class="section-heading"><div><span class="section-kicker">VISTA GENERAL</span><h2>Rendimiento</h2></div></div>
+            <div class="card performance-card">
+              <div class="performance-top"><div><span>TRANSFERENCIA DEMO</span><strong id="side-speed">0.0 <small>MB/s</small></strong></div><span class="live-tag"><span></span> SIMULADO</span></div>
+              <div class="bars" id="speed-bars" aria-label="Histograma de velocidad simulado"></div>
+              <div class="graph-axis"><span>ANTERIOR</span><span>AHORA</span></div>
+            </div>
+            <div class="card summary-card"><span class="section-kicker">CAPACIDAD</span><h3>Procesamiento paralelo</h3><div class="capacity-row"><span>Trabajos simultáneos en demo</span><strong id="capacity-current">1 / 1</strong></div><div class="capacity-track"><span id="capacity-fill"></span></div><p>Las descargas reales seguirán dependiendo del host Windows y de los sitios de origen.</p></div>
+            <div class="card privacy-card"><span class="shield">◇</span><div><strong>Privado por diseño</strong><p>Sin servidor propio, sin telemetría y sin acceso al host Windows en este prototipo.</p></div></div>
+          </aside>
+        </section>
+
+        <section id="settings-page" data-page="settings" class="page" hidden>
+          <div class="section-heading"><div><span class="section-kicker">PERSONALIZACIÓN</span><h2>Preferencias del prototipo</h2></div></div>
+          <div class="settings-grid">
+            <div class="card setting-card"><div class="setting-icon">⇄</div><div><h3>Simulaciones simultáneas</h3><p>Elige cuántas operaciones de demostración podrán avanzar al mismo tiempo.</p></div><label for="parallel">LÍMITE DEMO</label><select id="parallel"><option value="1">1 simulación</option><option value="2">2 simulaciones</option><option value="3">3 simulaciones</option></select></div>
+            <div class="card setting-card"><div class="setting-icon">▦</div><div><h3>Vista compacta</h3><p>Reduce los espacios del panel para ver más tareas.</p></div><label class="toggle"><input type="checkbox" id="compact"><span class="toggle-track"></span><span>Activar vista compacta</span></label></div>
+            <div class="card setting-card"><div class="setting-icon">⌁</div><div><h3>Almacenamiento del prototipo</h3><p>La cola demo se guarda únicamente en el almacenamiento local de esta página y nunca se mezcla con la 1.2.3.</p></div><button id="reset-demo" type="button" class="danger-btn">Restablecer datos demo</button></div>
+          </div>
+        </section>
+      </main>
+      <footer class="footer"><span>© APEX VISUAL STUDIO · PREVIEW DE INTERFAZ</span><span>2.0.0-alpha.1 / SIN DESCARGAS REALES</span></footer>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script src="core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
