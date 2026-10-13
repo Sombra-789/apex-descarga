@@ -1,5 +1,5 @@
 /* Apex Descarga 2.0 alpha.1 — offline interactive UI, demo only.
-   This page NEVER calls fetch(), downloads files, or uses chrome.runtime/nativeMessaging. */
+   This offline preview never requests network data or connects to the installed extension. */
 (function () {
   'use strict';
   const C = window.ApexCore;
