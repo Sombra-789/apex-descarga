@@ -9,13 +9,16 @@ let isConnected = false;
 let visibleJob = null;
 let lastPreviewURL = '';
 let acceptedTerms = false;
-const TERMS_VERSION = '1.2.2';
+const TERMS_VERSION = '1.2.2'; // Los terminos no han cambiado en 1.2.3.
 
 function errorView(message) {
+  const messageText = String(message?.message || message || '');
+  const nativeHelp = $('native-help');
+  if (nativeHelp) nativeHelp.hidden = !(/native messaging host is forbidden|specified native messaging host is forbidden|native messaging host not found/i.test(messageText));
   $('error').hidden = false;
   $('error').textContent = String(message?.message || message || 'Error desconocido').slice(0, 700);
 }
-function clearError() { $('error').hidden = true; $('error').textContent = ''; }
+function clearError() { $('error').hidden = true; $('error').textContent = ''; const help = $('native-help'); if (help) help.hidden = true; }
 function hostnameFor(value) {
   try { return new URL(value).hostname; } catch { return 'Enlace'; }
 }
@@ -293,7 +296,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
     $('connection').className = 'connection good';
     setFolder(health.folder);
     if (!health.ytdlp) errorView('Falta yt-dlp. Repara la instalación local.');
-    else if (health.version !== '1.2.2') errorView(`Tu componente local es ${health.version || 'antiguo'}. Ejecuta ACTUALIZAR_APEX.cmd de Apex Descarga 1.2.2.`);
+    else if (health.version !== '1.2.3') errorView(`Tu componente local es ${health.version || 'antiguo'}. Ejecuta ACTUALIZAR_APEX.cmd de Apex Descarga 1.2.3.`);
     else if (!health.ffmpeg) errorView('FFmpeg no está disponible. La conversión a MP3 no funcionará.');
   } catch (error) {
     isConnected = false;

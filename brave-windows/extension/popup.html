@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
-  <title>Apex Descarga 1.2.2</title>
+  <title>Apex Descarga 1.2.3</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
   <main>
     <header class="topbar">
       <div class="brandmark" aria-hidden="true"><img src="icons/brand.png" alt=""></div>
-      <div class="brand"><div class="brandname">APEX <span>DESCARGA</span></div><div class="subtitle">BY APEX VISUAL STUDIO <span class="version">V1.2.2</span></div></div>
+      <div class="brand"><div class="brandname">APEX <span>DESCARGA</span></div><div class="subtitle">BY APEX VISUAL STUDIO <span class="version">V1.2.3</span></div></div>
       <div class="connection-dot" id="health" title="Comprobando conexión"></div>
     </header>
     <section class="topstatus" aria-label="Estado del sistema">
@@ -68,6 +68,7 @@
       <div class="progress" role="progressbar" aria-label="Progreso de descarga" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress"><span id="bar"></span></div>
       <p id="job-detail" class="detail">No hay descargas en curso.</p>
       <div id="error" class="error" role="alert" hidden></div>
+      <p id="native-help" class="detail" hidden>La conexión con Windows fue rechazada. Comprueba el ID de esta extensión en brave://extensions y ejecuta REPARAR_APEX.cmd desde la carpeta brave-windows de Apex Descarga 1.2.3. La reparación solicita confirmación y crea un respaldo.</p>
       <div id="file" class="file" hidden></div>
       <button id="cancel" type="button" class="outline danger" hidden>✕ Cancelar descarga actual</button>
       <div class="destination"><div class="destination-title">CARPETA DE DESTINO</div><div class="destination-row"><span id="folder" title="Ubicación de descargas">Descargas / Apex Descarga</span></div><div class="destination-actions"><button id="choose-folder" type="button" class="smallbtn choose-folder">▤ Cambiar carpeta</button><button id="open-folder" type="button" class="smallbtn">Abrir ↗</button></div><p class="destination-tip" id="folder-tip">Windows te permitirá elegir una carpeta; si el panel se cierra, vuelve a abrir Apex para ver la ruta guardada.</p></div>

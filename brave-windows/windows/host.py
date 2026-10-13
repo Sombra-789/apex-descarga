@@ -21,7 +21,7 @@ import threading
 import time
 from urllib.parse import urlsplit
 
-VERSION = '1.2.2'
+VERSION = '1.2.3'
 MAX_MESSAGE = 1024 * 1024
 MAX_PREVIEW = 4 * 1024 * 1024
 PERCENT = re.compile(r'(?<!\d)(\d{1,3}(?:\.\d+)?)%')

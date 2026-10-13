@@ -5,9 +5,10 @@ $SourceHost = Join-Path $PSScriptRoot 'host.py'
 
 Write-Host ''
 Write-Host '=======================================================' -ForegroundColor Cyan
-Write-Host '    APEX DESCARGA 1.2.2 - ACTUALIZADOR SEGURO' -ForegroundColor Cyan
+Write-Host '    APEX DESCARGA 1.2.3 - ACTUALIZADOR SEGURO' -ForegroundColor Cyan
 Write-Host '=======================================================' -ForegroundColor Cyan
 Write-Host 'Conserva la extension y el ID que ya funcionan en Brave.'
+Write-Host 'Si el ID cambio, utiliza REPARAR_APEX.cmd despues de esta actualizacion.'
 Write-Host 'Actualiza la interfaz, los iconos y host.py; conserva el registro y el EXE.'
 Write-Host 'No necesita permisos de administrador.'
 Write-Host ''
@@ -105,7 +106,7 @@ try {
     }
     Copy-Item -LiteralPath $SourceHost -Destination $existingHost -Force
     $applied = Get-Content -LiteralPath $targetManifest -Raw -Encoding UTF8 | ConvertFrom-Json
-    if ($applied.version -cne '1.2.2') { throw 'No se pudo actualizar el manifiesto de la extensión.' }
+    if ($applied.version -cne '1.2.3') { throw 'No se pudo actualizar el manifiesto de la extensión.' }
 } catch {
     foreach ($name in @('manifest.json', 'popup.html', 'popup.css', 'popup.js', 'background.js')) {
         $old = Join-Path $backupExt $name
@@ -121,7 +122,7 @@ try {
     throw ('Actualizacion revertida desde copia de seguridad: ' + $_.Exception.Message)
 }
 Write-Host ''
-Write-Host 'ACTUALIZACION 1.2.2 APLICADA.' -ForegroundColor Green
+Write-Host 'ACTUALIZACION 1.2.3 APLICADA.' -ForegroundColor Green
 Write-Host 'Tu ID, el registro Native Messaging y los archivos descargados siguen intactos.' -ForegroundColor Green
 Write-Host 'En brave://extensions, pulsa ACTUALIZAR (o la flecha recargar de Apex).' -ForegroundColor Cyan
 Write-Host 'Abre el icono de Apex y comprueba Conectado y V1.2.2.'

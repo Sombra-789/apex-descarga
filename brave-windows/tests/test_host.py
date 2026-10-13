@@ -162,7 +162,7 @@ class ProtocolTests(unittest.TestCase):
         return json.loads(result.stdout[4:])
     def test_status(self):
         result=self.exchange({'type':'status'})
-        self.assertEqual(result['version'],'1.2.2')
+        self.assertEqual(result['version'],'1.2.3')
         self.assertEqual(result['type'],'status')
     def test_unknown_command(self):
         self.assertEqual(self.exchange({'type':'wat'})['type'],'error')

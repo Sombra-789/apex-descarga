@@ -1,3 +1,13 @@
+# Apex Descarga 1.2.3 — Brave y Windows 11
+
+## Correccion Native Messaging
+
+Si Brave muestra `Access to the specified native messaging host is forbidden`, normalmente el ID de la extension no coincide con `allowed_origins` del manifiesto local de Windows. La version 1.2.3 incluye `REPARAR_APEX.cmd`: revisa el componente y las dependencias, solicita el ID visible en `brave://extensions`, verifica la discrepancia, pide confirmacion antes de reparar y guarda respaldo del manifiesto. No instala paquetes ni cambia el registro. Cierra Brave completamente antes de reparar y recarga la extension despues.
+
+Tambien puedes ejecutar el diagnostico sin cambios desde PowerShell: `powershell.exe -NoProfile -File .\windows\diagnostico.ps1 -ExtensionId ID_DE_32_LETRAS`. No se comparten IDs ni archivos de configuracion con servidores de Apex.
+
+El actualizador `ACTUALIZAR_APEX.cmd` sigue siendo solo para actualizaciones sobre instalaciones existentes y conserva el ID de extension. Si la extension se reinstalo y cambio su ID, utiliza el reparador con autorizacion explicita.
+
 # Apex Descarga 1.2.2 — actualización para Brave y Windows 11
 
 ## Cambios
