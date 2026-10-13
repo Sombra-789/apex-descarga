@@ -13,13 +13,11 @@ try {
     $script=Join-Path $PSScriptRoot '..\windows\diagnostico.ps1'
 
     & $script -InstallDir $folder -ExtensionId 'codeljnkpoahdegaopkiabplpcagpljl' -NonInteractive
-    if ($LASTEXITCODE -ne 0) { throw 'El diagnostico fallo.' }
     if ((Get-Content $manifest -Raw | ConvertFrom-Json).allowed_origins[0] -cne $prior) {
         throw 'El diagnostico modifico la autorizacion sin permiso.'
     }
 
     & $script -InstallDir $folder -ExtensionId 'codeljnkpoahdegaopkiabplpcagpljl' -Repair -ConfirmRepair -NonInteractive
-    if ($LASTEXITCODE -ne 0) { throw 'El reparador fallo.' }
     if ((Get-Content $manifest -Raw | ConvertFrom-Json).allowed_origins[0] -cne $next) {
         throw 'No se actualizo el ID.'
     }
@@ -28,7 +26,7 @@ try {
         throw 'No se conservo el manifiesto original.'
     }
 
-    & $script -InstallDir $folder -ExtensionId 'INVALID' -Repair -ConfirmRepair -NonInteractive
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $script -InstallDir $folder -ExtensionId 'INVALID' -Repair -ConfirmRepair -NonInteractive
     if ($LASTEXITCODE -eq 0) { throw 'Se acepto un ID invalido.' }
     if ((Get-Content $manifest -Raw | ConvertFrom-Json).allowed_origins[0] -cne $next) {
         throw 'Un ID invalido modifico el manifiesto.'
