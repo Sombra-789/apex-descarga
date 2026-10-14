@@ -32,4 +32,4 @@ También puedes consultar [GitHub Issues](https://github.com/Sombra-789/apex-des
 - **Pendiente**: auditoría de licencias de FFmpeg y bibliotecas empaquetadas, prueba en múltiples teléfonos y firma **release** propia, verificada con `apksigner`.
 - La fuente está en [android/](https://github.com/Sombra-789/apex-descarga/tree/main/android) y las condiciones del proyecto en [THIRD_PARTY_NOTICES.md](https://github.com/Sombra-789/apex-descarga/blob/main/THIRD_PARTY_NOTICES.md).
 
-**Brave/Windows 1.2.2** también tiene código fuente en el mismo repositorio, pero este APK **solo es para Android**.
+**Brave/Windows 1.2.3 estable** también tiene código fuente en este repositorio. El APK 1.0.0-rc1 es una **compilación independiente para Android y solo de pruebas**, no una versión 1.2.3 de Android.

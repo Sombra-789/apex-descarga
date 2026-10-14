@@ -1,5 +1,19 @@
 # Historial de cambios
 
+## Brave + Windows 1.2.3 — ESTABLE (2026-10-13)
+- Se declara concluido el desarrollo principal de Apex Descarga, con Brave/Windows v1.2.3 como referencia estable de esa plataforma.
+- Se incluye diagnóstico y reparación de Native Messaging mediante REPARAR_APEX.cmd, con consentimiento y respaldo del manifiesto.
+- El usuario confirmó conexión, descargas MP4/MP3, miniaturas, carpetas y administración de cola e historial en Windows.
+- Las pruebas automatizadas de la versión y reparador fueron aprobadas en GitHub Actions.
+- Se preparó la publicación de un ZIP de actualización verificable en GitHub Releases (no instalador de primera instalación).
+- El desarrollo 2.0 alpha.1 queda reservado como prototipo experimental sin fusionarlo con estable.
+
+### Estado de las otras plataformas
+- Android 1.0.0-rc1: APK de pruebas DEBUG disponible en GitHub Releases; no debe confundirse con Brave 1.2.3.
+- Windows Desktop 0.2.1: beta independiente, no se declara estable.
+- Próximas modificaciones: mantenimiento, correcciones y actualizaciones menores si fueran necesarias.
+
+
 ## 1.0.0-rc1 (candidato) — 2026-10-11
 - Se crea un monorepositorio con fuentes recuperadas de Android y Brave/Windows.
 - Android: `versionCode` 8 y `versionName` 1.0.0-rc1; mismas preferencias, `applicationId` y motor de 0.6.

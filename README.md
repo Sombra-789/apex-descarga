@@ -1,116 +1,67 @@
-# APEX DESCARGA — Android + Brave/Windows 11
+# 🦅 Apex Descarga — Apex Visual Studio
 
-**Estado: 1.0.0-rc1 — versión de pruebas (APK debug), todavía no versión estable de producción.**
+**Estado del proyecto: desarrollo principal finalizado. Mantenimiento y actualizaciones menores únicamente.**
 
-Proyecto de **Apex Visual Studio** para gestionar descargas de medios **propios o autorizados**. Contiene tres productos relacionados con bases de código distintas:
+Apex Descarga permite gestionar descargas de contenido **propio o autorizado**. Este repositorio conserva tres aplicaciones independientes, **con versiones y estados de publicación diferentes**.
 
-| Producto | Ruta | Versión del código incluido |
-|---|---|---|
-| Aplicación nativa Android | [`android/`](android/) | **1.0.0-rc1** basada en la 0.6 verificada manualmente |
-| Extensión Brave/Chromium + host local Windows | [`brave-windows/`](brave-windows/) | **1.2.2** (última actualización aportada por el propietario) |
-| Aplicación independiente Windows 11 | [`desktop-windows/`](desktop-windows/) | **0.2.0 UI Pro** (beta de escritorio) |
-| **Aplicación independiente Windows 11** | [`desktop-windows/`](desktop-windows/) | **Beta 0.1.0** (EXE en validación) |
+## 📦 Descargas oficiales de GitHub
 
-> Android utiliza su propia numeración 1.0.0-rc1; la extensión Brave conserva su numeración independiente **1.2.2**. El paquete Brave 1.2.2 es una actualización sobre una instalación previa y no garantiza instalación completamente nueva sin registrar Native Messaging.
+| Plataforma | Versión | Estado | Descarga |
+| --- | --- | --- | --- |
+| **Brave + Windows** | **1.2.3** | **Estable para instalaciones existentes** | [ZIP de actualización 1.2.3](https://github.com/Sombra-789/apex-descarga/releases/download/brave-v1.2.3/Apex-Descarga-Brave-1.2.3-Actualizacion.zip) |
+| **Android** | **1.0.0-rc1** | **APK de pruebas (DEBUG)** | **[Descargar APK Android](https://github.com/Sombra-789/apex-descarga/releases/download/v1.0.0-rc1/Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk)** |
+| **Desktop independiente Windows** | 0.2.1 | Beta, ejecutable no firmado | [EXE de pruebas](https://github.com/Sombra-789/apex-descarga/releases/download/desktop-v0.2.1-beta/ApexDescargaDesktop.exe) |
 
-## Qué hace
+**Página de todas las publicaciones:** [GitHub Releases](https://github.com/Sombra-789/apex-descarga/releases).
 
-### Android
-- Descarga MP4/MP3 con motor `yt-dlp` por medio de una biblioteca Android; usa FFmpeg cuando corresponde.
-- Vista previa con título, autor, duración, miniaturas y formatos cuando los facilita el sitio.
-- Cola secuencial, notificaciones, historial/biblioteca, compartir enlaces a Apex, apertura/compartición de archivos.
-- Paletas personalizables y colores HEX, logotipo opcional, modo solo Wi-Fi, comprobaciones de almacenamiento y actualización programada de motor.
-- Diseño nativo inspirado en [Apex UI Pro (Figma)](https://www.figma.com/design/tnVTpd2xcdL4XqrEuWmNUH).
+### 📱 Instalar el APK Android
 
-### Desktop — Windows 11
-- Aplicación independiente de Brave y Android con interfaz oscura Apex, temas HEX, Inicio/Cola/Biblioteca/Ajustes.
-- Descargas MP4 y MP3 con yt-dlp incorporable al ejecutable, FFmpeg/Deno externos cuando sean necesarios.
-- Cola secuencial, vista previa y portadas, progreso y cancelación/reintento, carpeta de destino configurable e historial local.
-- **Beta 0.1.0**: 22 pruebas unitarias aprobadas. El ejecutable PyInstaller está en proceso de validación mediante [GitHub Actions](https://github.com/Sombra-789/apex-descarga/actions/workflows/desktop-windows.yml); todavía **no es una versión Windows firmada ni estable**.
-- Ejecutar el código con `desktop-windows/INICIAR_APEX.cmd` o compilar usando `desktop-windows/BUILD_EXE_WINDOWS.cmd`. [Manual de Desktop](desktop-windows/README.md). 
+El APK Android ya está publicado en la [versión de pruebas 1.0 RC1](https://github.com/Sombra-789/apex-descarga/releases/tag/v1.0.0-rc1). Puedes descargarlo directamente desde el enlace de arriba.
 
-### Windows 11 — aplicación independiente
+1. Descarga el archivo **Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk** en tu teléfono Android compatible.
+2. Para comprobar la integridad descarga también su [archivo SHA-256](https://github.com/Sombra-789/apex-descarga/releases/download/v1.0.0-rc1/Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk.sha256).
+3. Abre el APK desde tu gestor de archivos y, solo si confías en el origen, concede autorización puntual para instalar desde esa fuente.
+4. Prueba la aplicación con contenido autorizado.
 
-- **Apex Descarga Desktop 0.2 UI Pro** funciona sin tener Brave abierto: navegación de cinco pantallas, cola, miniaturas, biblioteca, filtros, ajustes de apariencia y pantalla Acerca de.
-- Descarga MP4/MP3 mediante yt-dlp, y requiere FFmpeg instalado para MP3 y para unir pistas de video HD cuando sea necesario.
-- Código: [desktop-windows/](desktop-windows/) · [Guía de inicio](desktop-windows/README.md) · [Capturas](desktop-windows/docs/UI_PRO_VISTA_GENERAL.jpg).
-- [Descargar beta Windows](https://github.com/Sombra-789/apex-descarga/releases/tag/desktop-v0.2.0-beta) cuando GitHub Actions haya terminado; archivo `ApexDescargaDesktop.exe` **sin firma Authenticode**, para pruebas exclusivamente.
+**Advertencia:** el APK de 1.0 RC1 está firmado con un **certificado DEBUG de GitHub Actions**, no con una clave de distribución estable. Está destinado a pruebas; Android puede impedir actualizar encima de otra copia firmada con una clave distinta. **No desinstales una versión que contenga datos importantes** para resolver un error de firma. La compatibilidad declarada es Android 10 o posterior, con arquitectura ARM de 64 bits (o emulador x86_64). La versión estable **1.2.3 corresponde a Brave + Windows, NO a Android**.
 
-### Brave + Windows
-- Popup Manifest V3 y Native Messaging con host Python.
-- Detección de enlace en pestaña activa autorizada, vista previa, selector de calidad, MP4/MP3, transportes alternativos cuando los ofrece yt-dlp.
-- Cola secuencial, cancelación, historial local, selector nativo de carpeta Windows y persistencia de la ruta en `settings.json`.
-- Solicitud de aceptación de las condiciones revisadas en 1.2.2, con política de privacidad local y avisos sobre contenido de terceros.
-- Depende de Python, yt-dlp, FFmpeg y del entorno JS compatible (por ejemplo Deno para ciertos sitios).
+### 🖥️ Brave + Windows — 1.2.3 estable
 
-## 📦 Descargar APK de pruebas (Android 1.0 RC1)
+La versión 1.2.3 de Brave + Windows fue verificada manualmente con descargas MP4/MP3, vista previa, carpetas, cola/historial y conexión Native Messaging. El reparador **REPARAR_APEX.cmd** corrigió un error de permisos del host cuando cambió el ID de la extensión. También se aprobaron las pruebas automáticas de diagnóstico y empaquetado.
 
-Busca la **pre-release** [Apex Descarga 1.0 RC1 — APK de prueba](https://github.com/Sombra-789/apex-descarga/releases/tag/v1.0.0-rc1) cuando haya terminado su compilación/publicación. Descarga el archivo `Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk` y verifica el SHA-256 publicado junto a él.
+**El ZIP de 1.2.3 es solo una actualización:** no contiene un instalador completo ni un host ejecutable compilado. Requiere tener Apex previamente instalado y configurado con Python, yt-dlp y las dependencias pertinentes.
 
-> ⚠️ El APK está firmado con **certificado de depuración de CI**, no con una clave release de Apex Visual Studio. Es una distribución para pruebas técnicas; puede requerir un dispositivo o perfil sin otra versión instalada con una firma diferente. No desinstales versiones anteriores con datos importantes solo por solucionar un conflicto de firma. No incluye garantía de compatibilidad para todos los sitios o dispositivos.
+1. Extrae el ZIP completo, cierra Brave y ejecuta **ACTUALIZAR_APEX.cmd**, sin privilegios de administrador.
+2. Selecciona la carpeta **original** de la extensión que ya está cargada en Brave; no la carpeta nueva del ZIP.
+3. Recarga la extensión en **brave://extensions** y confirma **1.2.3** y **Conectado**.
+4. Si aparece un error de permiso Native Messaging, ejecuta **REPARAR_APEX.cmd** y sigue las instrucciones para autorizar el ID de Brave. La herramienta solicita confirmación y crea un respaldo.
 
-**Contacto para reportar fallos o sugerencias:** [angelrlpz030207@gmail.com](mailto:angelrlpz030207@gmail.com). Incluye modelo, versión de Android/Windows, pasos para reproducir y mensaje de error, **sin enviar contraseñas, cookies, tokens, enlaces privados ni información sensible**. También puedes abrir una [incidencia en GitHub](https://github.com/Sombra-789/apex-descarga/issues) cuando el repositorio esté accesible.
+[Manual Brave/Windows](brave-windows/README_PRIMERO.md) · [Cambios de 1.2.3](brave-windows/CAMBIOS_1.2.3.md) · [Historial](CHANGELOG.md)
 
-## Compilación Android (Windows 11)
+## Funcionalidades y código fuente
 
-1. Instala **Android Studio + SDK Platform 35** y **JDK 17 o 21**.
-2. En la carpeta `android/`, ejecuta `GENERAR_APK_WINDOWS.cmd` sin privilegios de administrador.
-3. La salida será `android/APEX_DESCARGA_ANDROID_1.0_RC1_DEBUG.apk`, **solo para pruebas**.
-4. Para un APK público, audita dependencias, cambia la configuración de release cuando sea necesario y **firma con una clave privada que nunca se sube al repositorio**. Consulta [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md).
+| Producto | Código | Capacidades principales |
+| --- | --- | --- |
+| **Brave/Windows 1.2.3** | [brave-windows/](brave-windows/) | Pestaña activa, vista previa, MP4/MP3, calidades, cola e historial, cambiar/abrir carpeta, reparador Native Messaging |
+| **Android 1.0 RC1** | [android/](android/) | Descargas MP4/MP3, vista previa, cola, biblioteca, notificaciones, selección de tema y control de red |
+| **Desktop Windows beta** | [desktop-windows/](desktop-windows/) | Aplicación independiente con cola, biblioteca, ajustes, descargas y exportación ejecutable |
+| **Prototipo 2.0** | [prototypes/apex-descarga-2.0 (rama experimental)](https://github.com/Sombra-789/apex-descarga/tree/feature/apex-descarga-2.0-alpha1/prototypes/apex-descarga-2.0) | Interfaz interactiva local **simulada**, separada de producción y conservada como referencia futura |
 
-**Atención:** Si tu instalación previa se firmó con una clave *debug* diferente, Android rechazará la actualización. Antes de desinstalar, considera que pueden perderse datos y ajustes.
+**El prototipo 2.0 no es una actualización disponible de la 1.2.3 y no realiza descargas reales.** Se conserva como trabajo experimental sin integrarse en la rama estable.
 
-## Instalación Brave
+## Mantenimiento
 
-Lee [`brave-windows/README_PRIMERO.md`](brave-windows/README_PRIMERO.md): registra el componente local y carga la carpeta `extension/` desde Brave Developer Mode. Esta fuente corresponde a la **actualización 1.2.2** facilitada por el propietario, no a una publicación de tienda. Requiere configuración previa del componente local y Native Messaging.
+- **Versión estable elegida para Brave:** 1.2.3.
+- El desarrollo principal se da por concluido; solo se prevén correcciones, mantenimiento de seguridad y mejoras menores cuando sean necesarias.
+- Android 1.0 RC1 y Desktop 0.2.1 mantienen su condición de versiones **de pruebas**, no de productos estables.
+- No se recopila telemetría hacia servidores propios de Apex; las descargas o previsualizaciones **sí requieren contactar** con los sitios externos.
+- No se ofrece evasión de DRM ni garantía de compatibilidad con todos los portales.
+- Antes de instalar archivos descargados, verifícalos y revisa el código abierto.
 
-## Versión Desktop 0.2 UI Pro
+## Documentación y contacto
 
-- Diseño visual profesional basado en el estilo Apex, funciones originales preservadas y datos locales compatibles con Desktop 0.1.
-- Requiere Windows 11; el `.exe` empaqueta Python/yt-dlp pero **no FFmpeg ni Deno**.
-- Errores y sugerencias: **angelrlpz030207@gmail.com**.
+[Política de privacidad](PRIVACY.md) · [Seguridad](SECURITY.md) · [Licencias de terceros](THIRD_PARTY_NOTICES.md) · [Checklist de publicación](RELEASE_CHECKLIST.md) · [Seguimiento Android](docs/RC1-TESTING-RELEASE.md) · [Cierre y mantenimiento](docs/CIERRE_PROYECTO.md).
 
-## Versión Brave 1.2.2: novedades
+Para fallos o sugerencias, abre una [incidencia en GitHub](https://github.com/Sombra-789/apex-descarga/issues). No compartas contraseñas, cookies, enlaces privados ni archivos sensibles.
 
-- Cambio de carpeta de destino mediante selector de Windows.
-- Ruta persistente en `%LOCALAPPDATA%\ApexVideoDownloader\settings.json`.
-- Avisos de privacidad y términos revisados, aceptados una vez por versión de condiciones.
-- Actualizador de Windows conserva el ID de extensión al actualizar la carpeta original y realiza copia de seguridad.
-- La extensión mantiene los permisos `activeTab`, `nativeMessaging` y `storage` y no incorpora telemetría propia. **yt-dlp y miniaturas sí se comunican con sitios externos**.
-
-## Seguridad, privacidad y licencias
-
-- Únicamente enlaces HTTP(S) que el usuario solicita; la extensión usa permisos `activeTab`, `nativeMessaging` y `storage`.
-- No estamos afiliados a YouTube, TikTok, Instagram, Meta, Google, Brave ni sus propietarios.
-- No hay garantías de que una plataforma ofrezca un formato, permita descargas o sea accesible sin sesión; no se evade DRM.
-- El código puede incluir bibliotecas y herramientas de terceros con obligaciones de licencia diferentes. Lee [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) y [`PRIVACY.md`](PRIVACY.md).
-- Licencia del **código de este repositorio**: GPL-3.0, sujeto a que el autor tenga derechos para licenciar cada parte. El logotipo/marca no se concede bajo GPL para uso comercial o suplantación; ver [`BRANDING.md`](BRANDING.md).
-
-## Estado de validación
-
-La compilación automatizada **1.0 RC1** con Gradle y SDK 35 se completó con éxito en GitHub Actions; Brave superó las pruebas automatizadas Python/JavaScript. El creador confirmó en **Galaxy S23** la actualización de 0.6 a 1.0 RC1 conservando datos, descargas MP4 y MP3 y pruebas básicas de cola, segundo plano, Solo Wi-Fi, interrupción de red, cancelación y reintento. También confirmó el funcionamiento de **Brave 1.2.2 en Windows 11**. Detalles: [seguimiento de validación #1](https://github.com/Sombra-789/apex-descarga/issues/1).
-
-**El APK descargable es de DEPURACIÓN (DEBUG), para pruebas exclusivamente.** Es posible que no se pueda actualizar una instalación firmada con otra clave sin perder los datos de la app. No usar como APK estable ni publicarlo en tiendas. Sigue pendiente probarlo en otros modelos Android, comprobar las licencias de FFmpeg y generar una versión release firmada.
-
-## Documentación
-
-- [Registro de cambios](CHANGELOG.md)
-- [Guía de publicación](RELEASE_CHECKLIST.md)
-- [Avisos de terceros](THIRD_PARTY_NOTICES.md)
-- [Privacidad](PRIVACY.md)
-- [Política de seguridad](SECURITY.md)
-- [Créditos y marca](BRANDING.md)
-- [Android: README](android/README_PRIMERO.md)
-- [Brave: README](brave-windows/README_PRIMERO.md)
-- [Desktop 0.2: README](desktop-windows/README.md)
-- [Desktop 0.2: historial de cambios](desktop-windows/CHANGELOG.md)
-- [Brave 1.2.2: cambios](brave-windows/CAMBIOS_1.2.2.md)
-- [Brave 1.2.2: privacidad y condiciones](brave-windows/PRIVACIDAD_Y_CONDICIONES.md)
-
-## Contacto y colaboración
-
-Correo del proyecto: **angelrlpz030207@gmail.com**. Se aceptan avisos de errores, reportes reproducibles y sugerencias de mejora.
-
-## Sobre la autoría
-
-Iniciativa y decisiones de producto, diseño y pruebas de **Apex Visual Studio**, con asistencia de inteligencia artificial para generación de código, depuración y redacción; las pruebas manuales y decisiones de lanzamiento pertenecen al responsable del proyecto.
+**Apex Descarga es un proyecto de Apex Visual Studio**, con apoyo de herramientas de inteligencia artificial en el desarrollo. La marca y los logotipos se rigen por [BRANDING.md](BRANDING.md); el código se distribuye según [LICENSE](LICENSE) y las licencias de sus dependencias.

@@ -1,0 +1,119 @@
+name: Publicar Apex Descarga Brave 1.2.3 estable
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-brave-1.2.3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stable-brave:
+    if: github.repository == 'Sombra-789/apex-descarga' && github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verificar version, componentes y extension
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = 'brave-windows'
+          $manifest = Get-Content "$root/extension/manifest.json" -Raw | ConvertFrom-Json
+          if ($manifest.version -ne '1.2.3' -or $manifest.action.default_title -ne 'Apex Descarga 1.2.3') {
+            throw 'La version de Brave no coincide con el release estable solicitado.'
+          }
+          $required = @(
+            'ACTUALIZAR_APEX.cmd', 'REPARAR_APEX.cmd', 'README_PRIMERO.md',
+            'CAMBIOS_1.2.3.md', 'PRIVACIDAD_Y_CONDICIONES.md',
+            'windows/upgrade.ps1', 'windows/diagnostico.ps1', 'windows/host.py',
+            'extension/manifest.json', 'extension/background.js', 'extension/popup.html',
+            'extension/popup.css', 'extension/popup.js', 'extension/icons/16.png',
+            'extension/icons/48.png', 'extension/icons/128.png', 'extension/icons/brand.png'
+          )
+          foreach ($item in $required) {
+            if (-not (Test-Path -LiteralPath (Join-Path $root $item) -PathType Leaf)) {
+              throw "No se puede publicar: falta $item"
+            }
+          }
+          node --check "$root/extension/background.js"
+          if ($LASTEXITCODE -ne 0) { throw 'Error de sintaxis en background.js' }
+          node --check "$root/extension/popup.js"
+          if ($LASTEXITCODE -ne 0) { throw 'Error de sintaxis en popup.js' }
+          node "$root/tests/test_extension.js"
+          if ($LASTEXITCODE -ne 0) { throw 'Las pruebas de la extension fallaron' }
+          python -m unittest discover -s brave-windows/tests -p 'test_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Las pruebas del host fallaron' }
+
+      - name: Probar reparador de Native Messaging
+        shell: powershell
+        run: .\brave-windows\tests\test_diagnostico.ps1
+
+      - name: Crear paquete ZIP y checksum verificable
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $name = 'Apex-Descarga-Brave-1.2.3-Actualizacion.zip'
+          New-Item -ItemType Directory -Path dist -Force | Out-Null
+          $source = (Resolve-Path brave-windows).Path
+          $stage = Join-Path $env:RUNNER_TEMP 'Apex-Descarga-Brave-1.2.3'
+          if (Test-Path $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+          Copy-Item -LiteralPath (Join-Path $source 'extension') -Destination $stage -Recurse
+          Copy-Item -LiteralPath (Join-Path $source 'windows') -Destination $stage -Recurse
+          foreach ($item in @('ACTUALIZAR_APEX.cmd', 'REPARAR_APEX.cmd', 'README_PRIMERO.md', 'CAMBIOS_1.2.3.md', 'PRIVACIDAD_Y_CONDICIONES.md')) {
+            Copy-Item -LiteralPath (Join-Path $source $item) -Destination $stage
+          }
+          $zip = Join-Path (Resolve-Path dist) $name
+          Compress-Archive -LiteralPath $stage -DestinationPath $zip -Force
+          Add-Type -AssemblyName System.IO.Compression
+          $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
+          try {
+            $entries = @($archive.Entries | ForEach-Object { $_.FullName })
+            foreach ($expected in @('ACTUALIZAR_APEX.cmd', 'REPARAR_APEX.cmd', 'windows/host.py', 'extension/manifest.json')) {
+              if (-not @($entries | Where-Object { $_.Replace('\', '/') -like ('*/' + $expected) }).Count) {
+                throw "El ZIP no incluye $expected"
+              }
+            }
+          } finally {
+            $archive.Dispose()
+          }
+          $sha = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$sha  $name" | Set-Content -Encoding ascii (Join-Path dist 'SHA256SUMS.txt')
+
+      - name: Guardar copia de respaldo en Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: apex-descarga-brave-v1.2.3-stable
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publicar GitHub Release de Brave estable
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tag = 'brave-v1.2.3'
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "La version $tag ya existe; no se sobreescriben binarios publicados."
+            exit 0
+          }
+          gh release create $tag 'dist/Apex-Descarga-Brave-1.2.3-Actualizacion.zip' 'dist/SHA256SUMS.txt' --target "$env:GITHUB_SHA" --title 'Apex Descarga Brave + Windows 1.2.3 — Estable' --notes-file 'brave-windows/CAMBIOS_1.2.3.md' --latest
+          if ($LASTEXITCODE -ne 0) { throw 'GitHub Releases no pudo publicar el paquete.' }
