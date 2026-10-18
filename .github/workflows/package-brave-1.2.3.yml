@@ -9,6 +9,8 @@ permissions:
   contents: read
 jobs:
   package:
+    # Stable 1.2.3 packaging does not apply to experimental 2.0 branches.
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'feature/apex-descarga-2.0-') }}
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
