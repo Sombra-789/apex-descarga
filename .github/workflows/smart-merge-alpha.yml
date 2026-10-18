@@ -51,6 +51,8 @@ jobs:
             $errors = $null
             [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path).Path, [ref]$tokens, [ref]$errors)
             if ($errors.Count) { $errors | ForEach-Object { Write-Host $_.ToString() }; throw "Invalid PowerShell: $path" }
+            $scriptText = Get-Content -LiteralPath $path -Raw
+            if ($scriptText -match '(?im)^\s*\$host\s*=') { throw 'Reserved PowerShell variable Host assigned in ' + $path }
           }
       - name: Build alpha ZIP (no executable or data from user PC)
         shell: pwsh
