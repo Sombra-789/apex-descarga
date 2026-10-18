@@ -491,9 +491,13 @@ def execute(request: dict, callback, cancel: threading.Event, destination: Path)
     _emit(callback, "pack", "Creando archivo único " + output_format.upper(), 94)
     safe_base = re.sub(r"[^A-Za-z0-9._-]", "_", manifest["base"])[:65].strip("._") or "Apex_Merge"
     final = result_dir / f"{safe_base}-{fingerprint}.{output_format}"
+    if final.exists():
+        final = result_dir / f"{safe_base}-{fingerprint}-{uuid.uuid4().hex[:8]}.{output_format}"
     # Keep the correct .zip / .7z suffix for the archiver, and publish only
     # after the archive has passed a complete integrity test.
     stage = result_dir / (".smartmerge-building-" + fingerprint)
+    if stage.is_symlink():
+        raise MergeError("La carpeta de empaquetado no es válida.")
     stage.mkdir(exist_ok=True)
     temporary = stage / f"{safe_base}-{fingerprint}.{output_format}"
     temporary.unlink(missing_ok=True)
