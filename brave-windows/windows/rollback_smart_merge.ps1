@@ -9,9 +9,9 @@ $backup = [IO.Path]::GetFullPath([string]$record.backupRoot)
 $target = [IO.Path]::GetFullPath([string]$record.extensionPath)
 $root = Join-Path $backup 'extension'
 $manifest = Join-Path $root 'manifest.json'
-$host = Join-Path $backup 'host.py'
+$backupHostFile = Join-Path $backup 'host.py'
 if (-not (Test-Path -LiteralPath $manifest -PathType Leaf) -or
-    -not (Test-Path -LiteralPath $host -PathType Leaf)) {
+    -not (Test-Path -LiteralPath $backupHostFile -PathType Leaf)) {
     throw 'El respaldo no esta completo. No se realizo ninguna modificacion.'
 }
 $oldVersion = (Get-Content -LiteralPath $manifest -Raw | ConvertFrom-Json).version
@@ -32,7 +32,7 @@ foreach ($name in @('manifest.json','popup.html','popup.css','popup.js','backgro
 foreach ($name in @('manifest.json','popup.html','popup.css','popup.js','background.js')) {
     Copy-Item -LiteralPath (Join-Path $root $name) -Destination (Join-Path $target $name) -Force
 }
-Copy-Item -LiteralPath $host -Destination (Join-Path $install 'host.py') -Force
+Copy-Item -LiteralPath $backupHostFile -Destination (Join-Path $install 'host.py') -Force
 if (-not (Test-Path -LiteralPath (Join-Path $root 'smart_merge_ui.js'))) {
     Remove-Item -LiteralPath (Join-Path $target 'smart_merge_ui.js') -Force -ErrorAction SilentlyContinue
 }
