@@ -403,6 +403,8 @@ def _validate_members(text: str) -> tuple[int, int]:
             continue
         files += 1
         n = int(fields.get("Size", "0"))
+        if n < 0:
+            raise MergeError("El archivo contiene un tamaño inválido.")
         size += n
         if files > 10000 or size > MAX_UNPACKED:
             raise MergeError("El contenido excede límites de extracción seguros.")
@@ -473,7 +475,7 @@ def execute(request: dict, callback, cancel: threading.Event, destination: Path)
     _emit(callback, "verify", "Comprobando el conjunto RAR con 7-Zip (CRC)", 72)
     listing = _process([seven, "l", "-slt", "-p", str(first)], cancel, capture=True, timeout=120)
     count, unpacked_size = _validate_members(listing)
-    if shutil.disk_usage(directory).free < unpacked_size + 100 * 1024 * 1024:
+    if shutil.disk_usage(directory).free < unpacked_size * 2 + 150 * 1024 * 1024:
         raise MergeError("No hay espacio disponible suficiente para extraer el contenido.")
     _process([seven, "t", "-y", "-p", "-bd", str(first)], cancel, timeout=3600)
     _emit(callback, "extract", "Verificación aprobada; reconstruyendo archivos", 83)
@@ -489,7 +491,11 @@ def execute(request: dict, callback, cancel: threading.Event, destination: Path)
     _emit(callback, "pack", "Creando archivo único " + output_format.upper(), 94)
     safe_base = re.sub(r"[^A-Za-z0-9._-]", "_", manifest["base"])[:65].strip("._") or "Apex_Merge"
     final = result_dir / f"{safe_base}-{fingerprint}.{output_format}"
-    temporary = result_dir / f".{safe_base}-{fingerprint}.{output_format}.partial"
+    # Keep the correct .zip / .7z suffix for the archiver, and publish only
+    # after the archive has passed a complete integrity test.
+    stage = result_dir / (".smartmerge-building-" + fingerprint)
+    stage.mkdir(exist_ok=True)
+    temporary = stage / f"{safe_base}-{fingerprint}.{output_format}"
     temporary.unlink(missing_ok=True)
     try:
         _process([seven, "a", "-y", "-bd", "-t" + output_format, "-mx=3",
@@ -504,6 +510,10 @@ def execute(request: dict, callback, cancel: threading.Event, destination: Path)
             raise MergeError("Falló la verificación del archivo final.")
     finally:
         temporary.unlink(missing_ok=True)
+        try:
+            stage.rmdir()
+        except OSError:
+            pass
     if cleanup:
         shutil.rmtree(workspace)
     return {"type": "done", "ok": True, "percent": 100, "stage": "done",
