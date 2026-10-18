@@ -88,7 +88,7 @@ def filename_from_link(url: str) -> str:
 def analyze(urls) -> dict:
     if not isinstance(urls, list) or not 2 <= len(urls) <= MAX_LINKS:
         raise MergeError("Pega entre 2 y 100 enlaces, uno por línea.")
-    parts, numbers, groups, seen_urls = [], set(), set(), set()
+    parts, numbers, groups, seen_urls, widths = [], set(), set(), set(), set()
     duplicates = []
     for raw in urls:
         url = check_url(raw)
@@ -100,6 +100,7 @@ def analyze(urls) -> dict:
         if not base or base.endswith(".") or len(base) > 130:
             raise MergeError("Nombre base de archivo inválido o demasiado largo.")
         number = int(match["number"])
+        widths.add(len(match["number"]))
         if number < 1 or number > 100:
             raise MergeError("Numeración de partes fuera de 1 a 100.")
         if number in numbers or url in seen_urls:
@@ -110,6 +111,8 @@ def analyze(urls) -> dict:
         parts.append({"url": url, "name": name, "number": number})
     if len(groups) != 1:
         raise MergeError("Las partes no pertenecen al mismo archivo base.")
+    if len(widths) != 1:
+        raise MergeError("La numeración de las partes tiene distintos rellenos (part1, part02). Debe ser uniforme.")
     if duplicates:
         raise MergeError("Partes repetidas: " + ", ".join(map(str, sorted(set(duplicates)))))
     missing = sorted(set(range(1, max(numbers) + 1)) - numbers)
@@ -224,6 +227,8 @@ class Progress:
                 return
             self.last_emit = now
             consumed = sum(self.bytes.values())
+            if consumed > MAX_TOTAL:
+                raise MergeError("El conjunto excedió el límite total de 16 GiB.")
             total = sum(self.expected.values()) if len(self.expected) == self.count else None
             speed = consumed / max(0.1, now - self.start)
             # 0..70% is download stage. Without every Content-Length, percent is unknown.
@@ -376,7 +381,7 @@ def _process(command, cancel: threading.Event, *, cwd=None, timeout=3600, captur
 def _validate_members(text: str) -> tuple[int, int]:
     if "----------" not in text:
         raise MergeError("No se pudo leer el listado del archivo RAR.")
-    members = text.split("----------", 1)[1].split("\n\n")
+    members = re.split(r"\r?\n\s*\r?\n", text.split("----------", 1)[1])
     files, size = 0, 0
     for member in members:
         fields = dict(line.split(" = ", 1) for line in member.splitlines() if " = " in line)
