@@ -1,0 +1,91 @@
+name: Apex Descarga 2.0 Smart Merge Alpha (Windows)
+on:
+  pull_request:
+    paths:
+      - 'brave-windows/**'
+      - '.github/workflows/smart-merge-alpha.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smart-merge:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check Python and JavaScript
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python -m py_compile brave-windows/windows/host.py brave-windows/windows/smart_merge.py
+          node --check brave-windows/extension/background.js
+          node --check brave-windows/extension/popup.js
+          node --check brave-windows/extension/smart_merge_ui.js
+          if ($LASTEXITCODE -ne 0) { throw 'Syntax validation failed' }
+          $manifest = Get-Content brave-windows/extension/manifest.json -Raw | ConvertFrom-Json
+          if ($manifest.version -ne '2.0.0') { throw 'Wrong extension version' }
+          $html = Get-Content brave-windows/extension/popup.html -Raw
+          if ($html -notmatch 'Smart Merge Engine' -or $html -notmatch 'smart_merge_ui.js') {
+            throw 'Smart Merge controls missing from popup'
+          }
+      - name: Run original and Smart Merge regression tests
+        shell: pwsh
+        run: |
+          python -m unittest discover -s brave-windows/tests -p 'test_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Python unit tests failed' }
+          node brave-windows/tests/test_extension.js
+          if ($LASTEXITCODE -ne 0) { throw 'Brave integration tests failed' }
+      - name: Verify existing Native Messaging diagnostics (not repaired on CI runner)
+        shell: powershell
+        run: .\brave-windows\tests\test_diagnostico.ps1
+      - name: Check install/rollback PowerShell syntax
+        shell: pwsh
+        run: |
+          foreach ($path in @('brave-windows/windows/upgrade_smart_merge.ps1','brave-windows/windows/rollback_smart_merge.ps1')) {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path).Path, [ref]$tokens, [ref]$errors)
+            if ($errors.Count) { $errors | ForEach-Object { Write-Host $_.ToString() }; throw "Invalid PowerShell: $path" }
+          }
+      - name: Build alpha ZIP (no executable or data from user PC)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = (Resolve-Path brave-windows).Path
+          $stage = Join-Path $env:RUNNER_TEMP 'Apex-Descarga-2.0-Smart-Merge-Alpha1'
+          if (Test-Path -LiteralPath $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+          Copy-Item -LiteralPath (Join-Path $root 'extension') -Destination $stage -Recurse
+          Copy-Item -LiteralPath (Join-Path $root 'windows') -Destination $stage -Recurse
+          foreach ($file in @('ACTUALIZAR_SMART_MERGE_ALPHA.cmd','RESTAURAR_APEX_1_2_3.cmd',
+                             'SMART_MERGE_2_ALPHA.md','PRIVACIDAD_Y_CONDICIONES.md')) {
+            Copy-Item -LiteralPath (Join-Path $root $file) -Destination $stage
+          }
+          New-Item -ItemType Directory dist -Force | Out-Null
+          $zip = Join-Path (Resolve-Path dist).Path 'Apex-Descarga-2.0-Smart-Merge-Alpha1.zip'
+          Compress-Archive -LiteralPath $stage -DestinationPath $zip -Force
+          Add-Type -AssemblyName System.IO.Compression
+          $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
+          try {
+            $paths = @($archive.Entries | ForEach-Object { $_.FullName.Replace('\','/') })
+            foreach ($required in @('/extension/smart_merge_ui.js','/windows/smart_merge.py',
+                   '/windows/host.py','/ACTUALIZAR_SMART_MERGE_ALPHA.cmd',
+                   '/RESTAURAR_APEX_1_2_3.cmd')) {
+              if (-not @($paths | Where-Object { $_.EndsWith($required) }).Count) {
+                throw "Package missing $required"
+              }
+            }
+          } finally { $archive.Dispose() }
+          $sha = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$sha  $(Split-Path -Leaf $zip)" | Set-Content -Encoding ascii (Join-Path dist 'SHA256SUMS.txt')
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apex-descarga-smart-merge-alpha1-windows
+          path: dist/*
+          retention-days: 30
+          if-no-files-found: error
