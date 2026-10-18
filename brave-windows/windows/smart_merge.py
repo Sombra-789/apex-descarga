@@ -82,6 +82,10 @@ def filename_from_link(url: str) -> str:
         result = parts[-1] if parts else ""
     if not result or result in (".", "..") or "/" in result or "\\" in result or "\0" in result:
         raise MergeError("El enlace no incluye un nombre RAR identificable.")
+    forbidden = set('<>:"|?*')
+    if (any(char in forbidden or ord(char) < 32 for char in result)
+            or result.rstrip(" .") != result or result.split(".")[0].upper() in RESERVED):
+        raise MergeError("El nombre RAR contiene caracteres no válidos para Windows.")
     return result
 
 
