@@ -69,6 +69,9 @@ class Download(unittest.TestCase):
         opened = []
         def serve(url, headers=None, timeout=35):
             opened.append(headers or {})
+            if '/file/' in url:
+                html = b'<a id="downloadButton" href="https://download.mediafire.com/rar-volume">Descargar</a>'
+                return FakeResponse(url, html, {'Content-Type': 'text/html'})
             return FakeResponse(url, payload)
         with tempfile.TemporaryDirectory() as temp, patch.object(sm, '_open', serve):
             work = Path(temp)
@@ -79,7 +82,7 @@ class Download(unittest.TestCase):
             self.assertTrue((work / 'archive.part01.rar.verified.json').is_file())
             two = sm._download_one(manifest['parts'][0], work, threading.Event(), tracker)
             self.assertEqual(one, two)
-            self.assertEqual(len(opened), 1)
+            self.assertEqual(len(opened), 2)
 
     def test_rejects_html_download(self):
         url = public_url(1)
