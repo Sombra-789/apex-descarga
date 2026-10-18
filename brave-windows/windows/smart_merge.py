@@ -480,17 +480,17 @@ def execute(request: dict, callback, cancel: threading.Event, destination: Path)
         raise MergeError("Los volúmenes superan el límite de 16 GiB.")
     first = workspace / manifest["parts"][0]["name"]
     _emit(callback, "verify", "Comprobando el conjunto RAR con 7-Zip (CRC)", 72)
-    listing = _process([seven, "l", "-slt", "-p", str(first)], cancel, capture=True, timeout=120)
+    listing = _process([seven, "l", "-slt", str(first)], cancel, capture=True, timeout=120)
     count, unpacked_size = _validate_members(listing)
     if shutil.disk_usage(directory).free < unpacked_size * 2 + 150 * 1024 * 1024:
         raise MergeError("No hay espacio disponible suficiente para extraer el contenido.")
-    _process([seven, "t", "-y", "-p", "-bd", str(first)], cancel, timeout=3600)
+    _process([seven, "t", "-y", "-bd", str(first)], cancel, timeout=3600)
     _emit(callback, "extract", "Verificación aprobada; reconstruyendo archivos", 83)
     extracted = workspace / "contenido_extraido"
     if extracted.exists():
         shutil.rmtree(extracted)  # This engine's dedicated workspace only.
     extracted.mkdir(parents=True)
-    _process([seven, "x", "-y", "-p", "-bd", "-o" + str(extracted), str(first)], cancel,
+    _process([seven, "x", "-y", "-bd", "-o" + str(extracted), str(first)], cancel,
              timeout=3600)
     _check_extracted(extracted)
     if not any(p.is_file() for p in extracted.rglob("*")):
@@ -514,7 +514,7 @@ def execute(request: dict, callback, cancel: threading.Event, destination: Path)
         if not temporary.is_file() or temporary.stat().st_size == 0:
             raise MergeError("No se creó el archivo unificado.")
         _emit(callback, "verify_output", "Verificando integridad del archivo único", 98)
-        _process([seven, "t", "-y", "-bd", "-p", str(temporary)], cancel, timeout=3600)
+        _process([seven, "t", "-y", "-bd", str(temporary)], cancel, timeout=3600)
         os.replace(temporary, final)
         digest = _hash_file(final)
         if not final.is_file() or final.stat().st_size == 0:
