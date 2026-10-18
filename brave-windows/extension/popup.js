@@ -296,7 +296,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
     $('connection').className = 'connection good';
     setFolder(health.folder);
     if (!health.ytdlp) errorView('Falta yt-dlp. Repara la instalación local.');
-    else if (health.version !== '1.2.3') errorView(`Tu componente local es ${health.version || 'antiguo'}. Ejecuta ACTUALIZAR_APEX.cmd de Apex Descarga 1.2.3.`);
+    else if (health.version !== '2.0.0-alpha.1') errorView(`Tu componente local es ${health.version || 'antiguo'}. Para esta Alpha ejecuta ACTUALIZAR_SMART_MERGE_ALPHA.cmd.`);
     else if (!health.ffmpeg) errorView('FFmpeg no está disponible. La conversión a MP3 no funcionará.');
   } catch (error) {
     isConnected = false;
