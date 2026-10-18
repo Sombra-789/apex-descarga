@@ -447,11 +447,14 @@ def execute(request: dict, callback, cancel: threading.Event, destination: Path)
     if not directory.is_dir():
         raise MergeError("La carpeta de salida no está disponible.")
     fingerprint = hashlib.sha256("\n".join(p["url"] for p in manifest["parts"]).encode()).hexdigest()[:20]
-    workspace = directory / "SmartMerge_Work" / fingerprint
+    work_root = directory / "SmartMerge_Work"
+    result_dir = directory / "SmartMerge_Output"
+    if work_root.is_symlink() or result_dir.is_symlink():
+        raise MergeError("Las carpetas de trabajo y salida no son válidas.")
+    workspace = work_root / fingerprint
     workspace.mkdir(parents=True, exist_ok=True)
     if workspace.is_symlink():
         raise MergeError("El directorio temporal no puede ser un enlace simbólico.")
-    result_dir = directory / "SmartMerge_Output"
     result_dir.mkdir(parents=True, exist_ok=True)
     _emit(callback, "analyze", f"{manifest['count']} partes detectadas y ordenadas", 0)
     progress = Progress(manifest["count"], callback)
