@@ -2,7 +2,11 @@
 
 ## 📱 DESCARGAR APEX DESCARGA PARA ANDROID
 
-### ⬇️ [**PULSA AQUÍ PARA DESCARGAR EL APK DIRECTAMENTE**](https://github.com/Sombra-789/apex-descarga/releases/download/v1.0.0-rc1/Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk)
+### ⬇️ [**DESCARGAR APK 1.0.1 PREVIEW — GALAXY S23**](https://github.com/Sombra-789/apex-descarga/releases/download/android-v1.0.1-preview/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk)
+
+**Nuevo:** mantenimiento del actualizador de yt-dlp. Se instala como aplicación de pruebas **separada** para no sobrescribir ni borrar datos de la 1.0 RC1 existente. La descarga estará disponible cuando GitHub Actions termine su publicación. [Ver cambios 1.0.1](docs/ANDROID_1_0_1.md).
+
+### ⬇️ [**DESCARGAR APK ANTERIOR — ANDROID 1.0 RC1**](https://github.com/Sombra-789/apex-descarga/releases/download/v1.0.0-rc1/Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk)
 
 **Descarga directa, sin abrir carpetas ni entrar a GitHub Actions.** Abre este README desde el teléfono y toca el enlace de arriba. GitHub descargará el archivo `Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk` (aprox. 115 MB).
 
@@ -21,7 +25,7 @@ Apex Descarga permite gestionar descargas de contenido **propio o autorizado**. 
 | Plataforma | Versión | Estado | Descarga |
 | --- | --- | --- | --- |
 | **Brave + Windows** | **1.2.3** | **Estable para instalaciones existentes** | [ZIP de actualización 1.2.3](https://github.com/Sombra-789/apex-descarga/releases/download/brave-v1.2.3/Apex-Descarga-Brave-1.2.3-Actualizacion.zip) |
-| **Android** | **1.0.0-rc1** | **APK de pruebas (DEBUG)** | **[Descargar APK Android](https://github.com/Sombra-789/apex-descarga/releases/download/v1.0.0-rc1/Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk)** |
+| **Android** | **1.0.1 Preview** | **APK de pruebas independiente** | **[Descargar APK 1.0.1](https://github.com/Sombra-789/apex-descarga/releases/download/android-v1.0.1-preview/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk)** |
 | **Desktop independiente Windows** | 0.2.1 | Beta, ejecutable no firmado | [EXE de pruebas](https://github.com/Sombra-789/apex-descarga/releases/download/desktop-v0.2.1-beta/ApexDescargaDesktop.exe) |
 
 **Página de todas las publicaciones:** [GitHub Releases](https://github.com/Sombra-789/apex-descarga/releases).
