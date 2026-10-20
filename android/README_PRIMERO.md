@@ -1,4 +1,4 @@
-# Apex Descarga Android 1.0.0-rc1 — Candidata de lanzamiento
+# Apex Descarga Android 1.0.1 — Actualización de mantenimiento (beta)
 
 **Implementación nativa del diseño Figma:** https://www.figma.com/design/tnVTpd2xcdL4XqrEuWmNUH
 
@@ -9,7 +9,7 @@ Esta actualización aplica un rediseño Android a la base **funcional 0.5**, sin
 1. Descomprime el ZIP por completo y abre la carpeta `android`.
 2. Ejecuta `GENERAR_APK_WINDOWS.cmd` (no como administrador).
 3. Utiliza Android SDK 35, JDK 17/21 y conexión a internet para Gradle. Si tienes Android Studio, basta con dejar configurado el SDK.
-4. Cuando aparezca `BUILD SUCCESSFUL`, encontrarás `APEX_DESCARGA_ANDROID_1.0_RC1_DEBUG.apk` en la raíz del proyecto.
+4. Cuando aparezca `BUILD SUCCESSFUL`, encontrarás `APEX_DESCARGA_ANDROID_1.0.1_DEBUG.apk` en la raíz del proyecto.
 5. Crea una copia de seguridad de datos importantes antes de actualizar. Instálala encima de 0.5 **sin desinstalar**, siempre que la firma de depuración sea la misma.
 6. Si Android indica **firma incompatible**, no desinstales automáticamente: eso borraría datos privados, cola e historial.
 
@@ -35,3 +35,7 @@ Ver `CAMBIOS_0.6.md` y `PRUEBAS_GALAXY_S23.md`.
 
 
 > Revisión 1.0-rc1: cambia versión y añade documentación de distribución; los motores de descarga siguen los de 0.6. No distribuir la APK debug como release. Consulta ../RELEASE_CHECKLIST.md.
+
+## Android 1.0.1
+
+Corrección de la interpretación de las versiones de yt-dlp, mensajes claros ante actualizaciones no verificadas, y presentación dinámica de errores en Ajustes. Las descargas MP4/MP3, archivos existentes, historial y preferencias no se han cambiado. GitHub genera un APK DEBUG para pruebas; puede no actualizar una versión anterior con firma diferente. No borres los datos sin crear antes una copia de seguridad.
