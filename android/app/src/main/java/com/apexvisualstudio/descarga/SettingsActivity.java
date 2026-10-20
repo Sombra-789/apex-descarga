@@ -32,7 +32,7 @@ public final class SettingsActivity extends Activity {
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private SharedPreferences prefs;
     private ApexUi ui;
-    private TextView folderLabel, engineLabel;
+    private TextView folderLabel, engineLabel, engineIssueLabel;
     private Button engineButton;
     private volatile boolean updating=false;
     private final String[] themes={"Apex neón","Océano","Violeta","Esmeralda","Coral","Personalizado"};
@@ -142,17 +142,19 @@ public final class SettingsActivity extends Activity {
         engineButton.setOnClickListener(v->updateEngine());
         engine.addView(engineButton,new LinearLayout.LayoutParams(-1,ui.dp(49)));
         String issue=prefs.getString("engine_update_issue","");
-        if(!issue.isEmpty())engine.addView(ui.text("Última incidencia: "+issue,11,0xFFFFB6C3,false));
+        engineIssueLabel=ui.text("",11,0xFFFFB6C3,false);
+        engine.addView(engineIssueLabel);
+        showEngineIssue(issue);
         engine.addView(ui.caption("Las actualizaciones utilizan el canal estable del motor, sin descargar APK externos."));
         worker.execute(()->{
             try{
                 synchronized(DownloadService.ENGINE_LOCK){YoutubeDL.getInstance().init(getApplicationContext());}
-                String version=YoutubeDL.getInstance().versionName(getApplicationContext());
-                runOnUiThread(()->engineLabel.setText("Versión instalada: "+(version==null?"No disponible":version)));
+                String version=EngineVersion.normalize(YoutubeDL.getInstance().versionName(getApplicationContext()));
+                runOnUiThread(()->engineLabel.setText("Versión instalada: "+(version.isEmpty()?"No verificable":version)));
             }catch(Exception ex){runOnUiThread(()->engineLabel.setText("No disponible: "+brief(ex)));}
         });
         ui.addGap(root,15);
-        root.addView(ui.caption("APEX DESCARGA · ANDROID UI PRO 1.0 RC1 · BY APEX VISUAL STUDIO"));
+        root.addView(ui.caption("APEX DESCARGA · ANDROID UI PRO 1.0.1 · BY APEX VISUAL STUDIO"));
     }
     private CheckBox checkbox(String text,boolean checked){
         CheckBox c=new CheckBox(this);c.setText(text);c.setTextColor(ApexUi.WHITE);c.setTextSize(13);
@@ -219,17 +221,35 @@ public final class SettingsActivity extends Activity {
         }else runUpdate();
     }
     private void runUpdate(){
-        updating=true;engineButton.setEnabled(false);engineLabel.setText("Actualizando motor estable…");
+        updating=true;
+        engineButton.setEnabled(false);
+        engineLabel.setText("Comprobando actualización estable de yt-dlp…");
+        showEngineIssue("");
         worker.execute(()->{
             try{
-                String version=EngineHealth.updateStable(getApplicationContext());
-                runOnUiThread(()->engineLabel.setText("Motor actualizado: "+version));
+                EngineHealth.UpdateResult result=EngineHealth.updateStableDetailed(getApplicationContext());
+                runOnUiThread(()->{
+                    engineLabel.setText(result.status);
+                    showEngineIssue(result.verified ? "" :
+                        getSharedPreferences("apex_descarga",MODE_PRIVATE)
+                        .getString("engine_update_issue",""));
+                });
             }catch(Exception ex){
-                runOnUiThread(()->engineLabel.setText("Error al actualizar: "+brief(ex)));
+                String friendly=EngineHealth.describeFailure(ex);
+                runOnUiThread(()->{
+                    engineLabel.setText(friendly);
+                    showEngineIssue("No se ha confirmado una actualización. Tus descargas guardadas permanecen intactas.");
+                });
             }finally{
-                updating=false;runOnUiThread(()->engineButton.setEnabled(true));
+                updating=false;
+                runOnUiThread(()->engineButton.setEnabled(true));
             }
         });
+    }
+    private void showEngineIssue(String issue) {
+        if(engineIssueLabel==null)return;
+        engineIssueLabel.setVisibility(issue==null||issue.isEmpty()?View.GONE:View.VISIBLE);
+        engineIssueLabel.setText(issue==null||issue.isEmpty()?"":"Última incidencia: "+issue);
     }
     private static String brief(Exception ex){String message=String.valueOf(ex.getMessage());return message.length()>110?message.substring(0,110)+"…":message;}
     private void toast(String s){android.widget.Toast.makeText(this,s,android.widget.Toast.LENGTH_SHORT).show();}
