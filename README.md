@@ -1,5 +1,17 @@
 # 🦅 Apex Descarga — Apex Visual Studio
 
+## 📱 DESCARGAR APEX DESCARGA PARA ANDROID
+
+### ⬇️ [**PULSA AQUÍ PARA DESCARGAR EL APK DIRECTAMENTE**](https://github.com/Sombra-789/apex-descarga/releases/download/v1.0.0-rc1/Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk)
+
+**Descarga directa, sin abrir carpetas ni entrar a GitHub Actions.** Abre este README desde el teléfono y toca el enlace de arriba. GitHub descargará el archivo `Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk` (aprox. 115 MB).
+
+> **Versión Android 1.0 RC1 de pruebas (DEBUG).** Compatible con Android 10 o superior en ARM64. No equivale a la versión 1.2.3 de Brave/Windows y no se debe presentar como una aplicación Android estable. Si Android señala una firma distinta a una instalación previa, no desinstales sin respaldar tus datos.
+
+[Ver detalles de la versión Android](https://github.com/Sombra-789/apex-descarga/releases/tag/v1.0.0-rc1) · [Comprobar SHA-256](https://github.com/Sombra-789/apex-descarga/releases/download/v1.0.0-rc1/Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk.sha256)
+
+---
+
 **Estado del proyecto: desarrollo principal finalizado. Mantenimiento y actualizaciones menores únicamente.**
 
 Apex Descarga permite gestionar descargas de contenido **propio o autorizado**. Este repositorio conserva tres aplicaciones independientes, **con versiones y estados de publicación diferentes**.
