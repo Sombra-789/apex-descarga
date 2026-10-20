@@ -20,6 +20,12 @@ android {
     }
 
     buildTypes {
+        // GitHub Actions uses an ephemeral DEBUG signing key. Keep test installs
+        // separate so the user's previously installed RC1 and data stay intact.
+        debug {
+            applicationIdSuffix '.preview'
+            versionNameSuffix '-preview'
+        }
         release {
             minifyEnabled false
         }
