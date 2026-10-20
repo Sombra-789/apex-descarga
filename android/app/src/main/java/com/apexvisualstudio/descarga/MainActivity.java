@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/** Apex Descarga Android 0.6 UI Pro: native interface; retains 0.5 download engine. */
+/** Apex Descarga Android 1.0.1 UI Pro: native interface; retains 0.5 download engine. */
 public final class MainActivity extends Activity {
     private static final String PREF="apex_descarga";
     private static final int SELECT_FOLDER=2114;
@@ -170,7 +170,7 @@ public final class MainActivity extends Activity {
         }
         LinearLayout headerText=vert();
         headerText.addView(ui.heading("APEX DESCARGA"));
-        headerText.addView(ui.text("BY APEX VISUAL STUDIO  ·  UI PRO 1.0 RC1",10,ui.accent,true));
+        headerText.addView(ui.text("BY APEX VISUAL STUDIO  ·  UI PRO 1.0.1",10,ui.accent,true));
         header.addView(headerText,new LinearLayout.LayoutParams(0,-2,1));
         root.addView(header);
         engineStatus=ui.chip("● Preparando motor local…",ui.accent);
