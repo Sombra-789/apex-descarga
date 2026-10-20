@@ -1,0 +1,94 @@
+name: Publicar Apex Descarga Android 1.0.1 Preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - '.github/workflows/publish-android-1.0.1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish-preview:
+    if: github.repository == 'Sombra-789/apex-descarga' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Install SDK 35
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="$ANDROID_SDK_ROOT"
+          SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | sort -V | tail -n 1)"
+          test -n "$SDKMANAGER"
+          "$SDKMANAGER" --sdk_root="$SDK_ROOT" 'platforms;android-35' 'build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Verify source and version parser tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 android/scripts/verificar_proyecto.py
+          mkdir -p "$RUNNER_TEMP/apex-engine-tests"
+          javac -d "$RUNNER_TEMP/apex-engine-tests" \
+            android/app/src/main/java/com/apexvisualstudio/descarga/EngineVersion.java \
+            android/tests/EngineVersionTest.java
+          java -cp "$RUNNER_TEMP/apex-engine-tests" com.apexvisualstudio.descarga.EngineVersionTest
+      - name: Build Android 1.0.1 preview APK
+        working-directory: android
+        shell: bash
+        run: gradle --no-daemon :app:assembleDebug
+      - name: Verify signing, package, version and SHA256
+        shell: bash
+        run: |
+          set -euo pipefail
+          TOOLS="$ANDROID_SDK_ROOT/build-tools/35.0.0"
+          APK_SOURCE='android/app/build/outputs/apk/debug/app-debug.apk'
+          FILE='Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk'
+          mkdir -p dist
+          test -s "$APK_SOURCE"
+          cp "$APK_SOURCE" "dist/$FILE"
+          "$TOOLS/apksigner" verify --verbose --print-certs "dist/$FILE"
+          "$TOOLS/aapt" dump badging "dist/$FILE" | tee dist/apk-metadata.txt
+          grep -q "package: name='com.apexvisualstudio.descarga.preview'" dist/apk-metadata.txt
+          grep -q "versionCode='9'" dist/apk-metadata.txt
+          grep -q "versionName='1.0.1-preview'" dist/apk-metadata.txt
+          rm dist/apk-metadata.txt
+          ( cd dist && sha256sum "$FILE" > "$FILE.sha256" )
+          ls -lh "dist/$FILE" "dist/$FILE.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apex-descarga-android-1.0.1-PREVIEW-APK
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 30
+      - name: Publish direct GitHub Releases APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG='android-v1.0.1-preview'
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release exists: $TAG; keeping published APK unchanged."
+            gh release view "$TAG" --json url --jq '.url'
+            exit 0
+          fi
+          gh release create "$TAG" \
+            'dist/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk' \
+            'dist/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk.sha256' \
+            --target "$GITHUB_SHA" \
+            --title 'Apex Descarga Android 1.0.1 - Preview de mantenimiento' \
+            --notes-file 'docs/ANDROID_1_0_1.md' \
+            --prerelease

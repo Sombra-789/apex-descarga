@@ -124,7 +124,7 @@ try {
 }
 $apk = Join-Path $project 'app\build\outputs\apk\debug\app-debug.apk'
 if (-not (Test-Path -LiteralPath $apk -PathType Leaf)) { throw 'Gradle termino pero no se encontro la APK.' }
-$dest = Join-Path $project 'APEX_DESCARGA_ANDROID_1.0_RC1_DEBUG.apk'
+$dest = Join-Path $project 'APEX_DESCARGA_ANDROID_1.0.1_DEBUG.apk'
 Copy-Item -LiteralPath $apk -Destination $dest -Force
 Write-Host 'APK GENERADA CON EXITO:' -ForegroundColor Green
 Write-Host $dest -ForegroundColor Cyan
