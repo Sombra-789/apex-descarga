@@ -29,6 +29,15 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - name: Test engine version parser (pure Java, no device needed)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/apex-engine-tests"
+          javac -d "$RUNNER_TEMP/apex-engine-tests" \
+            android/app/src/main/java/com/apexvisualstudio/descarga/EngineVersion.java \
+            android/tests/EngineVersionTest.java
+          java -cp "$RUNNER_TEMP/apex-engine-tests" com.apexvisualstudio.descarga.EngineVersionTest
       - name: Install Android SDK 35
         shell: bash
         run: |
@@ -51,6 +60,6 @@ jobs:
         run: gradle --no-daemon :app:assembleDebug
       - uses: actions/upload-artifact@v4
         with:
-          name: apex-descarga-android-1.0.0-rc1-UNSIGNED-DEBUG-NOT-FOR-RELEASE
+          name: apex-descarga-android-1.0.1-DEBUG-PREVIEW-NOT-FOR-RELEASE
           path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 7
