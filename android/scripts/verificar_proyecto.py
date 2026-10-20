@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apex Descarga Android 1.0 RC1: static project checks; NOT an Android APK build."""
+"""Apex Descarga Android 1.0.1: static project checks; NOT an Android APK build."""
 from pathlib import Path
 from xml.etree import ElementTree as ET
 import sys
@@ -26,11 +26,11 @@ verify(not {'android.permission.MANAGE_EXTERNAL_STORAGE','android.permission.REA
 verify(app.get(ns+'allowBackup')=='false' and app.get(ns+'usesCleartextTraffic')=='false','Backup y tráfico sin cifrar deshabilitados')
 verify({' .MainActivity'.strip(),'.QueueActivity','.LibraryActivity','.ConverterActivity','.SettingsActivity'}<=activities,'Cinco pantallas')
 verify('.DownloadService' in services and '.EngineUpdateJob' in services,'Servicio y actualizador')
-verify('versionCode 8' in build and "versionName '1.0.0-rc1'" in build,'Versión 1.0.0-rc1')
+verify('versionCode 9' in build and "versionName '1.0.1'" in build,'Versión 1.0.1')
 verify("applicationId 'com.apexvisualstudio.descarga'" in build,'Mismo identificador de paquete')
 verify('youtubedl-android:library:0.18.1' in build and 'youtubedl-android:ffmpeg:0.18.1' in build,'Dependencias de 0.4 conservadas')
 verify('targetSdk 34' in build and 'minSdk 29' in build,'Android SDK compatible')
-names=['SettingsActivity','ThemeIdentity','MainActivity','NetworkPolicy','DownloadService','DownloadQueueStore','LibraryStore',
+names=['EngineVersion','SettingsActivity','ThemeIdentity','MainActivity','NetworkPolicy','DownloadService','DownloadQueueStore','LibraryStore',
     'LibraryActivity','ConverterActivity','EngineUpdateJob','EngineHealth','DownloadStorage',
     'PrivacyTerms','MediaMetadata','ArtworkCache','ApexUi','QueueActivity']
 verify(all((java/(n+'.java')).is_file() for n in names),'17 clases Java presentes')
@@ -56,8 +56,8 @@ verify('Reintentar' in src('QueueActivity') and 'resumePending' in store,'Reinte
 verify('Compartir' in src('LibraryActivity') and 'Eliminar' in src('LibraryActivity'),'Biblioteca completa')
 verify('show_logo' in src('SettingsActivity') and 'custom_primary' in src('SettingsActivity'),'Paletas y ocultar logo')
 verify((root/'app/src/main/res/drawable-nodpi/apex_brand.png').is_file(),'Identidad visual conservada')
-verify('APEX_DESCARGA_ANDROID_1.0_RC1_DEBUG.apk' in (root/'scripts/generar_apk.ps1').read_text(encoding='utf-8-sig'),'Salida Windows 0.6')
-verify('apex-descarga-android-1.0.0-rc1-' in (root.parent/'.github/workflows/build-and-test.yml').read_text(),'Artefacto Actions 1.0 RC1')
+verify('APEX_DESCARGA_ANDROID_1.0.1_DEBUG.apk' in (root/'scripts/generar_apk.ps1').read_text(encoding='utf-8-sig'),'Salida Windows 1.0.1')
+verify('apex-descarga-android-1.0.1-' in (root.parent/'.github/workflows/build-and-test.yml').read_text(),'Artefacto Actions 1.0.1')
 verify('py' not in (root/'app/src/main/AndroidManifest.xml').read_text().lower(),'Sin scripting externo en manifiesto')
 verify('scaffold(this,"inicio")' in main and 'scaffold(this,"cola")' in src('QueueActivity') and 'scaffold(this,"biblioteca")' in src('LibraryActivity') and 'scaffold(this,"ajustes")' in src('SettingsActivity'), 'Navegación inferior en las cuatro pantallas')
 verify('SharedPreferences' in src('ThemeIdentity') and 'onResume()' in src('QueueActivity'), 'Temas actualizados al volver de Ajustes')
