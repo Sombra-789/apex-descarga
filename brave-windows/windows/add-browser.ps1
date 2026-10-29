@@ -51,14 +51,13 @@ if ($origins -ccontains $origin) {
   $confirm = 'S'
   if (-not $SkipRegistration) { $confirm = (Read-Host "Agregar el ID al manifiesto de Apex para $Browser? [S/N]").Trim().ToUpperInvariant() }
   if ($confirm -ne 'S') { throw 'Cancelado sin cambios.' }
-  $backup = $manifestPath + '.bak-' + (Get-Date -Format yyyyMMdd_HHmmss)
-  Copy-Item -LiteralPath $manifestPath -Destination $backup
+  $backup = $manifestPath + '.bak-' + (Get-Date -Format yyyyMMdd_HHmmss) + '-' + [guid]::NewGuid().ToString('N')
   $manifest.allowed_origins = @($origins + @($origin) | Select-Object -Unique)
   $json = $manifest | ConvertTo-Json -Depth 10
   $temp = $manifestPath + '.tmp-' + [guid]::NewGuid().ToString('N')
   try {
     [IO.File]::WriteAllText($temp, $json, (New-Object System.Text.UTF8Encoding $false))
-    [IO.File]::Replace($temp, $manifestPath, $null)
+    [IO.File]::Replace($temp, $manifestPath, $backup, $false)
   } finally {
     if (Test-Path -LiteralPath $temp) { Remove-Item -LiteralPath $temp -Force }
   }
