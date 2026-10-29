@@ -1,5 +1,7 @@
 # 🦅 Apex Descarga — Apex Software Inc.
 
+**Contacto oficial Apex Software Inc.:** [apexsoftware.inc07@gmail.com](mailto:apexsoftware.inc07@gmail.com) — sugerencias, quejas, fallos y propuestas. [Guía de contacto y soporte](CONTACTO_Y_SOPORTE.md).
+
 > **Apex Software Inc. — Proyecto del ecosistema Apex Software.** [Guía completa de instalación, funcionamiento, requisitos, dependencias y limitaciones](GUIA_INSTALACION_Y_USO.md). La denominación “Inc.” se usa como identidad de proyecto y no constituye prueba de registro legal.
 
 ## 📱 DESCARGAR APEX DESCARGA PARA ANDROID
@@ -91,6 +93,6 @@ La versión 1.2.3 de Brave + Windows fue verificada manualmente con descargas MP
 
 [Política de privacidad](PRIVACY.md) · [Seguridad](SECURITY.md) · [Licencias de terceros](THIRD_PARTY_NOTICES.md) · [Checklist de publicación](RELEASE_CHECKLIST.md) · [Seguimiento Android](docs/RC1-TESTING-RELEASE.md) · [Cierre y mantenimiento](docs/CIERRE_PROYECTO.md).
 
-Para fallos o sugerencias, abre una [incidencia en GitHub](https://github.com/Sombra-789/apex-descarga/issues). No compartas contraseñas, cookies, enlaces privados ni archivos sensibles.
+Para fallos o sugerencias, escribe a **apexsoftware.inc07@gmail.com** o abre una [incidencia en GitHub](https://github.com/Sombra-789/apex-descarga/issues). No compartas contraseñas, cookies, enlaces privados ni archivos sensibles.
 
 **Apex Descarga forma parte de Apex Software Inc.**, con apoyo de herramientas de inteligencia artificial en el desarrollo. La marca y los logotipos se rigen por [BRANDING.md](BRANDING.md); el código se distribuye según [LICENSE](LICENSE) y las licencias de sus dependencias.
