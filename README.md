@@ -4,7 +4,7 @@
 
 ## 📱 DESCARGAR APEX DESCARGA PARA ANDROID
 
-### ⬇️ [**DESCARGAR APK 1.0.1 PREVIEW — GALAXY S23**](https://github.com/Sombra-789/apex-descarga/releases/download/android-v1.0.1-preview/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk)
+### ⬇️ [**DESCARGAR APK 1.0.1 PREVIEW **](https://github.com/Sombra-789/apex-descarga/releases/download/android-v1.0.1-preview/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk)
 
 **Nuevo:** mantenimiento del actualizador de yt-dlp. Se instala como aplicación de pruebas **separada** para no sobrescribir ni borrar datos de la 1.0 RC1 existente. La descarga estará disponible cuando GitHub Actions termine su publicación. [Ver cambios 1.0.1](docs/ANDROID_1_0_1.md).
 
