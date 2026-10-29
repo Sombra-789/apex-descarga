@@ -34,9 +34,9 @@ foreach ($candidate in @(
     @{ cmd = 'py.exe'; args = @('-3.13') },
     @{ cmd = 'python.exe'; args = @() }
 )) {
-    $found = Get-Command $candidate.cmd -ErrorAction SilentlyContinue
+    $found = Get-Command -Name $candidate['cmd'] -ErrorAction SilentlyContinue
     if (-not $found) { continue }
-    $baseArgs = @($candidate.args)
+    $baseArgs = @($candidate['args'])
     $testArgs = $baseArgs + @('-c', 'import sys,struct;sys.exit(0 if sys.version_info[:2] in [(3,12),(3,13)] and struct.calcsize("P")==8 else 2)')
     try {
         & $found.Source @testArgs 2>$null | Out-Null
