@@ -34,12 +34,14 @@ foreach ($candidate in @(
     @{ cmd = 'py.exe'; args = @('-3.13') },
     @{ cmd = 'python.exe'; args = @() }
 )) {
-    $found = Get-Command -Name $candidate['cmd'] -ErrorAction SilentlyContinue
+    $found = Get-Command -Name ([string]$candidate['cmd']) -ErrorAction SilentlyContinue
     if (-not $found) { continue }
     $baseArgs = @($candidate['args'])
-    $testArgs = $baseArgs + @('-c', 'import sys,struct;sys.exit(0 if sys.version_info[:2] in [(3,12),(3,13)] and struct.calcsize("P")==8 else 2)')
+    $testArgs = $baseArgs + @('-c', 'import sys;sys.exit(0 if sys.version_info.major==3 and sys.version_info.minor in (12,13) and sys.maxsize>2**32 else 2)')
     try {
+        Write-Host ("Comprobando Python: " + $found.Source + " " + ($baseArgs -join ' '))
         & $found.Source @testArgs 2>$null | Out-Null
+        Write-Host ("Resultado: " + $LASTEXITCODE)
         if ($LASTEXITCODE -eq 0) {
             $pythonCommand = $found.Source
             $pythonArgs = $baseArgs
