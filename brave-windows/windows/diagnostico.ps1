@@ -120,7 +120,7 @@ try {
         throw 'ID invalido. Debe tener exactamente 32 letras minusculas entre a y p.'
     }
     $expected = 'chrome-extension://' + $ExtensionId + '/'
-    $matches = ($origins.Count -eq 1 -and [string]$origins[0] -ceq $expected)
+    $matches = ($origins -ccontains $expected)
     Check 'Permiso para la extension actual' $matches $expected
     if ($matches) {
         Say 'Los permisos de Native Messaging ya coinciden. No es necesario reparar.' 'Green'
@@ -131,6 +131,9 @@ try {
     if (-not $Repair) {
         Say 'No se realizo ningun cambio. Abre REPARAR_APEX.cmd para reparar con confirmacion.' 'Cyan'
         return
+    }
+    if ($origins.Count -gt 1) {
+        throw 'Hay varios navegadores autorizados. Para agregar un ID sin revocar otros, usa AGREGAR_NAVEGADOR.cmd; el reparador sencillo no sustituira todos los origenes.'
     }
     if (-not $launcherOk) {
         throw 'No se puede reparar: primero debe comprobarse la ruta de apex_host.exe.'
