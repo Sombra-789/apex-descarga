@@ -6,12 +6,13 @@
 
 | Plataforma | Estado | Artefacto |
 | --- | --- | --- |
-| Brave + Windows 11 | **1.2.3 estable** (uso y funcionamiento confirmados) | https://github.com/Sombra-789/apex-descarga/releases/tag/brave-v1.2.3 |
+| Brave + Windows 11 (primera instalación) | **1.2.3, instalador beta** | https://github.com/Sombra-789/apex-descarga/releases/tag/brave-v1.2.3-instalacion-inicial |
+| Brave + Windows 11 (actualización) | **1.2.3 estable** (validada sobre instalación previa) | https://github.com/Sombra-789/apex-descarga/releases/tag/brave-v1.2.3 |
 | Android | **1.0.0-rc1 de pruebas, NO estable** | https://github.com/Sombra-789/apex-descarga/releases/tag/v1.0.0-rc1 |
 | Desktop Windows independiente | **RETIRADA (28-10-2026)** | Código y CI eliminados de main; releases históricos pendientes de retirada |
 | Prototipo UI 2.0 alpha.1 | **Experimental, congelado en rama separada** | https://github.com/Sombra-789/apex-descarga/pull/7 |
 
-El APK de Android es DEBUG y su versión no equivale a la versión estable Brave 1.2.3. El paquete de Brave es una **actualización**, no un instalador desde cero.
+El APK Android es DEBUG. La edición Android se probó en un Samsung Galaxy S23, pero no es exclusiva de ese teléfono. Su versión no equivale a la versión Brave/Windows 1.2.3. El paquete de Brave es una **actualización**, no un instalador desde cero.
 
 ## Funciones confirmadas por el usuario en Brave + Windows
 
