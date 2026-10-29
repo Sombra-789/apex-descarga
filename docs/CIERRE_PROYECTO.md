@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | Brave + Windows 11 | **1.2.3 estable** (uso y funcionamiento confirmados) | https://github.com/Sombra-789/apex-descarga/releases/tag/brave-v1.2.3 |
 | Android | **1.0.0-rc1 de pruebas, NO estable** | https://github.com/Sombra-789/apex-descarga/releases/tag/v1.0.0-rc1 |
-| Desktop Windows independiente | **0.2.1 Beta** | https://github.com/Sombra-789/apex-descarga/releases/tag/desktop-v0.2.1-beta |
+| Desktop Windows independiente | **RETIRADA (28-10-2026)** | Código y CI eliminados de main; releases históricos pendientes de retirada |
 | Prototipo UI 2.0 alpha.1 | **Experimental, congelado en rama separada** | https://github.com/Sombra-789/apex-descarga/pull/7 |
 
 El APK de Android es DEBUG y su versión no equivale a la versión estable Brave 1.2.3. El paquete de Brave es una **actualización**, no un instalador desde cero.
@@ -33,7 +33,7 @@ La versión Android 1.0 RC1 conserva advertencias propias de software de pruebas
 - La rama main contiene la versión de referencia, la documentación y los flujos de publicación.
 - Se aceptarán parches menores, correcciones de vulnerabilidades y ajustes de dependencias.
 - No se seguirá con la UI 2.0 ni se alterará el host estable sin una decisión explícita futura.
-- Las publicaciones mantienen etiquetas diferenciadas por plataforma para no confundir usuarios: brave-v*, v1.0.0-rc1 (Android) y desktop-v*.
+- Las publicaciones mantienen etiquetas diferenciadas por plataforma para no confundir usuarios: brave-v* y android-v*; los antiguos desktop-v* quedan obsoletos y pendientes de eliminación de Releases.
 - Evitar publicar APK con etiqueta «estable» sin firma release propia y proceso adecuado de verificación.
 
 ## Descargas
