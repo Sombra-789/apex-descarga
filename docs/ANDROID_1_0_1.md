@@ -1,6 +1,6 @@
 # Apex Descarga Android 1.0.1 Preview
 
-Esta es una compilación **de pruebas**, creada para validar en el Galaxy S23 la corrección del actualizador yt-dlp observada en 1.0 RC1. No es una versión final ni una sustitución de la edición Brave/Windows 1.2.3.
+Esta es una compilación **de pruebas**, con correcciones del actualizador yt-dlp observado en 1.0 RC1. **La versión Android fue probada en un Samsung Galaxy S23, pero no es exclusiva de ese teléfono.** Requiere Android 10+ y ARM64; aún deben validarse más modelos. No es una versión final ni una sustitución de la edición Brave/Windows 1.2.3.
 
 ## Cambios incluidos
 - Normaliza versiones de yt-dlp aunque estén acompañadas por un prefijo, por ejemplo: "yt-dlp 2026.08.19".
@@ -23,7 +23,7 @@ No desinstales 1.0 RC1 ni borres sus datos. Confirma en el teléfono el nombre, 
 - Las pruebas de Brave + Windows se mantienen separadas y no modifican su versión estable.
 
 ## Pruebas manuales pendientes
-En Android S23, confirmar que el APK instala y abre, que el motor yt-dlp muestra la versión, que el actualizador diferencia resultados, y que MP4, MP3, miniaturas, cola, biblioteca, guardar/abrir/compartir y notificaciones siguen funcionando. Los tests estáticos no sustituyen pruebas en dispositivo.
+En otros teléfonos Android compatibles, confirmar que el APK instala y abre, que el motor yt-dlp muestra la versión, que el actualizador diferencia resultados, y que MP4, MP3, miniaturas, cola, biblioteca, guardar/abrir/compartir y notificaciones siguen funcionando. Los tests estáticos no sustituyen pruebas en dispositivo.
 
 ## Descarga
 APK directo: https://github.com/Sombra-789/apex-descarga/releases/download/android-v1.0.1-preview/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk
