@@ -2,7 +2,7 @@
 # NO instala motores, NO toca otros hosts ni elimina permisos previos.
 [CmdletBinding()]
 param(
-  [ValidateSet('Brave','Chrome','Edge')][string]$Browser = '',
+  [ValidateSet('Brave','Chrome','Edge')][string]$Browser = 'Brave',
   [string]$ExtensionId = '',
   [string]$InstallDir = '',
   [switch]$SkipRegistration
@@ -18,7 +18,7 @@ $map = @{
   Chrome = @{ reg='HKCU:\Software\Google\Chrome\NativeMessagingHosts\com.apex.video_downloader'; page='chrome://extensions' }
   Edge = @{ reg='HKCU:\Software\Microsoft\Edge\NativeMessagingHosts\com.apex.video_downloader'; page='edge://extensions' }
 }
-if (-not $Browser) {
+if (-not $PSBoundParameters.ContainsKey('Browser') -and -not $SkipRegistration) {
   Write-Host '1 Brave, 2 Google Chrome, 3 Microsoft Edge'
   switch ((Read-Host 'Navegador [1]').Trim()) { '2' {$Browser='Chrome'} '3' {$Browser='Edge'} default {$Browser='Brave'} }
 }
@@ -35,14 +35,14 @@ $origins = @($manifest.allowed_origins)
 if (-not $origins.Count -or @($origins | Where-Object { $_ -cnotmatch '^chrome-extension://[a-p]{32}/$' }).Count) {
   throw 'El manifiesto tiene origenes invalidos; no se modifica.'
 }
-Write-Host "En $Browser: abre $page y carga la carpeta descomprimida:"
+Write-Host ('En ' + $Browser + ': abre ' + $page + ' y carga la carpeta descomprimida:')
 Write-Host (Join-Path $InstallDir 'extension')
 if (-not $ExtensionId) { $ExtensionId = Read-Host 'ID exacto de la extension (32 letras a-p)' }
 $ExtensionId = $ExtensionId.Trim()
 if ($ExtensionId -cnotmatch '^[a-p]{32}$') { throw 'ID invalido; no se modifica nada.' }
 if ((Test-Path -LiteralPath $reg) -and -not $SkipRegistration) {
   $present = [string](Get-Item -LiteralPath $reg).GetValue('')
-  if ($present -and $present -ine $manifestPath) { throw "El registro de $Browser usa otro host: $present. No se cambia." }
+  if ($present -and $present -ine $manifestPath) { throw ("El registro de " + $Browser + " usa otro host: " + $present + ". No se cambia.") }
 }
 $origin = 'chrome-extension://' + $ExtensionId + '/'
 if ($origins -ccontains $origin) {
