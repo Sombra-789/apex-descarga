@@ -31,8 +31,8 @@ $browserSetup = @{
 $regPath = $browserSetup[$Browser].reg
 $extensionsPage = $browserSetup[$Browser].page
 Write-Host ''
-Write-Host 'APEX DESCARGA 1.2.3 - INSTALACION INICIAL WINDOWS / $Browser' -ForegroundColor Cyan
-Write-Host 'Apex Software Inc. / requiere Python 3.12 o 3.13 x64 y $Browser.'
+Write-Host ('APEX DESCARGA 1.2.3 - INSTALACION INICIAL WINDOWS / ' + $Browser) -ForegroundColor Cyan
+Write-Host ('Apex Software Inc. / requiere Python 3.12 o 3.13 x64 y ' + $Browser + '.')
 if ((Test-Path -LiteralPath $manifestPath) -or (Test-Path -LiteralPath $launcherPath)) {
     throw "Ya hay componentes Apex en $InstallDir. No se sobrescriben: usa ACTUALIZAR_APEX.cmd."
 }
