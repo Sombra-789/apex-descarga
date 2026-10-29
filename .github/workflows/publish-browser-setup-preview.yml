@@ -1,0 +1,103 @@
+name: Apex Descarga Chromium browsers setup preview
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-browser-setup-preview.yml'
+      - 'brave-windows/GUIA_NAVEGADORES.md'
+      - 'brave-windows/AGREGAR_NAVEGADOR.cmd'
+      - 'brave-windows/INSTALAR_POR_PRIMERA_VEZ.cmd'
+      - 'brave-windows/windows/add-browser.ps1'
+      - 'brave-windows/windows/install-first.ps1'
+      - 'brave-windows/windows/diagnostico.ps1'
+      - 'brave-windows/windows/host.py'
+      - 'brave-windows/extension/**'
+      - 'brave-windows/tests/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package-browser-preview:
+    if: github.repository == 'Sombra-789/apex-descarga' && github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Probar extension y host
+        shell: pwsh
+        run: |
+          node brave-windows/tests/test_extension.js
+          if ($LASTEXITCODE -ne 0) { throw 'Pruebas JS fallaron' }
+          python -m unittest discover -s brave-windows/tests -p 'test_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Pruebas host fallaron' }
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File brave-windows/tests/test_diagnostico.ps1
+          if ($LASTEXITCODE -ne 0) { throw 'Pruebas diagnostico fallaron' }
+      - name: Probar nueva instalacion + varios navegadores sin tocar HKCU
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $sandbox = Join-Path $env:RUNNER_TEMP 'ApexBrowserSetup'
+          $extId1 = 'abcdefghijklmnopabcdefghijklmnop'
+          $extId2 = 'bcdefghijklmnopabcdefghijklmnopa'
+          $extId3 = 'cdefghijklmnopabcdefghijklmnopab'
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File brave-windows/windows/install-first.ps1 -InstallDir $sandbox -Browser Brave -ExtensionId $extId1 -SkipRegistration
+          if ($LASTEXITCODE -ne 0) { throw 'Primera instalacion fallo' }
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File brave-windows/windows/add-browser.ps1 -InstallDir $sandbox -Browser Chrome -ExtensionId $extId2 -SkipRegistration
+          if ($LASTEXITCODE -ne 0) { throw 'Chrome fallo' }
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File brave-windows/windows/add-browser.ps1 -InstallDir $sandbox -Browser Edge -ExtensionId $extId3 -SkipRegistration
+          if ($LASTEXITCODE -ne 0) { throw 'Edge fallo' }
+          $m = Get-Content (Join-Path $sandbox 'com.apex.video_downloader.json') -Raw | ConvertFrom-Json
+          $origins = @($m.allowed_origins)
+          if ($origins.Count -ne 3) { throw 'No conserva tres origenes autorizados' }
+          foreach ($id in @($extId1,$extId2,$extId3)) {
+            if ($origins -cnotcontains ('chrome-extension://' + $id + '/')) { throw "Falta origen $id" }
+          }
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File brave-windows/windows/add-browser.ps1 -InstallDir $sandbox -Browser Chrome -ExtensionId $extId2 -SkipRegistration
+          if ($LASTEXITCODE -ne 0) { throw 'La operacion idempotente fallo' }
+          $m2 = Get-Content (Join-Path $sandbox 'com.apex.video_downloader.json') -Raw | ConvertFrom-Json
+          if (@($m2.allowed_origins).Count -ne 3) { throw 'La reautorizacion creo un duplicado' }
+          Write-Host 'PASS: permisos Brave Chrome Edge, preservacion, idempotencia.'
+      - name: Empaquetar instalacion
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force dist | Out-Null
+          $stage = Join-Path $env:RUNNER_TEMP 'Apex-Descarga-Chromium-1.2.3'
+          New-Item -ItemType Directory -Force $stage | Out-Null
+          foreach ($dir in @('extension','windows')) { Copy-Item (Join-Path 'brave-windows' $dir) -Destination $stage -Recurse }
+          foreach ($file in @('INSTALAR_POR_PRIMERA_VEZ.cmd','AGREGAR_NAVEGADOR.cmd','ACTUALIZAR_APEX.cmd','REPARAR_APEX.cmd','README_PRIMERO.md','GUIA_NAVEGADORES.md','CAMBIOS_1.2.3.md','PRIVACIDAD_Y_CONDICIONES.md')) {
+            Copy-Item (Join-Path 'brave-windows' $file) -Destination $stage
+          }
+          Copy-Item 'CONTACTO_Y_SOPORTE.md' -Destination $stage
+          $filename = 'Apex-Descarga-Chromium-1.2.3-Setup-Preview.zip'
+          $zip = Join-Path dist $filename
+          Compress-Archive -LiteralPath $stage -DestinationPath $zip -Force
+          $sha = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$sha  $filename" | Set-Content -Encoding ascii (Join-Path dist 'SHA256SUMS.txt')
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apex-descarga-chromium-1.2.3-setup-preview
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 90
+      - name: Publicar prerelease despues de pruebas
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          $tag = 'chromium-v1.2.3-setup-preview1'
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "Release ya publicado; no reemplazar."
+            exit 0
+          }
+          gh release create $tag 'dist/Apex-Descarga-Chromium-1.2.3-Setup-Preview.zip' 'dist/SHA256SUMS.txt' --target "$env:GITHUB_SHA" --title 'Apex Descarga 1.2.3 - Brave / Chrome / Edge (Setup Preview)' --notes 'Primera instalacion Windows: Brave principal, Chrome y Edge experimentales. Seleccion de navegador y vinculacion Native Messaging local. Incluye Guia de Navegadores y contacto Apex Software Inc. CI prueba host y permisos aislados; pendiente validacion de extremo a extremo con navegadores reales.' --prerelease
+          if ($LASTEXITCODE -ne 0) { throw 'Publicacion fallo' }
