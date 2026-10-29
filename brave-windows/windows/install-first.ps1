@@ -1,6 +1,11 @@
 # Primera instalacion Apex Descarga 1.2.3; nunca reemplaza instalacion previa.
 [CmdletBinding()]
-param([string]$ExtensionId = '', [string]$InstallDir = '', [switch]$SkipRegistration)
+param(
+    [ValidateSet('Brave','Chrome','Edge')][string]$Browser = 'Brave',
+    [string]$ExtensionId = '',
+    [string]$InstallDir = '',
+    [switch]$SkipRegistration
+)
 $ErrorActionPreference = 'Stop'
 if ($env:OS -ne 'Windows_NT') { throw 'Este instalador solo funciona en Windows.' }
 if (-not $InstallDir) { $InstallDir = Join-Path $env:LOCALAPPDATA 'ApexVideoDownloader' }
@@ -13,10 +18,21 @@ $manifestPath = Join-Path $InstallDir 'com.apex.video_downloader.json'
 $launcherPath = Join-Path $InstallDir 'apex_host.exe'
 $pythonPath = Join-Path $InstallDir 'python.path'
 $extensionTarget = Join-Path $InstallDir 'extension'
-$regPath = 'HKCU:\Software\BraveSoftware\Brave-Browser\NativeMessagingHosts\com.apex.video_downloader'
+if (-not $PSBoundParameters.ContainsKey('Browser') -and -not $SkipRegistration) {
+    Write-Host 'Navegador: 1 Brave (recomendado), 2 Google Chrome (experimental), 3 Microsoft Edge (experimental).'
+    $answer = (Read-Host 'Selecciona navegador [1]').Trim()
+    switch ($answer) { '2' { $Browser='Chrome' } '3' { $Browser='Edge' } default { $Browser='Brave' } }
+}
+$browserSetup = @{
+    Brave = @{ reg='HKCU:\Software\BraveSoftware\Brave-Browser\NativeMessagingHosts\com.apex.video_downloader'; page='brave://extensions' }
+    Chrome = @{ reg='HKCU:\Software\Google\Chrome\NativeMessagingHosts\com.apex.video_downloader'; page='chrome://extensions' }
+    Edge = @{ reg='HKCU:\Software\Microsoft\Edge\NativeMessagingHosts\com.apex.video_downloader'; page='edge://extensions' }
+}
+$regPath = $browserSetup[$Browser].reg
+$extensionsPage = $browserSetup[$Browser].page
 Write-Host ''
-Write-Host 'APEX DESCARGA 1.2.3 - INSTALACION INICIAL BRAVE/WINDOWS' -ForegroundColor Cyan
-Write-Host 'Apex Software Inc. / requiere Python 3.12 o 3.13 x64 y Brave.'
+Write-Host 'APEX DESCARGA 1.2.3 - INSTALACION INICIAL WINDOWS / $Browser' -ForegroundColor Cyan
+Write-Host 'Apex Software Inc. / requiere Python 3.12 o 3.13 x64 y $Browser.'
 if ((Test-Path -LiteralPath $manifestPath) -or (Test-Path -LiteralPath $launcherPath)) {
     throw "Ya hay componentes Apex en $InstallDir. No se sobrescriben: usa ACTUALIZAR_APEX.cmd."
 }
@@ -74,7 +90,7 @@ if (-not (Test-Path -LiteralPath $extensionTarget -PathType Container)) {
 }
 Write-Host ''
 Write-Host "Extension preparada: $extensionTarget" -ForegroundColor Cyan
-Write-Host 'En Brave: brave://extensions > Modo desarrollador > Cargar descomprimida.'
+Write-Host ("En " + $Browser + ": " + $extensionsPage + " > Modo desarrollador > Cargar descomprimida.")
 Write-Host 'Selecciona la carpeta indicada, copia su ID de 32 letras y regresa aqui.'
 if (-not $ExtensionId) { $ExtensionId = Read-Host 'ID de extension (32 letras a-p)' }
 $ExtensionId = $ExtensionId.Trim()
@@ -101,8 +117,8 @@ Write-Host ''
 Write-Host 'Instalacion inicial preparada.' -ForegroundColor Green
 if ($SkipRegistration) { Write-Host 'Modo CI: registro omitido, no equivale a prueba de Brave real.' }
 else {
-    Write-Host 'Cierra Brave COMPLETAMENTE, abrelo, recarga Apex en brave://extensions.'
-    Write-Host 'Comprueba CONECTADO / v1.2.3 en el icono de la extension.'
+    Write-Host ("Cierra " + $Browser + " COMPLETAMENTE, abrelo y recarga Apex en " + $extensionsPage + ".")
+    Write-Host 'Comprueba CONECTADO / v1.2.3 en el icono de la extension; en Chrome/Edge es compatibilidad experimental.'
 }
 if (-not (Get-Command ffmpeg.exe -ErrorAction SilentlyContinue)) {
     Write-Host 'ATENCION: falta FFmpeg en PATH; MP3 y mezcla HD no funcionaran hasta instalarlo.' -ForegroundColor Yellow
