@@ -12,6 +12,12 @@ Gestionar descargas de vídeo MP4 y audio MP3 de contenido propio o autorizado: 
 
 **Importante:** GitHub Actions Artifacts puede exigir inicio de sesión y caducar. Los paquetes beta/preview no se equiparan a versiones estables.
 
+## Instalación en Brave, Chrome y Edge
+
+El navegador principal probado es **Brave**. Para **Google Chrome** y **Microsoft Edge** se agregó un configurador experimental que registra el host Native Messaging en la ubicación correcta de Windows. Cada uno necesita cargar la extensión desde su página `chrome://extensions` o `edge://extensions`, copiar el ID y autorizarlo. [Consultar la guía paso a paso](brave-windows/GUIA_NAVEGADORES.md). El [nuevo paquete Chromium](https://github.com/Sombra-789/apex-descarga/releases/tag/chromium-v1.2.3-setup-preview1) contiene `AGREGAR_NAVEGADOR.cmd` y `INSTALAR_POR_PRIMERA_VEZ.cmd`.
+
+**Nota:** Edge y Chrome son experimentales, no se han validado manualmente en equipos reales. Firefox/Safari no están soportados.
+
 ## Instalación paso a paso
 
 ### Android — primera instalación
