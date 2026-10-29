@@ -1,4 +1,6 @@
-# 🦅 Apex Descarga — Apex Visual Studio
+# 🦅 Apex Descarga — Apex Software Inc.
+
+> **Apex Software Inc. — Proyecto del ecosistema Apex Software.** [Guía completa de instalación, funcionamiento, requisitos, dependencias y limitaciones](GUIA_INSTALACION_Y_USO.md). La denominación “Inc.” se usa como identidad de proyecto y no constituye prueba de registro legal.
 
 ## 📱 DESCARGAR APEX DESCARGA PARA ANDROID
 
@@ -18,7 +20,7 @@
 
 **Estado del proyecto: desarrollo principal finalizado. Mantenimiento y actualizaciones menores únicamente.**
 
-Apex Descarga permite gestionar descargas de contenido **propio o autorizado**. Este repositorio conserva tres aplicaciones independientes, **con versiones y estados de publicación diferentes**.
+Apex Descarga permite gestionar descargas de contenido **propio o autorizado**. Este repositorio conserva **dos ediciones activas: Brave/Windows y Android**, con versiones y estados de publicación distintos. La aplicación Windows Desktop independiente ha sido retirada por decisión del propietario.
 
 ## 📦 Descargas oficiales de GitHub
 
@@ -26,7 +28,6 @@ Apex Descarga permite gestionar descargas de contenido **propio o autorizado**. 
 | --- | --- | --- | --- |
 | **Brave + Windows** | **1.2.3** | **Estable para instalaciones existentes** | [ZIP de actualización 1.2.3](https://github.com/Sombra-789/apex-descarga/releases/download/brave-v1.2.3/Apex-Descarga-Brave-1.2.3-Actualizacion.zip) |
 | **Android** | **1.0.1 Preview** | **APK de pruebas independiente** | **[Descargar APK 1.0.1](https://github.com/Sombra-789/apex-descarga/releases/download/android-v1.0.1-preview/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk)** |
-| **Desktop independiente Windows** | 0.2.1 | Beta, ejecutable no firmado | [EXE de pruebas](https://github.com/Sombra-789/apex-descarga/releases/download/desktop-v0.2.1-beta/ApexDescargaDesktop.exe) |
 
 **Página de todas las publicaciones:** [GitHub Releases](https://github.com/Sombra-789/apex-descarga/releases).
 
@@ -60,16 +61,15 @@ La versión 1.2.3 de Brave + Windows fue verificada manualmente con descargas MP
 | --- | --- | --- |
 | **Brave/Windows 1.2.3** | [brave-windows/](brave-windows/) | Pestaña activa, vista previa, MP4/MP3, calidades, cola e historial, cambiar/abrir carpeta, reparador Native Messaging |
 | **Android 1.0 RC1** | [android/](android/) | Descargas MP4/MP3, vista previa, cola, biblioteca, notificaciones, selección de tema y control de red |
-| **Desktop Windows beta** | [desktop-windows/](desktop-windows/) | Aplicación independiente con cola, biblioteca, ajustes, descargas y exportación ejecutable |
 | **Prototipo 2.0** | [prototypes/apex-descarga-2.0 (rama experimental)](https://github.com/Sombra-789/apex-descarga/tree/feature/apex-descarga-2.0-alpha1/prototypes/apex-descarga-2.0) | Interfaz interactiva local **simulada**, separada de producción y conservada como referencia futura |
 
-**El prototipo 2.0 no es una actualización disponible de la 1.2.3 y no realiza descargas reales.** Se conserva como trabajo experimental sin integrarse en la rama estable.
+**El prototipo 2.0 no es una actualización disponible de 1.2.3 ni realiza descargas reales.** Permanece únicamente como referencia experimental en una rama separada.
 
 ## Mantenimiento
 
 - **Versión estable elegida para Brave:** 1.2.3.
 - El desarrollo principal se da por concluido; solo se prevén correcciones, mantenimiento de seguridad y mejoras menores cuando sean necesarias.
-- Android 1.0 RC1 y Desktop 0.2.1 mantienen su condición de versiones **de pruebas**, no de productos estables.
+- Android 1.0.1 sigue siendo una versión Preview de pruebas, no un producto estable. La edición Desktop independiente se retiró.
 - No se recopila telemetría hacia servidores propios de Apex; las descargas o previsualizaciones **sí requieren contactar** con los sitios externos.
 - No se ofrece evasión de DRM ni garantía de compatibilidad con todos los portales.
 - Antes de instalar archivos descargados, verifícalos y revisa el código abierto.
@@ -80,4 +80,4 @@ La versión 1.2.3 de Brave + Windows fue verificada manualmente con descargas MP
 
 Para fallos o sugerencias, abre una [incidencia en GitHub](https://github.com/Sombra-789/apex-descarga/issues). No compartas contraseñas, cookies, enlaces privados ni archivos sensibles.
 
-**Apex Descarga es un proyecto de Apex Visual Studio**, con apoyo de herramientas de inteligencia artificial en el desarrollo. La marca y los logotipos se rigen por [BRANDING.md](BRANDING.md); el código se distribuye según [LICENSE](LICENSE) y las licencias de sus dependencias.
+**Apex Descarga forma parte de Apex Software Inc.**, con apoyo de herramientas de inteligencia artificial en el desarrollo. La marca y los logotipos se rigen por [BRANDING.md](BRANDING.md); el código se distribuye según [LICENSE](LICENSE) y las licencias de sus dependencias.
