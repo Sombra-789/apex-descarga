@@ -1,5 +1,7 @@
 # Apex Descarga Android 1.0.1 — Actualización de mantenimiento (beta)
 
+**Proyecto de Apex Software Inc.** La versión Android fue probada en un **Samsung Galaxy S23**, pero **no es exclusiva de ese teléfono**. Es compatible en principio con Android 10+ y ARM64; debe validarse su funcionamiento en otros modelos.
+
 **Implementación nativa del diseño Figma:** https://www.figma.com/design/tnVTpd2xcdL4XqrEuWmNUH
 
 Esta actualización aplica un rediseño Android a la base **funcional 0.5**, sin modificar las operaciones de yt-dlp/FFmpeg ni las claves de datos. Los archivos son un **proyecto de código fuente**, no un APK ya compilado.
