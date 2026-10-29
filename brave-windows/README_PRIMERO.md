@@ -15,6 +15,17 @@
 **Estado:** Brave 1.2.3 se validó sobre instalaciones existentes; esta ruta de primera instalación es nueva y sigue en fase beta hasta probar el proceso completo en equipos reales. No requiere tener instalada otra versión de Apex Descarga.
 
 
+
+## Navegadores compatibles por diseño
+
+- **Brave:** `brave://extensions` (versión principal).
+- **Google Chrome:** `chrome://extensions` (experimental).
+- **Microsoft Edge:** `edge://extensions` (experimental).
+
+Para Chrome o Edge descarga el [paquete de configuración Chromium 1.2.3](https://github.com/Sombra-789/apex-descarga/releases/tag/chromium-v1.2.3-setup-preview1) y usa el selector del instalador inicial. **Cada navegador debe cargar la extensión y autorizar su propio ID de Native Messaging.** Si Apex ya está instalado para Brave, usa `AGREGAR_NAVEGADOR.cmd` en lugar de reinstalar. [Guía completa](GUIA_NAVEGADORES.md). No existe soporte confirmado para Firefox, Safari, Opera ni Vivaldi.
+
+**Correo oficial de sugerencias y quejas:** [apexsoftware.inc07@gmail.com](mailto:apexsoftware.inc07@gmail.com).
+
 ## Correccion Native Messaging
 
 Si Brave muestra `Access to the specified native messaging host is forbidden`, normalmente el ID de la extension no coincide con `allowed_origins` del manifiesto local de Windows. La version 1.2.3 incluye `REPARAR_APEX.cmd`: revisa el componente y las dependencias, solicita el ID visible en `brave://extensions`, verifica la discrepancia, pide confirmacion antes de reparar y guarda respaldo del manifiesto. No instala paquetes ni cambia el registro. Cierra Brave completamente antes de reparar y recarga la extension despues.
