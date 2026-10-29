@@ -6,9 +6,9 @@
 
 ## 📱 DESCARGAR APEX DESCARGA PARA ANDROID
 
-### ⬇️ [**DESCARGAR APK 1.0.1 PREVIEW **](https://github.com/Sombra-789/apex-descarga/releases/download/android-v1.0.1-preview/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk)
+### ⬇️ [**DESCARGAR APK ANDROID 1.0.1 PREVIEW**](https://github.com/Sombra-789/apex-descarga/releases/download/android-v1.0.1-preview/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk)
 
-**Probada en un Samsung Galaxy S23, pero NO exclusiva de ese teléfono.** Requiere Android 10+ y ARM64; la compatibilidad con otros teléfonos queda sujeta a pruebas. **Nuevo:** mantenimiento del actualizador de yt-dlp. Se instala como aplicación de pruebas **separada** para no sobrescribir ni borrar datos de la 1.0 RC1 existente. La descarga estará disponible cuando GitHub Actions termine su publicación. [Ver cambios 1.0.1](docs/ANDROID_1_0_1.md).
+**Probada en un Samsung Galaxy S23, pero NO exclusiva de ese teléfono.** Requiere Android 10+ y ARM64; la compatibilidad con otros teléfonos queda sujeta a pruebas. **Nuevo:** mantenimiento del actualizador de yt-dlp. Se instala como aplicación de pruebas **separada** para no sobrescribir ni borrar datos de la 1.0 RC1 existente. El APK 1.0.1 Preview ya está publicado en GitHub Releases. [Ver cambios 1.0.1](docs/ANDROID_1_0_1.md).
 
 ### ⬇️ [**DESCARGAR APK ANTERIOR — ANDROID 1.0 RC1**](https://github.com/Sombra-789/apex-descarga/releases/download/v1.0.0-rc1/Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk)
 
@@ -41,7 +41,7 @@ Apex Descarga permite gestionar descargas de contenido **propio o autorizado**. 
 
 La extensión se instala desde **Modo desarrollador → Cargar descomprimida**. La versión principal usa Brave (`brave://extensions`); **Google Chrome** (`chrome://extensions`) y **Microsoft Edge** (`edge://extensions`) cuentan con un configurador experimental de Native Messaging. Para cada navegador hay que registrar su ID de extensión.
 
-- **Primera instalación:** [paquete Chromium para Brave, Chrome y Edge (Preview)](https://github.com/Sombra-789/apex-descarga/releases/tag/chromium-v1.2.3-setup-preview1). Ejecuta `INSTALAR_POR_PRIMERA_VEZ.cmd` y elige el navegador.
+- **Primera instalación:** [paquete Chromium para Brave, Chrome y Edge (Preview)](https://github.com/Sombra-789/apex-descarga/releases/tag/chromium-v1.2.3-setup-preview1), publicado tras [CI satisfactoria](https://github.com/Sombra-789/apex-descarga/actions/runs/40806347883). Ejecuta `INSTALAR_POR_PRIMERA_VEZ.cmd` y elige el navegador.
 - **Si Apex ya está instalado:** ejecuta `AGREGAR_NAVEGADOR.cmd` del paquete actualizado para conservar la autorización de Brave y añadir el nuevo navegador.
 - **Instrucciones detalladas:** [Guía para Brave, Chrome y Edge](brave-windows/GUIA_NAVEGADORES.md). Chrome y Edge aún necesitan pruebas manuales; Firefox, Safari y otros navegadores no están soportados por este paquete.
 
