@@ -1,5 +1,20 @@
 # Apex Descarga 1.2.3 — Brave y Windows 11
 
+**Parte de Apex Software Inc.**
+
+## 🖥️ Primera instalación Brave + Windows (sin Apex anterior)
+
+**Para personas que nunca han instalado Apex Descarga:** [paquete inicial Brave/Windows v1.2.3 (beta)](https://github.com/Sombra-789/apex-descarga/releases/tag/brave-v1.2.3-instalacion-inicial). **Es distinto del ZIP de actualización.** La descarga aparecerá cuando la [validación de GitHub Actions](https://github.com/Sombra-789/apex-descarga/actions/workflows/publish-brave-first-install.yml) finalice correctamente; no anunciarla como publicada antes.
+
+1. Instala **Brave** y **Python 3.12 o 3.13 de 64 bits** en Windows; necesitas Internet.
+2. Descarga y extrae por completo el ZIP inicial; ejecuta **INSTALAR_POR_PRIMERA_VEZ.cmd** como usuario normal. Prepara un entorno Python local, instala yt-dlp y compila el puente Native Messaging.
+3. Abre `brave://extensions`, activa **Modo desarrollador**, pulsa **Cargar descomprimida** y selecciona la carpeta indicada por el instalador (habitualmente `%LOCALAPPDATA%\ApexVideoDownloader\extension`).
+4. Copia el ID de 32 letras de Apex mostrado por Brave, pégalo en el instalador, cierra Brave totalmente, vuelve a abrirlo, recarga Apex y comprueba **Conectado**.
+5. Instala **FFmpeg** por separado para MP3 y combinación de vídeo HD; verifica `ffmpeg -version` en una consola nueva. **Deno** es opcional según el sitio.
+
+**Estado:** Brave 1.2.3 se validó sobre instalaciones existentes; esta ruta de primera instalación es nueva y sigue en fase beta hasta probar el proceso completo en equipos reales. No requiere tener instalada otra versión de Apex Descarga.
+
+
 ## Correccion Native Messaging
 
 Si Brave muestra `Access to the specified native messaging host is forbidden`, normalmente el ID de la extension no coincide con `allowed_origins` del manifiesto local de Windows. La version 1.2.3 incluye `REPARAR_APEX.cmd`: revisa el componente y las dependencias, solicita el ID visible en `brave://extensions`, verifica la discrepancia, pide confirmacion antes de reparar y guarda respaldo del manifiesto. No instala paquetes ni cambia el registro. Cierra Brave completamente antes de reparar y recarga la extension despues.
