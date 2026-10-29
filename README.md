@@ -36,6 +36,15 @@ Apex Descarga permite gestionar descargas de contenido **propio o autorizado**. 
 
 **Estado:** Brave 1.2.3 se validó sobre instalaciones existentes; esta ruta de primera instalación es nueva y sigue en fase beta hasta probar el proceso completo en equipos reales. No requiere tener instalada otra versión de Apex Descarga.
 
+
+## Instalación en navegadores de Windows
+
+La extensión se instala desde **Modo desarrollador → Cargar descomprimida**. La versión principal usa Brave (`brave://extensions`); **Google Chrome** (`chrome://extensions`) y **Microsoft Edge** (`edge://extensions`) cuentan con un configurador experimental de Native Messaging. Para cada navegador hay que registrar su ID de extensión.
+
+- **Primera instalación:** [paquete Chromium para Brave, Chrome y Edge (Preview)](https://github.com/Sombra-789/apex-descarga/releases/tag/chromium-v1.2.3-setup-preview1). Ejecuta `INSTALAR_POR_PRIMERA_VEZ.cmd` y elige el navegador.
+- **Si Apex ya está instalado:** ejecuta `AGREGAR_NAVEGADOR.cmd` del paquete actualizado para conservar la autorización de Brave y añadir el nuevo navegador.
+- **Instrucciones detalladas:** [Guía para Brave, Chrome y Edge](brave-windows/GUIA_NAVEGADORES.md). Chrome y Edge aún necesitan pruebas manuales; Firefox, Safari y otros navegadores no están soportados por este paquete.
+
 ## 📦 Descargas oficiales de GitHub
 
 | Plataforma | Versión | Estado | Descarga |
