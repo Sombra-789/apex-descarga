@@ -4,7 +4,7 @@
 
 ## 🖥️ Primera instalación Brave + Windows (sin Apex anterior)
 
-**Para personas que nunca han instalado Apex Descarga:** [paquete inicial Brave/Windows v1.2.3 (beta)](https://github.com/Sombra-789/apex-descarga/releases/tag/brave-v1.2.3-instalacion-inicial). **Es distinto del ZIP de actualización.** La descarga aparecerá cuando la [validación de GitHub Actions](https://github.com/Sombra-789/apex-descarga/actions/workflows/publish-brave-first-install.yml) finalice correctamente; no anunciarla como publicada antes.
+**Para personas que nunca han instalado Apex Descarga:** [paquete inicial Brave/Windows v1.2.3 (beta)](https://github.com/Sombra-789/apex-descarga/releases/tag/brave-v1.2.3-instalacion-inicial). **Es distinto del ZIP de actualización.** **Paquete publicado y compilación automatizada aprobada**: [ver validación](https://github.com/Sombra-789/apex-descarga/actions/runs/40803915446). Aún falta la prueba manual con Brave real.
 
 1. Instala **Brave** y **Python 3.12 o 3.13 de 64 bits** en Windows; necesitas Internet.
 2. Descarga y extrae por completo el ZIP inicial; ejecuta **INSTALAR_POR_PRIMERA_VEZ.cmd** como usuario normal. Prepara un entorno Python local, instala yt-dlp y compila el puente Native Messaging.
