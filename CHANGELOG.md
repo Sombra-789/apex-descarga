@@ -1,5 +1,11 @@
 # Historial de cambios
 
+## 2026-10-28 — Retiro de Desktop independiente y documentación
+- Se retira de main la aplicación Desktop Windows independiente, sin afectar la extensión Brave/Windows ni Android.
+- Se elimina su pipeline Desktop. Los Releases Desktop históricos están pendientes de eliminación en GitHub.
+- Se añade guía de instalación, usos, requisitos, dependencias y límites bajo la identidad Apex Software Inc. (denominación de proyecto).
+
+
 ## Brave + Windows 1.2.3 — ESTABLE (2026-10-13)
 - Se declara concluido el desarrollo principal de Apex Descarga, con Brave/Windows v1.2.3 como referencia estable de esa plataforma.
 - Se incluye diagnóstico y reparación de Native Messaging mediante REPARAR_APEX.cmd, con consentimiento y respaldo del manifiesto.
@@ -10,7 +16,7 @@
 
 ### Estado de las otras plataformas
 - Android 1.0.0-rc1: APK de pruebas DEBUG disponible en GitHub Releases; no debe confundirse con Brave 1.2.3.
-- Windows Desktop 0.2.1: beta independiente, no se declara estable.
+- Windows Desktop 0.2.1: RETIRADA el 28-10-2026; código y CI borrados de main, releases históricos pendientes de eliminación.
 - Próximas modificaciones: mantenimiento, correcciones y actualizaciones menores si fueran necesarias.
 
 
