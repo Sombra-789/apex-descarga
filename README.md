@@ -6,7 +6,7 @@
 
 ### ⬇️ [**DESCARGAR APK 1.0.1 PREVIEW **](https://github.com/Sombra-789/apex-descarga/releases/download/android-v1.0.1-preview/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk)
 
-**Nuevo:** mantenimiento del actualizador de yt-dlp. Se instala como aplicación de pruebas **separada** para no sobrescribir ni borrar datos de la 1.0 RC1 existente. La descarga estará disponible cuando GitHub Actions termine su publicación. [Ver cambios 1.0.1](docs/ANDROID_1_0_1.md).
+**Probada en un Samsung Galaxy S23, pero NO exclusiva de ese teléfono.** Requiere Android 10+ y ARM64; la compatibilidad con otros teléfonos queda sujeta a pruebas. **Nuevo:** mantenimiento del actualizador de yt-dlp. Se instala como aplicación de pruebas **separada** para no sobrescribir ni borrar datos de la 1.0 RC1 existente. La descarga estará disponible cuando GitHub Actions termine su publicación. [Ver cambios 1.0.1](docs/ANDROID_1_0_1.md).
 
 ### ⬇️ [**DESCARGAR APK ANTERIOR — ANDROID 1.0 RC1**](https://github.com/Sombra-789/apex-descarga/releases/download/v1.0.0-rc1/Apex-Descarga-Android-1.0.0-rc1-DEBUG-TESTING.apk)
 
@@ -22,16 +22,29 @@
 
 Apex Descarga permite gestionar descargas de contenido **propio o autorizado**. Este repositorio conserva **dos ediciones activas: Brave/Windows y Android**, con versiones y estados de publicación distintos. La aplicación Windows Desktop independiente ha sido retirada por decisión del propietario.
 
+## 🖥️ Primera instalación Brave + Windows (sin Apex anterior)
+
+**Para personas que nunca han instalado Apex Descarga:** [paquete inicial Brave/Windows v1.2.3 (beta)](https://github.com/Sombra-789/apex-descarga/releases/tag/brave-v1.2.3-instalacion-inicial). **Es distinto del ZIP de actualización.** La descarga aparecerá cuando la [validación de GitHub Actions](https://github.com/Sombra-789/apex-descarga/actions/workflows/publish-brave-first-install.yml) finalice correctamente; no anunciarla como publicada antes.
+
+1. Instala **Brave** y **Python 3.12 o 3.13 de 64 bits** en Windows; necesitas Internet.
+2. Descarga y extrae por completo el ZIP inicial; ejecuta **INSTALAR_POR_PRIMERA_VEZ.cmd** como usuario normal. Prepara un entorno Python local, instala yt-dlp y compila el puente Native Messaging.
+3. Abre `brave://extensions`, activa **Modo desarrollador**, pulsa **Cargar descomprimida** y selecciona la carpeta indicada por el instalador (habitualmente `%LOCALAPPDATA%\ApexVideoDownloader\extension`).
+4. Copia el ID de 32 letras de Apex mostrado por Brave, pégalo en el instalador, cierra Brave totalmente, vuelve a abrirlo, recarga Apex y comprueba **Conectado**.
+5. Instala **FFmpeg** por separado para MP3 y combinación de vídeo HD; verifica `ffmpeg -version` en una consola nueva. **Deno** es opcional según el sitio.
+
+**Estado:** Brave 1.2.3 se validó sobre instalaciones existentes; esta ruta de primera instalación es nueva y sigue en fase beta hasta probar el proceso completo en equipos reales. No requiere tener instalada otra versión de Apex Descarga.
+
 ## 📦 Descargas oficiales de GitHub
 
 | Plataforma | Versión | Estado | Descarga |
 | --- | --- | --- | --- |
-| **Brave + Windows** | **1.2.3** | **Estable para instalaciones existentes** | [ZIP de actualización 1.2.3](https://github.com/Sombra-789/apex-descarga/releases/download/brave-v1.2.3/Apex-Descarga-Brave-1.2.3-Actualizacion.zip) |
+| **Brave + Windows (primera instalación)** | **1.2.3** | **Instalador beta para usuarios nuevos** | [ZIP inicial](https://github.com/Sombra-789/apex-descarga/releases/tag/brave-v1.2.3-instalacion-inicial) |
+| **Brave + Windows (actualización)** | **1.2.3** | **Estable para instalaciones existentes** | [ZIP de actualización 1.2.3](https://github.com/Sombra-789/apex-descarga/releases/download/brave-v1.2.3/Apex-Descarga-Brave-1.2.3-Actualizacion.zip) |
 | **Android** | **1.0.1 Preview** | **APK de pruebas independiente** | **[Descargar APK 1.0.1](https://github.com/Sombra-789/apex-descarga/releases/download/android-v1.0.1-preview/Apex-Descarga-Android-1.0.1-PREVIEW-TESTING.apk)** |
 
 **Página de todas las publicaciones:** [GitHub Releases](https://github.com/Sombra-789/apex-descarga/releases).
 
-### 📱 Instalar el APK Android
+### 📱 Instalar el APK Android — probado en Galaxy S23, no exclusivo
 
 El APK Android ya está publicado en la [versión de pruebas 1.0 RC1](https://github.com/Sombra-789/apex-descarga/releases/tag/v1.0.0-rc1). Puedes descargarlo directamente desde el enlace de arriba.
 
@@ -46,7 +59,7 @@ El APK Android ya está publicado en la [versión de pruebas 1.0 RC1](https://gi
 
 La versión 1.2.3 de Brave + Windows fue verificada manualmente con descargas MP4/MP3, vista previa, carpetas, cola/historial y conexión Native Messaging. El reparador **REPARAR_APEX.cmd** corrigió un error de permisos del host cuando cambió el ID de la extensión. También se aprobaron las pruebas automáticas de diagnóstico y empaquetado.
 
-**El ZIP de 1.2.3 es solo una actualización:** no contiene un instalador completo ni un host ejecutable compilado. Requiere tener Apex previamente instalado y configurado con Python, yt-dlp y las dependencias pertinentes.
+**El ZIP antiguo de actualización de 1.2.3 es solo para instalaciones existentes; hay un ZIP inicial distinto:** no contiene un instalador completo ni un host ejecutable compilado. Requiere tener Apex previamente instalado y configurado con Python, yt-dlp y las dependencias pertinentes.
 
 1. Extrae el ZIP completo, cierra Brave y ejecuta **ACTUALIZAR_APEX.cmd**, sin privilegios de administrador.
 2. Selecciona la carpeta **original** de la extensión que ya está cargada en Brave; no la carpeta nueva del ZIP.
@@ -60,7 +73,7 @@ La versión 1.2.3 de Brave + Windows fue verificada manualmente con descargas MP
 | Producto | Código | Capacidades principales |
 | --- | --- | --- |
 | **Brave/Windows 1.2.3** | [brave-windows/](brave-windows/) | Pestaña activa, vista previa, MP4/MP3, calidades, cola e historial, cambiar/abrir carpeta, reparador Native Messaging |
-| **Android 1.0 RC1** | [android/](android/) | Descargas MP4/MP3, vista previa, cola, biblioteca, notificaciones, selección de tema y control de red |
+| **Android 1.0.1 Preview** | [android/](android/) | Descargas MP4/MP3, vista previa, cola, biblioteca, notificaciones, selección de tema y control de red |
 | **Prototipo 2.0** | [prototypes/apex-descarga-2.0 (rama experimental)](https://github.com/Sombra-789/apex-descarga/tree/feature/apex-descarga-2.0-alpha1/prototypes/apex-descarga-2.0) | Interfaz interactiva local **simulada**, separada de producción y conservada como referencia futura |
 
 **El prototipo 2.0 no es una actualización disponible de 1.2.3 ni realiza descargas reales.** Permanece únicamente como referencia experimental en una rama separada.
