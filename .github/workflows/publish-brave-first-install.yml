@@ -1,0 +1,97 @@
+name: Apex Descarga Brave 1.2.3 - Instalacion inicial
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-brave-first-install.yml'
+      - 'brave-windows/INSTALAR_POR_PRIMERA_VEZ.cmd'
+      - 'brave-windows/windows/install-first.ps1'
+      - 'brave-windows/windows/launcher.cs'
+      - 'brave-windows/windows/host.py'
+      - 'brave-windows/extension/**'
+      - 'brave-windows/tests/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  first-install:
+    if: github.repository == 'Sombra-789/apex-descarga' && github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validar extension y host sin descargar medios
+        shell: pwsh
+        run: |
+          node --check brave-windows/extension/background.js
+          if ($LASTEXITCODE -ne 0) { throw 'Background JS invalido' }
+          node --check brave-windows/extension/popup.js
+          if ($LASTEXITCODE -ne 0) { throw 'Popup JS invalido' }
+          node brave-windows/tests/test_extension.js
+          if ($LASTEXITCODE -ne 0) { throw 'Fallo pruebas extension' }
+          python -m unittest discover -s brave-windows/tests -p 'test_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Fallo pruebas host' }
+      - name: Probar instalacion inicial aislada en Windows
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $sandbox = Join-Path $env:RUNNER_TEMP 'ApexInitialInstallCI'
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File brave-windows/windows/install-first.ps1 -InstallDir $sandbox -ExtensionId 'abcdefghijklmnopabcdefghijklmnop' -SkipRegistration
+          if ($LASTEXITCODE -ne 0) { throw 'Fallo instalador inicial' }
+          foreach ($file in @('apex_host.exe','python.path','host.py','com.apex.video_downloader.json','extension/manifest.json','.venv/Scripts/python.exe')) {
+            if (-not (Test-Path -LiteralPath (Join-Path $sandbox $file) -PathType Leaf)) { throw "No se genero $file" }
+          }
+          $manifest = Get-Content (Join-Path $sandbox 'com.apex.video_downloader.json') -Raw | ConvertFrom-Json
+          if ($manifest.name -ne 'com.apex.video_downloader' -or $manifest.allowed_origins[0] -ne 'chrome-extension://abcdefghijklmnopabcdefghijklmnop/') {
+            throw 'Manifiesto Native Messaging incorrecto'
+          }
+          $py = Get-Content (Join-Path $sandbox 'python.path') -Raw
+          & $py.Trim() -m yt_dlp --version
+          if ($LASTEXITCODE -ne 0) { throw 'yt-dlp no funciona en venv' }
+          Write-Host 'Smoke OK: EXE, entorno, extension y manifiesto; no se registra ni abre Brave.'
+      - name: Empaquetar ZIP para nuevos usuarios y SHA-256
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Path dist -Force | Out-Null
+          $stage = Join-Path $env:RUNNER_TEMP 'Apex-Descarga-Brave-1.2.3'
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+          foreach ($dir in @('extension','windows')) {
+            Copy-Item -LiteralPath (Join-Path 'brave-windows' $dir) -Destination $stage -Recurse
+          }
+          foreach ($file in @('INSTALAR_POR_PRIMERA_VEZ.cmd','ACTUALIZAR_APEX.cmd','REPARAR_APEX.cmd','README_PRIMERO.md','CAMBIOS_1.2.3.md','PRIVACIDAD_Y_CONDICIONES.md')) {
+            Copy-Item -LiteralPath (Join-Path 'brave-windows' $file) -Destination $stage
+          }
+          $filename = 'Apex-Descarga-Brave-1.2.3-Instalacion-Inicial.zip'
+          $zip = Join-Path dist $filename
+          Compress-Archive -LiteralPath $stage -DestinationPath $zip -Force
+          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  $filename" | Set-Content -Encoding ascii (Join-Path dist 'SHA256SUMS.txt')
+      - name: Conservar resultado en Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: Apex-Descarga-Brave-1.2.3-Primera-Instalacion
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 90
+      - name: Publicar instalacion inicial en GitHub Releases (preliminar)
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          $tag = 'brave-v1.2.3-instalacion-inicial'
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "El release $tag ya existe; no se sobreescriben binarios."
+            exit 0
+          }
+          gh release create $tag 'dist/Apex-Descarga-Brave-1.2.3-Instalacion-Inicial.zip' 'dist/SHA256SUMS.txt' --target "$env:GITHUB_SHA" --title 'Apex Descarga Brave/Windows 1.2.3 - Primera instalacion (beta)' --notes 'Incluye el instalador inicial sin una version Apex previa. Requiere Brave, Python 3.12/3.13 x64 e Internet; FFmpeg en PATH para MP3 y combinacion de video. Sigue README_PRIMERO.md. Instalador validado en CI; faltan pruebas de extremo a extremo con Brave real.' --prerelease
+          if ($LASTEXITCODE -ne 0) { throw 'No se publico Release primera instalacion.' }
