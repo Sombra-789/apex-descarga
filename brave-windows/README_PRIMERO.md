@@ -1,32 +1,19 @@
 # Apex Descarga para Windows 1.2.4
 
-Corrección de compatibilidad pendiente de prueba manual con Brave real. Chrome y Edge siguen siendo experimentales.
+La extensión y el componente local usan la misma versión. Brave es la plataforma principal; Chrome y Edge siguen siendo experimentales. 1.2.4 pasó pruebas automáticas y del puente local; aún necesita aceptación manual completa en Brave.
 
-## Si ya tienes Apex instalado
+| Tu objetivo | Abre esta guía | Ejecuta |
+| --- | --- | --- |
+| Primera instalación | [Requisitos y pasos](../docs/guias/INSTALACION_WINDOWS.md) | `INSTALAR_POR_PRIMERA_VEZ.cmd` |
+| Actualizar una instalación existente | [Actualizar conservando el ID](../docs/guias/INSTALACION_WINDOWS.md#5-actualizar-sin-perder-el-id) | `ACTUALIZAR_APEX.cmd` |
+| Descargar MP4/MP3 y gestionar la cola | [Manual de uso](../docs/guias/USO.md) | Abre Apex en el navegador |
+| Reparar conexión o permisos | [Solución de problemas](../docs/guias/SOLUCION_DE_PROBLEMAS.md) | `REPARAR_APEX.cmd` cuando corresponda |
+| Añadir Chrome/Edge | [Navegadores](GUIA_NAVEGADORES.md) | `AGREGAR_NAVEGADOR.cmd` |
 
-1. Extrae el paquete completo y cierra Brave completamente.
-2. Ejecuta `ACTUALIZAR_APEX.cmd` como usuario normal.
-3. Selecciona la carpeta `extension` ORIGINAL cargada en Brave. Así se conserva su ID.
-4. Confirma la ruta. El actualizador respalda la extensión y el componente local antes de copiarlos; conserva la carpeta de destino, el registro y el puente EXE.
-5. Abre `brave://extensions`, recarga Apex y comprueba **1.2.4 / Conectado**.
+Extrae todo el paquete antes de ejecutar los CMD. Para una primera instalación, carga la carpeta `extension` indicada por el instalador y autoriza su ID; cargar la extensión por sí sola no instala el componente Windows. Para actualizar, selecciona la carpeta de extensión ORIGINAL que ya usa Brave.
 
-No ejecutes instaladores antiguos que incluyan `host.py` 1.0 sobre una instalación 1.2.x. Usa todos los archivos de este paquete juntos.
+**Uso básico:** pega un enlace o toma la pestaña actual → analiza → elige MP4/MP3 y calidad → revisa la carpeta → acepta condiciones → añade a descargas. Mantén el navegador abierto y consulta el progreso.
 
-## Primera instalación
+MP3 y mezcla HD requieren FFmpeg. Threads muestra un aviso de falta de soporte. La compatibilidad con otros sitios depende de yt-dlp.
 
-Requiere Windows, Python 3.12 o 3.13 x64 e Internet. FFmpeg debe estar en PATH para MP3 y combinación HD.
-
-1. Extrae el ZIP y ejecuta `INSTALAR_POR_PRIMERA_VEZ.cmd` sin privilegios de administrador.
-2. Elige navegador. El instalador prepara un entorno Python, yt-dlp y el puente local. Si ya existe una instalación, se detiene y te indica actualizar.
-3. Carga la carpeta que indica el instalador desde el modo desarrollador del navegador y pega el ID solicitado.
-4. Reinicia el navegador, recarga Apex y comprueba **1.2.4 / Conectado**.
-
-## Enlaces y descargas
-
-«Pestaña actual» acepta enlaces HTTP(S) de otros sitios. Usa «Analizar enlace» para comprobar qué puede obtener el motor. Threads muestra un aviso de falta de soporte; no se inicia una descarga. No se garantiza compatibilidad con cualquier sitio o tipo de archivo.
-
-Si cambia el ID de la extensión, utiliza `REPARAR_APEX.cmd`. Para añadir otro navegador, consulta [GUIA_NAVEGADORES.md](GUIA_NAVEGADORES.md).
-
-[Cambios 1.2.4](CAMBIOS_1.2.4.md) · [Compatibilidad](../docs/COMPATIBILIDAD.md) · [Privacidad y condiciones](PRIVACIDAD_Y_CONDICIONES.md)
-
-La selección de carpeta se guarda en `settings.json`; la cola y el historial se guardan en el navegador. Apex contacta los sitios externos para analizar y descargar, sin telemetría propia ni obtención de cookies del navegador.
+[Versiones y descargas](../docs/VERSIONES_Y_DESCARGAS.md) · [Cambios 1.2.4](CAMBIOS_1.2.4.md) · [Privacidad y condiciones](PRIVACIDAD_Y_CONDICIONES.md)

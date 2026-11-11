@@ -1,20 +1,28 @@
 # Documentación de Apex Descarga
 
-## Uso
+## Instalar y utilizar
 
-- [Instalación y uso de las dos ediciones](guias/INSTALACION_Y_USO.md)
-- [Instalar o actualizar Windows 1.2.4](../brave-windows/README_PRIMERO.md)
-- [Brave, Chrome y Edge](../brave-windows/GUIA_NAVEGADORES.md)
-- [Compatibilidad, Threads y límites](COMPATIBILIDAD.md)
-- [Android 1.0.1 Preview](ANDROID_1_0_1.md)
-- [Contacto y soporte](guias/CONTACTO_Y_SOPORTE.md)
+| Necesidad | Documento |
+| --- | --- |
+| Descargar la edición correcta | [Versiones y descargas](VERSIONES_Y_DESCARGAS.md) |
+| Primera instalación o actualización Windows | [Instalación Windows](guias/INSTALACION_WINDOWS.md) |
+| MP4, MP3, carpeta, cola e historial | [Manual de uso](guias/USO.md) |
+| Sin conexión, formatos, FFmpeg o errores | [Solución de problemas](guias/SOLUCION_DE_PROBLEMAS.md) |
+| Configurar Brave, Chrome o Edge | [Navegadores](../brave-windows/GUIA_NAVEGADORES.md) |
+| Instalar Android Preview | [Edición Android](ANDROID_1_0_1.md) |
+| Saber qué enlaces están soportados | [Compatibilidad y límites](COMPATIBILIDAD.md) |
+| Reportar fallos o sugerencias | [Contacto y soporte](guias/CONTACTO_Y_SOPORTE.md) |
 
-## Mantenimiento
+## Desarrollo y mantenimiento
 
-- [Contribución y pruebas](../CONTRIBUTING.md)
-- [Lista de publicación](mantenimiento/RELEASE_CHECKLIST.md)
-- [Identidad visual](mantenimiento/BRANDING.md)
-- [Historial](../CHANGELOG.md)
-- [Privacidad](../PRIVACY.md), [seguridad](../SECURITY.md) y [dependencias](../THIRD_PARTY_NOTICES.md)
+- [Contribución y pruebas](../CONTRIBUTING.md).
+- [Lista de publicación](mantenimiento/RELEASE_CHECKLIST.md).
+- [Identidad visual](mantenimiento/BRANDING.md).
+- [Historial](../CHANGELOG.md) y [notas Windows 1.2.4](../brave-windows/CAMBIOS_1.2.4.md).
+- [Privacidad](../PRIVACY.md), [seguridad](../SECURITY.md) y [dependencias](../THIRD_PARTY_NOTICES.md).
 
-Los planes y cierres anteriores (`APEX_DESCARGA_2.0_PLAN.md`, `CIERRE_PROYECTO.md`, `RC1-TESTING-RELEASE.md`) son referencias históricas. Las recetas de publicación anteriores están archivadas en `archive/workflows/` y no son flujos activos.
+## Historia del proyecto
+
+Los documentos `APEX_DESCARGA_2.0_PLAN.md`, `CIERRE_PROYECTO.md` y `RC1-TESTING-RELEASE.md` conservan planes y decisiones anteriores. No sustituyen las guías actuales. Las recetas de publicación con versiones fijas están en `archive/workflows/`.
+
+[Volver a la portada](../README.md)
