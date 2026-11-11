@@ -1,6 +1,6 @@
 # Apex Descarga 1.2.3 — instalar la extensión en Windows
 
-**Apex Software Inc.** · [Contacto y soporte](../CONTACTO_Y_SOPORTE.md): **apexsoftware.inc07@gmail.com**.
+**Apex Software Inc.** · [Contacto y soporte](../docs/guias/CONTACTO_Y_SOPORTE.md): **apexsoftware.inc07@gmail.com**.
 
 ## Navegadores y estado
 

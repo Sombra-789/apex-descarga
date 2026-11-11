@@ -1,69 +1,32 @@
-# Apex Descarga 1.2.3 — Brave y Windows 11
+# Apex Descarga para Windows 1.2.4
 
-**Parte de Apex Software Inc.**
+Corrección de compatibilidad pendiente de prueba manual con Brave real. Chrome y Edge siguen siendo experimentales.
 
-## 🖥️ Primera instalación Brave + Windows (sin Apex anterior)
+## Si ya tienes Apex instalado
 
-**Para personas que nunca han instalado Apex Descarga:** [paquete inicial Brave/Windows v1.2.3 (beta)](https://github.com/Sombra-789/apex-descarga/releases/tag/brave-v1.2.3-instalacion-inicial). **Es distinto del ZIP de actualización.** **Paquete publicado y compilación automatizada aprobada**: [ver validación](https://github.com/Sombra-789/apex-descarga/actions/runs/40803915446). Aún falta la prueba manual con Brave real.
+1. Extrae el paquete completo y cierra Brave completamente.
+2. Ejecuta `ACTUALIZAR_APEX.cmd` como usuario normal.
+3. Selecciona la carpeta `extension` ORIGINAL cargada en Brave. Así se conserva su ID.
+4. Confirma la ruta. El actualizador respalda la extensión y el componente local antes de copiarlos; conserva la carpeta de destino, el registro y el puente EXE.
+5. Abre `brave://extensions`, recarga Apex y comprueba **1.2.4 / Conectado**.
 
-1. Instala **Brave** y **Python 3.12 o 3.13 de 64 bits** en Windows; necesitas Internet.
-2. Descarga y extrae por completo el ZIP inicial; ejecuta **INSTALAR_POR_PRIMERA_VEZ.cmd** como usuario normal. Prepara un entorno Python local, instala yt-dlp y compila el puente Native Messaging.
-3. Abre `brave://extensions`, activa **Modo desarrollador**, pulsa **Cargar descomprimida** y selecciona la carpeta indicada por el instalador (habitualmente `%LOCALAPPDATA%\ApexVideoDownloader\extension`).
-4. Copia el ID de 32 letras de Apex mostrado por Brave, pégalo en el instalador, cierra Brave totalmente, vuelve a abrirlo, recarga Apex y comprueba **Conectado**.
-5. Instala **FFmpeg** por separado para MP3 y combinación de vídeo HD; verifica `ffmpeg -version` en una consola nueva. **Deno** es opcional según el sitio.
+No ejecutes instaladores antiguos que incluyan `host.py` 1.0 sobre una instalación 1.2.x. Usa todos los archivos de este paquete juntos.
 
-**Estado:** Brave 1.2.3 se validó sobre instalaciones existentes; esta ruta de primera instalación es nueva y sigue en fase beta hasta probar el proceso completo en equipos reales. No requiere tener instalada otra versión de Apex Descarga.
+## Primera instalación
 
+Requiere Windows, Python 3.12 o 3.13 x64 e Internet. FFmpeg debe estar en PATH para MP3 y combinación HD.
 
+1. Extrae el ZIP y ejecuta `INSTALAR_POR_PRIMERA_VEZ.cmd` sin privilegios de administrador.
+2. Elige navegador. El instalador prepara un entorno Python, yt-dlp y el puente local. Si ya existe una instalación, se detiene y te indica actualizar.
+3. Carga la carpeta que indica el instalador desde el modo desarrollador del navegador y pega el ID solicitado.
+4. Reinicia el navegador, recarga Apex y comprueba **1.2.4 / Conectado**.
 
-## Navegadores compatibles por diseño
+## Enlaces y descargas
 
-- **Brave:** `brave://extensions` (versión principal).
-- **Google Chrome:** `chrome://extensions` (experimental).
-- **Microsoft Edge:** `edge://extensions` (experimental).
+«Pestaña actual» acepta enlaces HTTP(S) de otros sitios. Usa «Analizar enlace» para comprobar qué puede obtener el motor. Threads muestra un aviso de falta de soporte; no se inicia una descarga. No se garantiza compatibilidad con cualquier sitio o tipo de archivo.
 
-Para Chrome o Edge descarga el [paquete de configuración Chromium 1.2.3](https://github.com/Sombra-789/apex-descarga/releases/tag/chromium-v1.2.3-setup-preview1) y usa el selector del instalador inicial. **Cada navegador debe cargar la extensión y autorizar su propio ID de Native Messaging.** Si Apex ya está instalado para Brave, usa `AGREGAR_NAVEGADOR.cmd` en lugar de reinstalar. [Guía completa](GUIA_NAVEGADORES.md). No existe soporte confirmado para Firefox, Safari, Opera ni Vivaldi.
+Si cambia el ID de la extensión, utiliza `REPARAR_APEX.cmd`. Para añadir otro navegador, consulta [GUIA_NAVEGADORES.md](GUIA_NAVEGADORES.md).
 
-**Correo oficial de sugerencias y quejas:** [apexsoftware.inc07@gmail.com](mailto:apexsoftware.inc07@gmail.com).
+[Cambios 1.2.4](CAMBIOS_1.2.4.md) · [Compatibilidad](../docs/COMPATIBILIDAD.md) · [Privacidad y condiciones](PRIVACIDAD_Y_CONDICIONES.md)
 
-## Correccion Native Messaging
-
-Si Brave muestra `Access to the specified native messaging host is forbidden`, normalmente el ID de la extension no coincide con `allowed_origins` del manifiesto local de Windows. La version 1.2.3 incluye `REPARAR_APEX.cmd`: revisa el componente y las dependencias, solicita el ID visible en `brave://extensions`, verifica la discrepancia, pide confirmacion antes de reparar y guarda respaldo del manifiesto. No instala paquetes ni cambia el registro. Cierra Brave completamente antes de reparar y recarga la extension despues.
-
-Tambien puedes ejecutar el diagnostico sin cambios desde PowerShell: `powershell.exe -NoProfile -File .\windows\diagnostico.ps1 -ExtensionId ID_DE_32_LETRAS`. No se comparten IDs ni archivos de configuracion con servidores de Apex.
-
-El actualizador `ACTUALIZAR_APEX.cmd` sigue siendo solo para actualizaciones sobre instalaciones existentes y conserva el ID de extension. Si la extension se reinstalo y cambio su ID, utiliza el reparador con autorizacion explicita.
-
-# Apex Descarga 1.2.2 — actualización para Brave y Windows 11
-
-## Cambios
-- Conserva el diseño negro, púrpura y azul y el águila de Apex Visual Studio.
-- Agrega **Cambiar carpeta** dentro de Actividad → Carpeta de destino.
-- Elige la nueva ubicación mediante el selector nativo de carpetas de Windows.
-- Guarda esa ubicación en `AppData\Local\ApexVideoDownloader\settings.json`; futuras descargas y «Abrir» usarán la nueva carpeta.
-- Nueva información de privacidad, más transparente: no hay telemetría ni servidores propios de Apex; el historial, la configuración y los enlaces se almacenan localmente; yt-dlp debe contactar los sitios de origen.
-- Solicita aceptar las condiciones revisadas antes de la próxima descarga (solo una vez por versión de términos).
-
-## Actualización sin perder el ID ni Native Messaging
-1. **Extrae** todo el ZIP. No ejecutes archivos `.cmd` directamente desde el archivo comprimido.
-2. Cierra Brave completamente.
-3. Ejecuta `ACTUALIZAR_APEX.cmd` **sin privilegios de administrador**, desde la cuenta de Windows que usa Brave.
-4. Elige la carpeta `extension` ORIGINAL instalada en Brave, no la carpeta nueva incluida en el ZIP.
-5. Confirma con `S` y espera el mensaje `ACTUALIZACION 1.2.2 APLICADA.`.
-6. Abre `brave://extensions` y haz clic en **Actualizar**.
-7. Abre **Apex Descarga 1.2.2** y comprueba `Conectado`.
-8. En «Carpeta de destino», haz clic en **Cambiar carpeta** y elige tu carpeta. La ventana de Apex puede cerrarse al abrir el diálogo; vuelve a abrirla y comprobarás la ruta guardada.
-
-## Datos y privacidad
-Apex no envía telemetría ni datos a un servidor de Apex Visual Studio. El estado, enlaces e historial de descargas se almacenan en el navegador (almacenamiento local de la extensión), y la carpeta elegida se guarda en un JSON local en tu Windows. Para analizar o descargar, yt-dlp necesita realizar conexiones con sitios externos; también pueden cargarse miniaturas desde servicios externos. No sería correcto afirmar que no se procesa ningún dato.
-
-## Seguridad
-Usa solamente contenido autorizado. Los archivos externos pueden ser peligrosos; analiza los archivos con un antivirus. La cláusula incluida es una declaración informativa y **no sustituye asesoría legal ni garantiza exención de responsabilidad**.
-
-## Si aparece Sin conexión
-1. No reinstales Python, yt-dlp, FFmpeg ni Deno.
-2. Cierra Brave por completo, ábrelo y en `brave://extensions` pulsa **Actualizar**.
-3. Si sigue igual, comparte la pantalla de error y salida de `ACTUALIZAR_APEX.cmd`. No utilices reparadores de registro salvo que diagnostiquemos que sean necesarios.
-
-## Nota técnica
-Conserva `com.apex.video_downloader` como nombre del host y utiliza el mismo directorio de la extensión cargada en Brave. El actualizador respalda los archivos antes de modificarlos. No migrará los medios antiguos: permanecen en su carpeta anterior.
+La selección de carpeta se guarda en `settings.json`; la cola y el historial se guardan en el navegador. Apex contacta los sitios externos para analizar y descargar, sin telemetría propia ni obtención de cookies del navegador.

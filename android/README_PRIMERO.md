@@ -36,7 +36,7 @@ El icono y logotipo son los assets originales del proyecto; las pantallas Figma 
 Ver `CAMBIOS_0.6.md` y `PRUEBAS_GALAXY_S23.md`.
 
 
-> Revisión 1.0-rc1: cambia versión y añade documentación de distribución; los motores de descarga siguen los de 0.6. No distribuir la APK debug como release. Consulta ../RELEASE_CHECKLIST.md.
+> Revisión 1.0-rc1: cambia versión y añade documentación de distribución; los motores de descarga siguen los de 0.6. No distribuir la APK debug como release. Consulta ../docs/mantenimiento/RELEASE_CHECKLIST.md.
 
 ## Android 1.0.1
 

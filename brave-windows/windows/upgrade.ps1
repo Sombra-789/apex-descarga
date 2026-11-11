@@ -1,11 +1,15 @@
 ﻿$ErrorActionPreference = 'Stop'
+$packageCheck = Join-Path $PSScriptRoot 'validate-package.ps1'
+if (-not (Test-Path -LiteralPath $packageCheck -PathType Leaf)) { throw 'Paquete incompleto: falta validate-package.ps1.' }
+& $packageCheck
+
 $InstallDir = Join-Path $env:LOCALAPPDATA 'ApexVideoDownloader'
 $SourceExtension = Join-Path (Split-Path -Parent $PSScriptRoot) 'extension'
 $SourceHost = Join-Path $PSScriptRoot 'host.py'
 
 Write-Host ''
 Write-Host '=======================================================' -ForegroundColor Cyan
-Write-Host '    APEX DESCARGA 1.2.3 - ACTUALIZADOR SEGURO' -ForegroundColor Cyan
+Write-Host '    APEX DESCARGA 1.2.4 - ACTUALIZADOR SEGURO' -ForegroundColor Cyan
 Write-Host '=======================================================' -ForegroundColor Cyan
 Write-Host 'Conserva la extension y el ID que ya funcionan en Brave.'
 Write-Host 'Si el ID cambio, utiliza REPARAR_APEX.cmd despues de esta actualizacion.'
@@ -24,7 +28,7 @@ foreach ($f in @($existingHost, $existingManifest, $existingLauncher, $pythonPat
     }
 }
 $manifestNative = Get-Content -LiteralPath $existingManifest -Raw -Encoding UTF8 | ConvertFrom-Json
-if ($manifestNative.name -cne 'com.apex.video_downloader' -or @($manifestNative.allowed_origins).Count -ne 1) {
+if ($manifestNative.name -cne 'com.apex.video_downloader' -or @($manifestNative.allowed_origins).Count -lt 1) {
     throw 'El manifiesto Native Messaging no corresponde a Apex. Se detuvo para proteger tu conexion actual.'
 }
 Write-Host ('Componente local: ' + $InstallDir) -ForegroundColor Green
@@ -83,7 +87,7 @@ $stamp = Get-Date -Format 'yyyyMMdd_HHmmss'
 $backupRoot = Join-Path $env:LOCALAPPDATA ('ApexVideoDownloader_backup_' + $stamp)
 $backupExt = Join-Path $backupRoot 'extension_anterior'
 New-Item -ItemType Directory -Path $backupExt -Force | Out-Null
-foreach ($name in @('manifest.json', 'popup.html', 'popup.css', 'popup.js', 'background.js')) {
+foreach ($name in @('manifest.json', 'popup.html', 'popup.css', 'popup.js', 'background.js', 'site-policy.js')) {
     $file = Join-Path $ExtensionTarget $name
     if (Test-Path -LiteralPath $file -PathType Leaf) { Copy-Item -LiteralPath $file -Destination (Join-Path $backupExt $name) -Force }
 }
@@ -96,7 +100,7 @@ if (Test-Path -LiteralPath $targetIcons -PathType Container) {
 }
 Write-Host ('Respaldo: ' + $backupRoot) -ForegroundColor Cyan
 try {
-    foreach ($name in @('manifest.json', 'popup.html', 'popup.css', 'popup.js', 'background.js')) {
+    foreach ($name in @('manifest.json', 'popup.html', 'popup.css', 'popup.js', 'background.js', 'site-policy.js')) {
         Copy-Item -LiteralPath (Join-Path $SourceExtension $name) -Destination (Join-Path $ExtensionTarget $name) -Force
     }
     if (-not (Test-Path -LiteralPath $sourceIcons -PathType Container)) { throw 'Falta carpeta icons del paquete.' }
@@ -106,9 +110,9 @@ try {
     }
     Copy-Item -LiteralPath $SourceHost -Destination $existingHost -Force
     $applied = Get-Content -LiteralPath $targetManifest -Raw -Encoding UTF8 | ConvertFrom-Json
-    if ($applied.version -cne '1.2.3') { throw 'No se pudo actualizar el manifiesto de la extensión.' }
+    if ($applied.version -cne '1.2.4') { throw 'No se pudo actualizar el manifiesto de la extensión.' }
 } catch {
-    foreach ($name in @('manifest.json', 'popup.html', 'popup.css', 'popup.js', 'background.js')) {
+    foreach ($name in @('manifest.json', 'popup.html', 'popup.css', 'popup.js', 'background.js', 'site-policy.js')) {
         $old = Join-Path $backupExt $name
         if (Test-Path -LiteralPath $old) { Copy-Item -LiteralPath $old -Destination (Join-Path $ExtensionTarget $name) -Force }
     }
@@ -122,9 +126,9 @@ try {
     throw ('Actualizacion revertida desde copia de seguridad: ' + $_.Exception.Message)
 }
 Write-Host ''
-Write-Host 'ACTUALIZACION 1.2.3 APLICADA.' -ForegroundColor Green
+Write-Host 'ACTUALIZACION 1.2.4 APLICADA.' -ForegroundColor Green
 Write-Host 'Tu ID, el registro Native Messaging y los archivos descargados siguen intactos.' -ForegroundColor Green
 Write-Host 'En brave://extensions, pulsa ACTUALIZAR (o la flecha recargar de Apex).' -ForegroundColor Cyan
-Write-Host 'Abre el icono de Apex y comprueba Conectado y V1.2.2.'
+Write-Host 'Abre el icono de Apex y comprueba Conectado y V1.2.4.'
 Write-Host ('Respaldo de seguridad: ' + $backupRoot)
 Write-Host ''

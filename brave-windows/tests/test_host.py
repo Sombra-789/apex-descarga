@@ -32,6 +32,20 @@ class URLTests(unittest.TestCase):
             with self.subTest(u=u), self.assertRaises(ValueError): mod.validate_url(u)
 
 
+class ThreadsTests(unittest.TestCase):
+    def test_threads_rejected_before_network_or_files(self):
+        for url in ('https://threads.net/@x/post/1', 'https://WWW.THREADS.COM./@x/post/1', 'https://m.threads.net/t/1'):
+            with self.subTest(url=url), patch.object(mod.subprocess, 'run') as run, patch.object(mod, 'folder') as folder:
+                with self.assertRaisesRegex(ValueError, 'Threads'): mod.preview(url)
+                with self.assertRaisesRegex(ValueError, 'Threads'): mod.download({'url': url}, listen_for_cancel=False)
+                run.assert_not_called()
+                folder.assert_not_called()
+
+    def test_similar_domain_is_not_threads(self):
+        url = 'https://threads.com.example.org/video'
+        self.assertEqual(mod.validate_url(url), url)
+
+
 class FolderTests(unittest.TestCase):
     def test_default_folder_without_settings(self):
         with TemporaryDirectory() as temp, patch.object(mod, 'CONFIG_FILE', Path(temp) / 'missing.json'):
@@ -162,7 +176,7 @@ class ProtocolTests(unittest.TestCase):
         return json.loads(result.stdout[4:])
     def test_status(self):
         result=self.exchange({'type':'status'})
-        self.assertEqual(result['version'],'1.2.3')
+        self.assertEqual(result['version'],'1.2.4')
         self.assertEqual(result['type'],'status')
     def test_unknown_command(self):
         self.assertEqual(self.exchange({'type':'wat'})['type'],'error')
@@ -174,6 +188,14 @@ class ProtocolTests(unittest.TestCase):
         self.assertEqual(json.loads(process.stdout[4:4+size])['type'],'error')
 
 class DownloadTests(unittest.TestCase):
+    def test_cancel_falls_back_when_taskkill_fails(self):
+        from unittest.mock import Mock
+        process = Mock()
+        process.poll.return_value = None
+        with patch.object(mod.os, 'name', 'nt'), patch.object(mod.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1)):
+            mod.terminate_tree(process)
+        process.terminate.assert_called_once()
+
     def settings(self):
         return {'url':'https://example.com/v', 'format':'mp4','quality':'1080','mode':'stable'}
     def mocks(self):

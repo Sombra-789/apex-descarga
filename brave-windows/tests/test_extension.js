@@ -17,7 +17,7 @@ const chrome = {
   runtime: { id:'test-apex-extension', lastError:null,
     onMessage:{addListener:f=>{listener=f}},
     connectNative:()=>{const p=port();ports.push(p);return p},
-    sendNativeMessage:(host,message,reply)=>reply(message.type==='status'?{ok:true,version:'1.2.2'}:{ok:true,title:'Test'})
+    sendNativeMessage:(host,message,reply)=>reply(message.type==='status'?{ok:true,version:'1.2.4'}:{ok:true,title:'Test'})
   },
   storage:{local:{get:async keys=>{
     const names = typeof keys==='string'?[keys]:keys;
@@ -25,6 +25,7 @@ const chrome = {
   },set:async payload=>{Object.assign(data,payload)}}}
 };
 const context=vm.createContext({ chrome, console, URL, Date, Math, Promise });
+context.importScripts = name => vm.runInContext(fs.readFileSync(path.join(__dirname, '../extension', name), 'utf8'), context);
 vm.runInContext(fs.readFileSync(path.join(__dirname,'../extension/background.js'),'utf8'),context);
 function delay(ms=10){return new Promise(resolve=>setTimeout(resolve,ms))}
 async function msg(request){
@@ -32,12 +33,21 @@ async function msg(request){
 }
 (async()=>{
   let result=await msg({type:'STATUS'});
-  assert.equal(result.version,'1.2.2');
+  assert.equal(result.version,'1.2.4');
   result=await msg({type:'CHOOSE_FOLDER'});
   assert.equal(result.ok,true);
   assert.equal(result.title,'Test');
   result=await msg({type:'QUEUE_ADD',url:'file:///etc/passwd',format:'mp4',quality:'1080',mode:'stable'});
   assert.equal(result.ok,false);
+  for (const url of ['https://threads.net/@a/post/1', 'https://WWW.THREADS.COM./@a/post/1', 'https://m.threads.com/@a/post/1']) {
+    for (const type of ['PREVIEW', 'QUEUE_ADD']) {
+      const rejected = await msg({type, url, format:'mp4', quality:'1080', mode:'stable'});
+      assert.equal(rejected.ok, false);
+      assert.match(rejected.error, /Threads/);
+    }
+  }
+  assert.equal(ports.length, 0);
+  assert.equal((await msg({type:'PREVIEW', url:'https://threads.com.example.org/video'})).ok, true);
   const job={format:'mp4',quality:'1080',mode:'stable'};
   result=await msg({type:'QUEUE_ADD',url:'https://youtu.be/first',...job});
   assert.equal(result.ok,true);
@@ -71,5 +81,18 @@ async function msg(request){
   assert.equal(result.title,'Test');
   await msg({type:'CLEAR_HISTORY'});
   assert.equal(data.apexHistory.length,0);
+  data.apexJob = null;
+  data.apexQueue = [
+    {id:'saved-threads',url:'https://threads.net/@x/post/1',...job},
+    {id:'saved-other',url:'https://example.org/video',...job}
+  ];
+  const resumed = vm.createContext({chrome,console,URL,Date,Math,Promise});
+  resumed.importScripts = name => vm.runInContext(fs.readFileSync(path.join(__dirname,'../extension',name),'utf8'),resumed);
+  vm.runInContext(fs.readFileSync(path.join(__dirname,'../extension/background.js'),'utf8'),resumed);
+  const priorPorts = ports.length;
+  await msg({type:'QUEUE_RESUME'});
+  assert.equal(ports.length,priorPorts+1);
+  assert.equal(ports.at(-1).messages[0].url,'https://example.org/video');
+  assert.match(data.apexHistory[0].error,/Threads/);
   console.log('PASS: background queue, sequential downloads, preview, cancellation, history');
 })().catch(err=>{console.error(err);process.exitCode=1});

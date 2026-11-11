@@ -1,6 +1,7 @@
 'use strict';
-// Apex Descarga 1.2.3 - native process and queue live in the service worker.
+// Apex Descarga 1.2.4 - native process and queue live in the service worker.
 // connectNative keeps the service worker alive while a task is active.
+importScripts('site-policy.js');
 const HOST = 'com.apex.video_downloader';
 const MAX_PENDING = 15;
 let nativePort = null;
@@ -70,40 +71,46 @@ async function beginNext() {
   try {
     const job = pending.shift();
     await saveQueue();
-    const port = chrome.runtime.connectNative(HOST);
-    nativePort = port;
-    cancellationRequested = false;
-    await saveJob({ ...job, state: 'running', percent: 0, stage: 'connecting',
-      detail: 'Abriendo comunicación con Windows…', error: '', file: '', folder: '' });
-    port.onMessage.addListener(msg => {
-      if (nativePort !== port || !msg || typeof msg !== 'object') return;
-      if (msg.type === 'progress') {
-        const percent = typeof msg.percent === 'number' && Number.isFinite(msg.percent)
-          ? Math.max(0, Math.min(99, msg.percent)) : currentJob?.percent || 0;
-        saveJob({ state: cancellationRequested ? 'cancelling' : 'running', percent,
-          stage: String(msg.stage || 'download'),
-          detail: String(msg.message || 'Descargando…').slice(0, 230) }).catch(() => {});
-      } else if (msg.type === 'done' || msg.type === 'error') {
-        const cancelled = Boolean(msg.cancelled || cancellationRequested);
-        const ok = msg.type === 'done' && msg.ok && !cancelled;
-        finishJob(port, { state: cancelled ? 'cancelled' : ok ? 'done' : 'error',
-          percent: ok ? 100 : currentJob?.percent || 0,
-          detail: cancelled ? 'Descarga cancelada.' : ok ? 'Archivo guardado correctamente.' : 'No se pudo completar.',
-          error: ok || cancelled ? '' : String(msg.error || 'Error del componente local.').slice(0, 500),
-          technical: String(msg.technical || '').slice(0, 500),
-          file: String(msg.file || '').slice(0, 260), folder: String(msg.folder || '').slice(0, 400)
-        }).catch(() => {});
-      }
-    });
-    port.onDisconnect.addListener(() => {
-      const message = chrome.runtime.lastError?.message;
-      if (nativePort !== port) return;
-      finishJob(port, { state: cancellationRequested ? 'cancelled' : 'error',
-        error: cancellationRequested ? '' : (message || 'Se perdió la comunicación con Windows.'),
-        detail: cancellationRequested ? 'Descarga cancelada.' : 'Comunicación interrumpida.' }).catch(() => {});
-    });
-    port.postMessage({ type: 'download', url: job.url, format: job.format,
-      quality: job.quality, mode: job.mode });
+    const siteError = ApexSitePolicy.errorFor(job.url);
+    if (siteError) {
+      await saveJob({ ...job, state: 'error', stage: 'done', percent: 0, error: siteError, file: '', folder: '' });
+      await appendHistory(currentJob);
+    } else {
+      const port = chrome.runtime.connectNative(HOST);
+      nativePort = port;
+      cancellationRequested = false;
+      await saveJob({ ...job, state: 'running', percent: 0, stage: 'connecting',
+        detail: 'Abriendo comunicación con Windows…', error: '', file: '', folder: '' });
+      port.onMessage.addListener(msg => {
+        if (nativePort !== port || !msg || typeof msg !== 'object') return;
+        if (msg.type === 'progress') {
+          const percent = typeof msg.percent === 'number' && Number.isFinite(msg.percent)
+            ? Math.max(0, Math.min(99, msg.percent)) : currentJob?.percent || 0;
+          saveJob({ state: cancellationRequested ? 'cancelling' : 'running', percent,
+            stage: String(msg.stage || 'download'),
+            detail: String(msg.message || 'Descargando…').slice(0, 230) }).catch(() => {});
+        } else if (msg.type === 'done' || msg.type === 'error') {
+          const cancelled = Boolean(msg.cancelled || cancellationRequested);
+          const ok = msg.type === 'done' && msg.ok && !cancelled;
+          finishJob(port, { state: cancelled ? 'cancelled' : ok ? 'done' : 'error',
+            percent: ok ? 100 : currentJob?.percent || 0,
+            detail: cancelled ? 'Descarga cancelada.' : ok ? 'Archivo guardado correctamente.' : 'No se pudo completar.',
+            error: ok || cancelled ? '' : String(msg.error || 'Error del componente local.').slice(0, 500),
+            technical: String(msg.technical || '').slice(0, 500),
+            file: String(msg.file || '').slice(0, 260), folder: String(msg.folder || '').slice(0, 400)
+          }).catch(() => {});
+        }
+      });
+      port.onDisconnect.addListener(() => {
+        const message = chrome.runtime.lastError?.message;
+        if (nativePort !== port) return;
+        finishJob(port, { state: cancellationRequested ? 'cancelled' : 'error',
+          error: cancellationRequested ? '' : (message || 'Se perdió la comunicación con Windows.'),
+          detail: cancellationRequested ? 'Descarga cancelada.' : 'Comunicación interrumpida.' }).catch(() => {});
+      });
+      port.postMessage({ type: 'download', url: job.url, format: job.format,
+        quality: job.quality, mode: job.mode });
+    }
   } catch (error) {
     const failed = currentJob;
     nativePort = null;
@@ -124,6 +131,10 @@ function nativeOnce(message) {
 async function handle(request) {
   if (!request || typeof request !== 'object') return { ok: false, error: 'Mensaje inválido.' };
   await load();
+  if (['PREVIEW', 'QUEUE_ADD'].includes(request.type)) {
+    const siteError = ApexSitePolicy.errorFor(request.url);
+    if (siteError) return { ok: false, error: siteError };
+  }
   switch (request.type) {
     case 'STATUS': return nativeOnce({ type: 'status' });
     case 'PREVIEW':
