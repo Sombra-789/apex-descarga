@@ -4,22 +4,55 @@
 
 Este buzón recibe **sugerencias, comentarios, quejas, informes de fallos y propuestas de mejora** sobre cualquiera de nuestros proyectos Apex Software.
 
-## Si necesitas ayuda para instalar o utilizar Apex
+## Plantilla para sugerencias, errores o quejas
 
-No necesitas conocer términos técnicos. Cuéntanos qué querías hacer y en qué paso te quedaste. Puedes usar este ejemplo:
+Copia el siguiente texto en un correo dirigido a **[apexsoftware.inc07@gmail.com](mailto:apexsoftware.inc07@gmail.com)**. Elige un solo tipo de mensaje y sustituye `[TIPO]` en el asunto por **SUGERENCIA**, **ERROR** o **QUEJA**.
 
-> Asunto: Ayuda con Apex Descarga
->
-> Uso Windows 11 y Brave. Estoy intentando instalar Apex / descargar un video / guardar solo el audio. Llegué al paso … y apareció el mensaje …
+- **Sugerencia:** una idea para mejorar Apex o añadir una función.
+- **Error:** algo no funciona como esperabas.
+- **Queja:** una inconformidad con la aplicación, la documentación o la atención recibida.
 
-También puedes adjuntar una captura de pantalla que muestre el problema.
+Completa lo que conozcas. Puedes escribir **«No lo sé»** o **«No aplica»**; no necesitas conocimientos técnicos. La sección «Si es un error» se puede omitir en sugerencias y quejas.
 
-## Cómo enviar un reporte útil
+```text
+Para: apexsoftware.inc07@gmail.com
+Asunto: [Apex Descarga] [TIPO] Resumen breve
 
-1. Indica el **nombre del proyecto y la versión** (por ejemplo, Apex Descarga Android 1.0.1 Preview).
-2. Describe lo que intentabas hacer, qué ocurrió y qué esperabas que ocurriera.
-3. Anota el sistema operativo, navegador o modelo de dispositivo y los pasos para reproducir el problema.
-4. Puedes adjuntar capturas o registros **después de ocultar** contraseñas, tokens, direcciones privadas, enlaces con credenciales y archivos personales.
+TIPO DE MENSAJE: Sugerencia / Error / Queja (elige uno)
+RESUMEN: ¿De qué trata tu mensaje?
+
+DATOS DE LA APLICACIÓN
+Edición: Windows (extensión) / Android
+Versión de Apex: (si no la conoces, escribe "No lo sé")
+Sistema: (por ejemplo, Windows 11 o Android 14)
+Navegador, si usas Windows: Brave / Chrome / Edge
+Modelo de teléfono, si usas Android:
+
+DESCRIPCIÓN
+¿Qué querías hacer?
+¿Qué ocurrió o qué te gustaría mejorar?
+¿Qué resultado esperabas o qué solución propones?
+
+SI ES UN ERROR
+Pasos para que podamos repetirlo:
+1.
+2.
+3.
+Mensaje exacto que aparece:
+¿Ocurre siempre o solo algunas veces?
+
+ARCHIVOS DE APOYO (OPCIONAL)
+Capturas o registros adjuntos:
+Información adicional:
+```
+
+**Ejemplos de asunto:**
+
+- `[Apex Descarga] [SUGERENCIA] Mostrar mejor la carpeta de destino`
+- `[Apex Descarga] [ERROR] No puedo guardar audio MP3`
+- `[Apex Descarga] [QUEJA] Las instrucciones de instalación no son claras`
+
+Antes de adjuntar capturas o registros, oculta contraseñas, tokens, enlaces con credenciales y archivos personales.
 
 El contacto por correo no garantiza una respuesta inmediata ni soporte profesional con tiempo de resolución comprometido. Para incidencias técnicas reproducibles también puedes utilizar la sección **Issues** del repositorio, si está disponible.
 
