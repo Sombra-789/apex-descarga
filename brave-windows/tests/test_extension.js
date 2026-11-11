@@ -17,7 +17,7 @@ const chrome = {
   runtime: { id:'test-apex-extension', lastError:null,
     onMessage:{addListener:f=>{listener=f}},
     connectNative:()=>{const p=port();ports.push(p);return p},
-    sendNativeMessage:(host,message,reply)=>reply(message.type==='status'?{ok:true,version:'1.2.2'}:{ok:true,title:'Test'})
+    sendNativeMessage:(host,message,reply)=>reply(message.type==='status'?{ok:true,version:'1.2.2'}:message.type==='smart_analyze'?{ok:true,type:'smart_analysis',count:2,base:'archive',parts:[{number:1,name:'archive.part01.rar'},{number:2,name:'archive.part02.rar'}]}:{ok:true,title:'Test'})
   },
   storage:{local:{get:async keys=>{
     const names = typeof keys==='string'?[keys]:keys;
@@ -71,5 +71,28 @@ async function msg(request){
   assert.equal(result.title,'Test');
   await msg({type:'CLEAR_HISTORY'});
   assert.equal(data.apexHistory.length,0);
-  console.log('PASS: background queue, sequential downloads, preview, cancellation, history');
+  const smartUrls = [
+    'https://www.mediafire.com/file/a/archive.part01.rar/file',
+    'https://www.mediafire.com/file/b/archive.part02.rar/file'
+  ];
+  result = await msg({type:'SMART_ANALYZE',urls:smartUrls});
+  assert.equal(result.count,2);
+  result = await msg({type:'SMART_START',urls:smartUrls,parallel:2,output:'zip',cleanup:true});
+  assert.equal(result.ok,true);
+  const smartPort = ports.at(-1);
+  assert.equal(smartPort.messages[0].type,'smart_download');
+  result = await msg({type:'SMART_START',urls:smartUrls,parallel:2,output:'zip',cleanup:true});
+  assert.equal(result.ok,false);
+  smartPort.emit({type:'progress',stage:'download',percent:35,parts_done:1,parts_total:2, speed_bps:1024});
+  await delay();
+  let smart = await msg({type:'SMART_GET_DATA'});
+  assert.equal(smart.job.percent,35);
+  result = await msg({type:'SMART_CANCEL'});
+  assert.equal(result.ok,true);
+  assert.equal(smartPort.messages.at(-1).type,'cancel');
+  smartPort.emit({type:'done',ok:false,cancelled:true,error:'cancelado'});
+  await delay(20);
+  smart = await msg({type:'SMART_GET_DATA'});
+  assert.equal(smart.job.state,'cancelled');
+  console.log('PASS: existing MP4/MP3 queue and new Smart Merge independently tracked');
 })().catch(err=>{console.error(err);process.exitCode=1});

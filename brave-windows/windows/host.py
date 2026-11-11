@@ -21,7 +21,7 @@ import threading
 import time
 from urllib.parse import urlsplit
 
-VERSION = '1.2.3'
+VERSION = '2.0.0-alpha.1'
 MAX_MESSAGE = 1024 * 1024
 MAX_PREVIEW = 4 * 1024 * 1024
 PERCENT = re.compile(r'(?<!\d)(\d{1,3}(?:\.\d+)?)%')
@@ -446,6 +446,12 @@ def main():
             send(choose_folder())
         elif action == 'download':
             download(request)
+        elif action == 'smart_analyze':
+            from smart_merge import analyze
+            send(analyze(request.get('urls')))
+        elif action == 'smart_download':
+            from smart_merge import run_native
+            run_native(request, send, recv, folder())
         else:
             send({'type': 'error', 'error': 'Operación desconocida.'})
     except (ValueError, OSError, EOFError, json.JSONDecodeError) as error:

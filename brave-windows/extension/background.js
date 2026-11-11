@@ -160,10 +160,100 @@ async function handle(request) {
       await saveJob({ state: 'cancelling', detail: 'Cancelando descarga…' });
       try { nativePort.postMessage({ type: 'cancel' }); return { ok: true }; }
       catch (error) { return { ok: false, error: String(error.message || error) }; }
+    case 'SMART_ANALYZE':
+      return smartOnceAnalyze(request.urls);
+    case 'SMART_GET_DATA': {
+      const result = await chrome.storage.local.get(['apexSmartState', 'apexSmartHistory']);
+      const job = result.apexSmartState || null;
+      return { ok: true, job: job && !smartPort && ['running', 'cancelling'].includes(job.state)
+        ? { ...job, state: 'error', error: 'La sesión de Smart Merge se interrumpió. Puedes volver a iniciar la operación para reutilizar partes ya verificadas.' } : job,
+        history: result.apexSmartHistory || [] };
+    }
+    case 'SMART_START':
+      return startSmart(request);
+    case 'SMART_CANCEL':
+      if (!smartPort) return { ok: false, error: 'No hay una unificación activa.' };
+      smartPort.postMessage({ type: 'cancel' });
+      await setSmart({ ...(smartState || {}), state: 'cancelling', message: 'Cancelando…' });
+      return { ok: true };
     case 'CLEAR_HISTORY': await chrome.storage.local.set({ apexHistory: [] }); return { ok: true };
     default: return { ok: false, error: 'Operación desconocida.' };
   }
 }
+// Smart Merge has its own native port and local storage namespace.
+// This keeps the 1.2.3 MP4/MP3 queue, history and previews unchanged.
+let smartPort = null;
+let smartState = null;
+let smartWrites = Promise.resolve();
+async function setSmart(next) {
+  smartState = { ...next, updatedAt: Date.now() };
+  const snapshot = smartState;
+  smartWrites = smartWrites.catch(() => {}).then(() =>
+    chrome.storage.local.set({ apexSmartState: snapshot }));
+  await smartWrites;
+}
+function smartValidate(urls) {
+  return Array.isArray(urls) && urls.length >= 2 && urls.length <= 100 &&
+    urls.every(x => typeof x === 'string' && x.length <= 2000 && validUrl(x));
+}
+async function smartOnceAnalyze(urls) {
+  if (!smartValidate(urls)) return { ok: false, error: 'Pega entre 2 y 100 enlaces HTTPS válidos de MediaFire.' };
+  const result = await nativeOnce({ type: 'smart_analyze', urls });
+  return result && result.ok ? result : { ok: false, error: result?.error || 'No se pudieron analizar los enlaces.' };
+}
+async function finishSmart(port, final) {
+  if (smartPort !== port) return;
+  smartPort = null;
+  const state = { ...(smartState || {}), ...final, updatedAt: Date.now() };
+  await setSmart(state);
+  const data = await chrome.storage.local.get('apexSmartHistory');
+  const history = Array.isArray(data.apexSmartHistory) ? data.apexSmartHistory : [];
+  await chrome.storage.local.set({ apexSmartHistory: [
+    { time: Date.now(), state: state.state, file: state.file || '',
+      error: state.error || '', path: state.path || '', sha256: state.sha256 || '' },
+    ...history
+  ].slice(0, 20) });
+  try { port.disconnect(); } catch { /* already disconnected */ }
+}
+async function startSmart(request) {
+  if (smartPort) return { ok: false, error: 'Smart Merge ya tiene una operación en curso.' };
+  if (!smartValidate(request.urls)) return { ok: false, error: 'Se requieren 2 a 100 enlaces válidos.' };
+  if (![1,2,3,4].includes(request.parallel) || !['zip','7z'].includes(request.output) ||
+      typeof request.cleanup !== 'boolean')
+    return { ok: false, error: 'Opciones de unificación inválidas.' };
+  const analysis = await smartOnceAnalyze(request.urls);
+  if (!analysis.ok) return analysis;
+  const port = chrome.runtime.connectNative(HOST);
+  smartPort = port;
+  await setSmart({ state: 'running', stage: 'analyze', percent: 0, message: 'Iniciando descarga de partes…',
+    partsDone: 0, partsTotal: analysis.count, speed: null, eta: null, file: '', path: '', error: '' });
+  port.onMessage.addListener(msg => {
+    if (smartPort !== port || !msg) return;
+    if (msg.type === 'progress') {
+      setSmart({ ...(smartState || {}), stage: msg.stage || 'download',
+        percent: typeof msg.percent === 'number' ? msg.percent : null,
+        partsDone: msg.parts_done ?? smartState?.partsDone ?? 0,
+        partsTotal: msg.parts_total ?? smartState?.partsTotal ?? analysis.count,
+        speed: msg.speed_bps ?? null, eta: msg.eta_seconds ?? null,
+        message: String(msg.message || 'Procesando…').slice(0, 240) }).catch(() => {});
+    } else if (msg.type === 'done' || msg.type === 'error') {
+      finishSmart(port, { state: msg.cancelled ? 'cancelled' : msg.ok ? 'done' : 'error',
+        stage: msg.stage || 'done', percent: msg.ok ? 100 : null,
+        file: String(msg.file || '').slice(0, 260), path: String(msg.path || '').slice(0, 480),
+        sha256: String(msg.sha256 || ''), message: String(msg.message || '').slice(0, 280),
+        error: msg.ok ? '' : String(msg.error || 'Fallo el proceso.').slice(0, 420) }).catch(() => {});
+    }
+  });
+  port.onDisconnect.addListener(() => {
+    const error = chrome.runtime.lastError?.message;
+    if (smartPort === port) finishSmart(port, { state: 'error',
+      error: error || 'Se perdió la conexión con Windows durante Smart Merge.' }).catch(() => {});
+  });
+  port.postMessage({ type: 'smart_download', urls: request.urls, parallel: request.parallel,
+    output: request.output, cleanup: request.cleanup });
+  return { ok: true, count: analysis.count };
+}
+
 chrome.runtime.onMessage.addListener((message, sender, reply) => {
   if (sender.id !== chrome.runtime.id) return false;
   handle(message).then(reply).catch(error => reply({ ok: false, error: String(error.message || error) }));

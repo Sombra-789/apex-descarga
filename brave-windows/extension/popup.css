@@ -11,3 +11,34 @@ button,input,select{font:inherit}button{cursor:pointer;transition:background .18
 .destination-actions .choose-folder{background:linear-gradient(90deg,rgba(31,123,255,.22),rgba(138,77,255,.16));border-color:rgba(138,77,255,.48);flex:1}
 .destination-tip{font-size:10px;color:#93a2bb;line-height:1.45;margin:10px 0 0}
 @media (max-width:390px){.destination-actions{flex-wrap:wrap}}
+
+
+/* Smart Merge 2.0 Alpha: isolated style; legacy MP4/MP3 UI unchanged. */
+.sm-panel{padding:0;overflow:hidden;border-color:rgba(77,220,255,.3)}
+.sm-toggle{display:flex;align-items:center;gap:10px;padding:18px 16px;cursor:pointer;list-style:none;background:linear-gradient(105deg,rgba(26,108,210,.12),rgba(133,67,203,.09))}
+.sm-toggle::-webkit-details-marker{display:none}
+.sm-badge{align-self:flex-start;white-space:nowrap;font-size:8px;font-weight:900;letter-spacing:.35px;color:#8fe8ff;background:rgba(39,155,235,.14);border:1px solid rgba(77,220,255,.32);padding:4px 6px;border-radius:6px;margin-top:1px}
+.sm-toggle-text{min-width:0;flex:1}.sm-toggle-text strong{display:block;font-size:14px;font-weight:850;color:#e9f8ff}.sm-toggle-text small{display:block;font-size:10px;color:#98a9c7;margin-top:4px;line-height:1.45}
+.sm-arrow{font-size:24px;color:#82d8ff;transition:transform .2s}.sm-panel[open] .sm-arrow{transform:rotate(180deg)}
+.sm-content{padding:4px 16px 18px;border-top:1px solid rgba(77,220,255,.12)}
+.sm-note{font-size:11px;color:#a9bcda;line-height:1.6;margin:13px 0 16px}.sm-note strong{color:#cbeeff}
+#sm-urls{width:100%;min-height:112px;resize:vertical;max-height:230px;background:#060b15;border:1px solid rgba(94,146,221,.34);color:#eef6ff;font:11px/1.5 Consolas,monospace;outline:0;border-radius:11px;padding:11px;word-break:break-all}
+#sm-urls:focus{border-color:#55cefa;box-shadow:0 0 0 2px rgba(85,206,250,.09)}
+#sm-urls::placeholder{color:#74849f}
+.sm-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0 12px}
+.sm-counter{font-size:10px;color:#a3b9db}
+.sm-button{border:1px solid rgba(80,196,243,.32);border-radius:10px;padding:9px 12px;background:rgba(31,130,204,.13);color:#bcf0ff;font-weight:750;font-size:11px}
+.sm-button:hover{background:rgba(31,130,204,.24)}
+.sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:13px 0}.sm-grid select{height:39px;font-size:11px;padding:0 7px}
+.sm-check{display:flex;gap:8px;align-items:flex-start;color:#b5c5dd;font-size:10px;margin:12px 0;line-height:1.5}.sm-check input{margin-top:2px;accent-color:#49cefa;flex-shrink:0}.sm-check strong{color:#e6f7ff}
+.sm-start{height:47px;border-radius:12px;font-size:12px;margin:15px 0 0;gap:10px}
+.sm-analysis{padding:12px;background:#0d1726;border:1px solid rgba(80,196,243,.25);border-radius:10px;font-size:11px;color:#bfe5ff;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.sm-progress-block{margin-top:16px;padding:14px 12px;border:1px solid rgba(140,105,243,.3);border-radius:12px;background:rgba(13,21,41,.9)}
+.sm-progress-head{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:12px}.sm-progress-head strong{font-weight:760}.sm-progress-head span{font-size:17px;font-weight:850;color:#76deff}
+.sm-track{margin:11px 0 0;height:8px}.sm-stage{font-size:11px;color:#a6b9d4;margin:12px 0 8px}
+.sm-data{display:flex;flex-wrap:wrap;gap:7px;color:#8a9fbc;font-size:10px}.sm-data span{border-radius:7px;background:rgba(42,67,103,.35);padding:5px 7px}
+.sm-result{margin-top:12px;overflow-wrap:anywhere;background:rgba(87,225,168,.08);border:1px solid rgba(87,225,168,.32);padding:11px;border-radius:9px;color:#bcffe3;font-size:11px}
+.sm-cancel{margin-top:12px;width:100%;color:#ffbed0;border-color:rgba(255,105,146,.42)}
+.sm-error{color:#ffd2db;background:rgba(154,39,73,.18);border:1px solid rgba(255,93,145,.3);border-radius:9px;padding:10px;font-size:11px;overflow-wrap:anywhere}
+.sm-server-note{font-size:10px;color:#9aabca;line-height:1.55;margin-top:16px;border-top:1px solid rgba(255,255,255,.08);padding-top:12px}
+.sm-server-note strong{color:#e1d2ff}

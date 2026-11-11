@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
-  <title>Apex Descarga 1.2.3</title>
+  <title>Apex Descarga 2.0 Alpha 1</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
   <main>
     <header class="topbar">
       <div class="brandmark" aria-hidden="true"><img src="icons/brand.png" alt=""></div>
-      <div class="brand"><div class="brandname">APEX <span>DESCARGA</span></div><div class="subtitle">BY APEX VISUAL STUDIO <span class="version">V1.2.3</span></div></div>
+      <div class="brand"><div class="brandname">APEX <span>DESCARGA</span></div><div class="subtitle">BY APEX VISUAL STUDIO <span class="version">V2.0 ALPHA</span></div></div>
       <div class="connection-dot" id="health" title="Comprobando conexión"></div>
     </header>
     <section class="topstatus" aria-label="Estado del sistema">
@@ -62,13 +62,51 @@
       <p class="legal">Para contenido propio o autorizado. Sin evasión de DRM.</p>
     </section>
 
+
+    <details class="panel sm-panel" id="sm-panel">
+      <summary class="sm-toggle">
+        <span class="sm-badge">NUEVO · ALPHA</span>
+        <span class="sm-toggle-text"><strong>Smart Merge Engine</strong><small>Partes RAR → descarga → verificación → archivo único</small></span>
+        <span class="sm-arrow">⌄</span>
+      </summary>
+      <div class="sm-content">
+        <p class="sm-note">Motor local para enlaces públicos de <strong>MediaFire</strong>. Reconstruye en tu Windows con <strong>7-Zip</strong>. No crea un enlace web ni evita límites del proveedor.</p>
+        <label class="label" for="sm-urls">Enlaces de partes RAR (2 a 100, uno por línea)</label>
+        <textarea id="sm-urls" placeholder="https://www.mediafire.com/file/.../archivo.part01.rar/file&#10;https://www.mediafire.com/file/.../archivo.part02.rar/file" rows="5" spellcheck="false" maxlength="205000"></textarea>
+        <div class="sm-actions">
+          <span id="sm-count" class="sm-counter">0 enlaces</span>
+          <button id="sm-analyze" class="sm-button" type="button">◈ Analizar partes</button>
+        </div>
+        <div id="sm-analysis" class="sm-analysis" hidden></div>
+        <div class="sm-grid">
+          <div><label class="label" for="sm-parallel">En paralelo</label>
+          <select id="sm-parallel"><option value="1">1 parte</option><option value="2" selected>2 partes</option><option value="3">3 partes</option><option value="4">4 partes</option></select></div>
+          <div><label class="label" for="sm-output">Archivo final</label>
+          <select id="sm-output"><option value="zip">ZIP único</option><option value="7z">7z único</option></select></div>
+        </div>
+        <label class="sm-check"><input id="sm-cleanup" type="checkbox"> Eliminar temporales <strong>solo tras verificar</strong> el archivo final</label>
+        <label class="sm-check"><input id="sm-rights" type="checkbox"> Tengo autorización para obtener y reconstruir estos archivos.</label>
+        <button id="sm-start" type="button" class="primary sm-start" disabled><span>⇣</span> Descargar y unificar <span>→</span></button>
+        <div id="sm-progress-block" class="sm-progress-block" hidden>
+          <div class="sm-progress-head"><strong id="sm-state">Preparando…</strong><span id="sm-percent">—</span></div>
+          <div class="progress sm-track" role="progressbar" aria-label="Progreso global Smart Merge" aria-valuemin="0" aria-valuemax="100" id="sm-progress"><span id="sm-bar"></span></div>
+          <p class="sm-stage" id="sm-stage">Preparando el motor local...</p>
+          <div class="sm-data"><span id="sm-parts">Partes: —</span><span id="sm-speed">Velocidad: —</span><span id="sm-eta">Tiempo: —</span></div>
+          <div class="sm-result" id="sm-result" hidden></div>
+          <button class="sm-button sm-cancel" type="button" id="sm-cancel" hidden>✕ Cancelar unificación</button>
+        </div>
+        <p class="sm-error" id="sm-error" role="alert" hidden></p>
+        <div class="sm-server-note">◈ <strong>Descarga única mediante servidor:</strong> opción futura, requiere infraestructura autorizada. Esta Alpha produce un archivo local, no una URL pública.</div>
+      </div>
+    </details>
+
     <section class="panel active-panel">
       <div class="heading horizontal"><span class="index">02</span><h2>Actividad</h2><span class="pill" id="job-pill">EN ESPERA</span></div>
       <div class="job-line"><span id="job-state">Listo para comenzar</span><span id="percent">0%</span></div>
       <div class="progress" role="progressbar" aria-label="Progreso de descarga" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress"><span id="bar"></span></div>
       <p id="job-detail" class="detail">No hay descargas en curso.</p>
       <div id="error" class="error" role="alert" hidden></div>
-      <p id="native-help" class="detail" hidden>La conexión con Windows fue rechazada. Comprueba el ID de esta extensión en brave://extensions y ejecuta REPARAR_APEX.cmd desde la carpeta brave-windows de Apex Descarga 1.2.3. La reparación solicita confirmación y crea un respaldo.</p>
+      <p id="native-help" class="detail" hidden>La conexión con Windows fue rechazada. Comprueba el ID de esta extensión en brave://extensions y ejecuta REPARAR_APEX.cmd desde la carpeta brave-windows de Apex Descarga 2.0 Alpha 1. La reparación solicita confirmación y crea un respaldo.</p>
       <div id="file" class="file" hidden></div>
       <button id="cancel" type="button" class="outline danger" hidden>✕ Cancelar descarga actual</button>
       <div class="destination"><div class="destination-title">CARPETA DE DESTINO</div><div class="destination-row"><span id="folder" title="Ubicación de descargas">Descargas / Apex Descarga</span></div><div class="destination-actions"><button id="choose-folder" type="button" class="smallbtn choose-folder">▤ Cambiar carpeta</button><button id="open-folder" type="button" class="smallbtn">Abrir ↗</button></div><p class="destination-tip" id="folder-tip">Windows te permitirá elegir una carpeta; si el panel se cierra, vuelve a abrir Apex para ver la ruta guardada.</p></div>
@@ -87,5 +125,6 @@
     <footer><span>APEX DESCARGA · BY APEX VISUAL STUDIO</span><span><i class="privacy-dot"></i> PROCESAMIENTO LOCAL</span></footer>
   </main>
   <script src="popup.js"></script>
+  <script src="smart_merge_ui.js"></script>
 </body>
 </html>

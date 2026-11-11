@@ -1,15 +1,15 @@
 {
   "manifest_version": 3,
   "name": "Apex Descarga",
-  "version": "1.2.3",
-  "description": "Descarga contenido autorizado con MP4/MP3, selector de carpeta y procesamiento local, sin analítica propia.",
+  "version": "2.0.0",
+  "description": "Apex Descarga 2.0 Alpha: MP4/MP3 y Smart Merge para partes RAR MediaFire. Procesamiento local mediante Windows.",
   "permissions": [
     "activeTab",
     "nativeMessaging",
     "storage"
   ],
   "action": {
-    "default_title": "Apex Descarga 1.2.3",
+    "default_title": "Apex Descarga 2.0 Alpha 1",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/16.png",
