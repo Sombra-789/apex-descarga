@@ -9,7 +9,8 @@
 - **MP3 y combinación de audio/video requieren FFmpeg.** Sin esa herramienta, algunas opciones no estarán disponibles.
 - **No inicia sesión con cookies del navegador ni evita las protecciones DRM.** El contenido privado o que exige acceso puede no descargarse.
 - **No descarga listas de reproducción.** En Windows procesa un trabajo a la vez; el navegador debe permanecer abierto.
-- **Chrome y Edge siguen siendo experimentales.** Android es una edición Preview con versión propia; los cambios de Windows no se aplican automáticamente al teléfono.
+- **Apex en Chrome y Edge (Windows):** la extensión comparte la base Chromium con Brave. Su instalación y conexión con el programa de Windows aún requieren pruebas manuales completas en esos navegadores; la advertencia se refiere al soporte de Apex, no a los navegadores.
+- **Apex para Android:** es una aplicación móvil independiente en versión Preview (de pruebas). No es una extensión de Chrome o Edge y sus actualizaciones se publican por separado.
 - **Las pruebas son limitadas.** Windows 1.2.4 aún necesita aceptación manual completa en Brave; no se garantiza funcionamiento en todos los equipos o sitios.
 
 ## Abierto a futuras actualizaciones

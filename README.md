@@ -26,7 +26,7 @@ Apex Descarga permite guardar en tu computadora un video o solo su audio a parti
 | Edición | Versión y estado | Obtenerla |
 | --- | --- | --- |
 | **Windows + Brave** | **1.2.4**, mantenimiento; pruebas automáticas y puente local comprobados, pendiente de aceptación manual en Brave | [Código main](https://github.com/Sombra-789/apex-descarga/archive/refs/heads/main.zip) o [artefacto Windows de Actions](https://github.com/Sombra-789/apex-descarga/actions/workflows/windows-package.yml) |
-| Windows + Chrome/Edge | Configuración experimental, pendiente de pruebas manuales | [Guía de navegadores](brave-windows/GUIA_NAVEGADORES.md) |
+| Windows + Chrome/Edge | Soporte de Apex pendiente de validación manual completa | [Guía de navegadores](brave-windows/GUIA_NAVEGADORES.md) |
 | **Android** | **1.0.1 Preview**, APK de pruebas independiente | [Release Android](https://github.com/Sombra-789/apex-descarga/releases/tag/android-v1.0.1-preview) |
 
 **Para obtener Windows 1.2.4:** abre el botón verde **Code** de este repositorio, elige **Download ZIP**, haz clic derecho en el archivo descargado y selecciona **Extraer todo**. Abre la carpeta extraída, después `apex-descarga-main` y luego `brave-windows`. Ejecuta `INSTALAR_POR_PRIMERA_VEZ.cmd` si nunca has instalado Apex o `ACTUALIZAR_APEX.cmd` si ya existe una instalación. Sigue la [guía completa](docs/guias/INSTALACION_WINDOWS.md) para cargar y autorizar la extensión correctamente.
@@ -52,7 +52,8 @@ La versión anterior **Windows 1.2.3** conserva sus pruebas manuales. Sus Releas
 - **MP3 y combinación de audio/video requieren FFmpeg.** Sin esa herramienta, algunas opciones no estarán disponibles.
 - **No inicia sesión con cookies del navegador ni evita las protecciones DRM.** El contenido privado o que exige acceso puede no descargarse.
 - **No descarga listas de reproducción.** En Windows procesa un trabajo a la vez; el navegador debe permanecer abierto.
-- **Chrome y Edge siguen siendo experimentales.** Android es una edición Preview con versión propia; los cambios de Windows no se aplican automáticamente al teléfono.
+- **Apex en Chrome y Edge (Windows):** la extensión comparte la base Chromium con Brave. Su instalación y conexión con el programa de Windows aún requieren pruebas manuales completas en esos navegadores; la advertencia se refiere al soporte de Apex, no a los navegadores.
+- **Apex para Android:** es una aplicación móvil independiente en versión Preview (de pruebas). No es una extensión de Chrome o Edge y sus actualizaciones se publican por separado.
 - **Las pruebas son limitadas.** Windows 1.2.4 aún necesita aceptación manual completa en Brave; no se garantiza funcionamiento en todos los equipos o sitios.
 
 [Más información sobre compatibilidad](docs/COMPATIBILIDAD.md).

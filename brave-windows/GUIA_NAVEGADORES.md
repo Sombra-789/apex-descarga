@@ -1,5 +1,17 @@
 # Apex Descarga 1.2.3 — instalar la extensión en Windows
 
+## Qué significa la compatibilidad con Chromium
+
+Chrome, Microsoft Edge y Brave se basan en Chromium, por lo que comparten gran parte de la tecnología de extensiones. Apex utiliza esa base común.
+
+Aun así, Apex también necesita conectarse con un programa instalado en Windows. El instalador debe registrar esa conexión para el navegador elegido y autorizar el ID que corresponda. Por eso, compartir Chromium no sustituye una prueba completa de instalación y descarga en cada navegador.
+
+**La validación pendiente corresponde a Apex en Chrome/Edge; no significa que esos navegadores sean experimentales.**
+
+**Android es otra edición:** se instala como una aplicación móvil independiente (APK), no como una extensión del navegador. Su estado Preview y sus actualizaciones se documentan por separado.
+
+Referencias técnicas: [Microsoft Edge — Native Messaging](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/developer-guide/native-messaging) y [Chrome — Native Messaging](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging).
+
 **Apex Software Inc.** · [Contacto y soporte](../docs/guias/CONTACTO_Y_SOPORTE.md): **apexsoftware.inc07@gmail.com**.
 
 ## Navegadores y estado
@@ -7,8 +19,8 @@
 | Navegador | Instalación | Estado |
 | --- | --- | --- |
 | **Brave** | `brave://extensions` | Principal; v1.2.3 validada en instalaciones previas |
-| **Google Chrome** | `chrome://extensions` | Compatible por diseño Chromium/Native Messaging, **experimental** |
-| **Microsoft Edge** | `edge://extensions` | Compatible por diseño Chromium/Native Messaging, **experimental** |
+| **Google Chrome** | `chrome://extensions` | Base Chromium compatible; validación manual de Apex pendiente |
+| **Microsoft Edge** | `edge://extensions` | Base Chromium compatible; validación manual de Apex pendiente |
 | **Vivaldi / Opera / otros Chromium** | No se incluye instalador específico | Sin pruebas ni soporte declarado; no asumir compatibilidad |
 | **Firefox / Safari** | No admiten este paquete Chromium tal como está | Requerirían otra implementación |
 
@@ -38,7 +50,7 @@ El [ZIP de actualización 1.2.3](https://github.com/Sombra-789/apex-descarga/rel
 
 - Windows x64; Python 3.12/3.13 x64, Internet para instalar yt-dlp, Brave/Chrome/Edge actual con Manifest V3. El puente nativo se compila con .NET Framework en Windows.
 - Uso para contenido propio o autorizado. No se soporta DRM, playlists ni compatibilidad universal con todos los sitios.
-- Firefox, Safari, navegadores móviles y Chromium alternativos no están habilitados por este instalador. Chrome y Edge permanecen **experimentales** hasta verificarse manualmente.
+- Firefox, Safari, navegadores móviles y Chromium alternativos no están habilitados por este instalador. El soporte de Apex en Chrome y Edge sigue pendiente de validación manual completa.
 - Mantén la carpeta instalada y no la muevas tras cargar la extensión. Las políticas corporativas pueden impedir extensiones sin empaquetar o Native Messaging.
 - No envíes contraseñas, cookies, tokens ni capturas con información privada por correo.
 
