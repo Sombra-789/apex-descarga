@@ -1,5 +1,5 @@
 <#
-  Apex Descarga Brave 1.2.3 - diagnostico y reparacion asistida.
+  Apex Descarga Brave 1.2.4 - diagnostico y reparacion asistida.
   No descarga software, no solicita permisos de administrador y no modifica el
   registro de Windows. Solo cambia allowed_origins con consentimiento explicito.
 #>
@@ -36,7 +36,7 @@ try {
 
     Say ''
     Say '====================================================' 'Cyan'
-    Say '  APEX DESCARGA 1.2.3 - DIAGNOSTICO BRAVE/WINDOWS' 'Cyan'
+    Say '  APEX DESCARGA 1.2.4 - DIAGNOSTICO BRAVE/WINDOWS' 'Cyan'
     Say '====================================================' 'Cyan'
     Say ('Directorio: ' + $InstallDir)
 

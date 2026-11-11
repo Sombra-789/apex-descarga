@@ -1,4 +1,4 @@
-# Primera instalacion Apex Descarga 1.2.3; nunca reemplaza instalacion previa.
+# Primera instalacion Apex Descarga 1.2.4; nunca reemplaza instalacion previa.
 [CmdletBinding()]
 param(
     [ValidateSet('Brave','Chrome','Edge')][string]$Browser = 'Brave',
@@ -7,6 +7,10 @@ param(
     [switch]$SkipRegistration
 )
 $ErrorActionPreference = 'Stop'
+$packageCheck = Join-Path $PSScriptRoot 'validate-package.ps1'
+if (-not (Test-Path -LiteralPath $packageCheck -PathType Leaf)) { throw 'Paquete incompleto: falta validate-package.ps1.' }
+& $packageCheck
+
 if ($env:OS -ne 'Windows_NT') { throw 'Este instalador solo funciona en Windows.' }
 if (-not $InstallDir) { $InstallDir = Join-Path $env:LOCALAPPDATA 'ApexVideoDownloader' }
 $InstallDir = [IO.Path]::GetFullPath($InstallDir)
@@ -31,7 +35,7 @@ $browserSetup = @{
 $regPath = $browserSetup[$Browser].reg
 $extensionsPage = $browserSetup[$Browser].page
 Write-Host ''
-Write-Host ('APEX DESCARGA 1.2.3 - INSTALACION INICIAL WINDOWS / ' + $Browser) -ForegroundColor Cyan
+Write-Host ('APEX DESCARGA 1.2.4 - INSTALACION INICIAL WINDOWS / ' + $Browser) -ForegroundColor Cyan
 Write-Host ('Apex Software Inc. / requiere Python 3.12 o 3.13 x64 y ' + $Browser + '.')
 if ((Test-Path -LiteralPath $manifestPath) -or (Test-Path -LiteralPath $launcherPath)) {
     throw "Ya hay componentes Apex en $InstallDir. No se sobrescriben: usa ACTUALIZAR_APEX.cmd."
@@ -40,8 +44,8 @@ foreach ($needed in @($sourceHost, $sourceLauncher, (Join-Path $sourceExtension 
     if (-not (Test-Path -LiteralPath $needed -PathType Leaf)) { throw "Paquete incompleto: $needed" }
 }
 $extManifest = Get-Content (Join-Path $sourceExtension 'manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-if ($extManifest.name -ne 'Apex Descarga' -or $extManifest.version -ne '1.2.3' -or $extManifest.manifest_version -ne 3) {
-    throw 'La extension no corresponde a Apex Descarga 1.2.3 Manifest V3.'
+if ($extManifest.name -ne 'Apex Descarga' -or $extManifest.version -ne '1.2.4' -or $extManifest.manifest_version -ne 3) {
+    throw 'La extension no corresponde a Apex Descarga 1.2.4 Manifest V3.'
 }
 $pythonCommand = $null
 $pythonArgs = @()
@@ -101,7 +105,7 @@ if ((Test-Path $regPath) -and (-not $SkipRegistration)) {
 }
 $manifest = @{
     name = 'com.apex.video_downloader'
-    description = 'Apex Descarga 1.2.3 - host local'
+    description = 'Apex Descarga 1.2.4 - host local'
     type = 'stdio'
     path = $launcherPath
     allowed_origins = @('chrome-extension://' + $ExtensionId + '/')
@@ -118,7 +122,7 @@ Write-Host 'Instalacion inicial preparada.' -ForegroundColor Green
 if ($SkipRegistration) { Write-Host 'Modo CI: registro omitido, no equivale a prueba de Brave real.' }
 else {
     Write-Host ("Cierra " + $Browser + " COMPLETAMENTE, abrelo y recarga Apex en " + $extensionsPage + ".")
-    Write-Host 'Comprueba CONECTADO / v1.2.3 en el icono de la extension; en Chrome/Edge es compatibilidad experimental.'
+    Write-Host 'Comprueba CONECTADO / v1.2.4 en el icono de la extension; en Chrome/Edge es compatibilidad experimental.'
 }
 if (-not (Get-Command ffmpeg.exe -ErrorAction SilentlyContinue)) {
     Write-Host 'ATENCION: falta FFmpeg en PATH; MP3 y mezcla HD no funcionaran hasta instalarlo.' -ForegroundColor Yellow

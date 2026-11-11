@@ -9,7 +9,7 @@ let isConnected = false;
 let visibleJob = null;
 let lastPreviewURL = '';
 let acceptedTerms = false;
-const TERMS_VERSION = '1.2.2'; // Los terminos no han cambiado en 1.2.3.
+const TERMS_VERSION = '1.2.2'; // Los terminos no han cambiado en 1.2.4.
 
 function errorView(message) {
   const messageText = String(message?.message || message || '');
@@ -26,18 +26,6 @@ function validUrl(value) {
   try {
     const u = new URL(value);
     return ['http:', 'https:'].includes(u.protocol) && !!u.hostname && !u.username && !u.password;
-  } catch { return false; }
-}
-function isMediaLink(value) {
-  try {
-    const u = new URL(value);
-    const host = u.hostname.toLowerCase();
-    const path = u.pathname;
-    return (/(^|\.)youtube\.com$/.test(host) && (path === '/watch' && u.searchParams.has('v') || /^\/(shorts|live)\//.test(path))) ||
-      host === 'youtu.be' || (/(^|\.)tiktok\.com$/.test(host) && /\/video\/|\/t\//.test(path)) ||
-      (/(^|\.)instagram\.com$/.test(host) && /^\/(reel|p|tv)\//.test(path)) ||
-      (/(^|\.)vimeo\.com$/.test(host) && /\d+/.test(path)) ||
-      (/(^|\.)facebook\.com$/.test(host) && /\/videos\/|\/reel\//.test(path));
   } catch { return false; }
 }
 async function message(type, rest = {}) {
@@ -89,13 +77,15 @@ $('accept-terms').addEventListener('change', async e => { acceptedTerms = e.targ
 async function currentTab(silent) {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
   const value = tabs?.[0]?.url || '';
-  if (validUrl(value) && isMediaLink(value)) {
+  if (validUrl(value)) {
     urlInput.value = value;
     hidePreview();
     clearError();
+    const siteError = ApexSitePolicy.errorFor(value);
+    if (siteError) errorView(siteError);
     return;
   }
-  if (!silent) errorView('La pestaña actual no parece contener un video compatible. Abre un video concreto o pega su URL.');
+  if (!silent) errorView('La pestaña actual no tiene un enlace HTTP(S). Abre el contenido o pega su URL.');
 }
 $('current-tab').addEventListener('click', () => currentTab(false).catch(errorView));
 function hidePreview() { $('preview').hidden = true; lastPreviewURL = ''; }
@@ -132,6 +122,8 @@ $('preview-image').addEventListener('error', () => {
 $('analyze').addEventListener('click', async () => {
   const url = urlInput.value.trim();
   if (!validUrl(url)) { errorView('Pega primero un enlace HTTP(S) válido.'); return; }
+  const siteError = ApexSitePolicy.errorFor(url);
+  if (siteError) { errorView(siteError); return; }
   clearError();
   hidePreview();
   const button = $('analyze');
@@ -224,6 +216,8 @@ async function refreshData() {
 $('download').addEventListener('click', async () => {
   const url = urlInput.value.trim();
   if (!validUrl(url)) { errorView('Introduce un enlace HTTP(S) válido.'); return; }
+  const siteError = ApexSitePolicy.errorFor(url);
+  if (siteError) { errorView(siteError); return; }
   if (!(await ensureTermsAccepted())) return;
   clearError();
   $('download').disabled = true;
@@ -296,7 +290,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
     $('connection').className = 'connection good';
     setFolder(health.folder);
     if (!health.ytdlp) errorView('Falta yt-dlp. Repara la instalación local.');
-    else if (health.version !== '1.2.3') errorView(`Tu componente local es ${health.version || 'antiguo'}. Ejecuta ACTUALIZAR_APEX.cmd de Apex Descarga 1.2.3.`);
+    else if (health.version !== '1.2.4') errorView(`Tu componente local es ${health.version || 'antiguo'}. Ejecuta ACTUALIZAR_APEX.cmd de Apex Descarga 1.2.4.`);
     else if (!health.ffmpeg) errorView('FFmpeg no está disponible. La conversión a MP3 no funcionará.');
   } catch (error) {
     isConnected = false;

@@ -18,7 +18,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: JavaScript extension smoke tests
-        run: node brave-windows/tests/test_extension.js
+        run: |
+          node brave-windows/tests/test_extension.js
+          node brave-windows/tests/test_popup.js
       - name: Python native host tests
         run: python3 -m unittest discover -s brave-windows/tests -p 'test_*.py' -v
   android-debug:

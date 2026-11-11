@@ -1,0 +1,49 @@
+name: Windows - validate and package current version
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['brave-windows/**', 'scripts/package_windows.py', '.github/workflows/windows-package.yml']
+  pull_request:
+    paths: ['brave-windows/**', 'scripts/package_windows.py', '.github/workflows/windows-package.yml']
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate package versions before installation
+        shell: powershell
+        run: .\brave-windows\windows\validate-package.ps1
+      - name: Test extension and native host
+        shell: pwsh
+        run: |
+          node brave-windows/tests/test_extension.js
+          if ($LASTEXITCODE -ne 0) { throw 'Extension tests failed' }
+          node brave-windows/tests/test_popup.js
+          if ($LASTEXITCODE -ne 0) { throw 'Popup tests failed' }
+          python -m unittest discover -s brave-windows/tests -p 'test_*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Host tests failed' }
+      - name: Test native messaging repair
+        shell: powershell
+        run: .\brave-windows\tests\test_diagnostico.ps1
+      - name: Test isolated first installation (no browser registration)
+        shell: powershell
+        run: |
+          $sandbox = Join-Path $env:RUNNER_TEMP 'ApexInitialInstallCI'
+          .\brave-windows\windows\install-first.ps1 -InstallDir $sandbox -ExtensionId 'abcdefghijklmnopabcdefghijklmnop' -SkipRegistration
+      - name: Build clean ZIP and SHA-256
+        run: python scripts/package_windows.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Apex-Descarga-Windows
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 90

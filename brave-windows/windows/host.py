@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apex Descarga 1.2.2 Native Messaging host.
+"""Apex Descarga 1.2.4 Native Messaging host.
 Only explicit user-submitted HTTP(S) URLs. Runs yt-dlp without a shell,
 never imports browser cookies, and only writes downloaded media to the user-selected folder.
 Native Messaging wire protocol: little-endian uint32 + JSON UTF-8.
@@ -21,7 +21,7 @@ import threading
 import time
 from urllib.parse import urlsplit
 
-VERSION = '1.2.3'
+VERSION = '1.2.4'
 MAX_MESSAGE = 1024 * 1024
 MAX_PREVIEW = 4 * 1024 * 1024
 PERCENT = re.compile(r'(?<!\d)(\d{1,3}(?:\.\d+)?)%')
@@ -70,6 +70,9 @@ def validate_url(raw):
         if parsed.scheme not in ('http', 'https') or not parsed.hostname or parsed.username or parsed.password:
             raise ValueError('Solo se aceptan enlaces HTTP o HTTPS sin credenciales.')
         hostname = parsed.hostname.lower().rstrip('.')
+        if any(hostname == domain or hostname.endswith('.' + domain)
+               for domain in ('threads.net', 'threads.com')):
+            raise ValueError('Las descargas de Threads todavía no están disponibles en Apex Descarga.')
         if (hostname in ('localhost', 'localhost.localdomain') or
                 hostname.endswith(('.localhost', '.local', '.internal', '.test', '.invalid'))):
             raise ValueError('No se admiten direcciones locales.')
@@ -266,6 +269,7 @@ def simplify_metadata(info):
 
 
 def preview(url):
+    url = validate_url(url)
     if not ytdlp_version():
         raise ValueError('Falta yt-dlp en el Python configurado.')
     arguments = [sys.executable, '-m', 'yt_dlp', '--ignore-config', '--no-playlist',
@@ -293,11 +297,12 @@ def terminate_tree(process):
         return
     if os.name == 'nt':
         try:
-            subprocess.run(['taskkill', '/PID', str(process.pid), '/T', '/F'],
+            killed = subprocess.run(['taskkill', '/PID', str(process.pid), '/T', '/F'],
                            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
                            stderr=subprocess.DEVNULL, timeout=5, shell=False,
                            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
-            return
+            if killed.returncode == 0:
+                return
         except (OSError, subprocess.TimeoutExpired):
             pass
     try:

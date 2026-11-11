@@ -1,5 +1,11 @@
 # Historial de cambios
 
+## Windows 1.2.4 — 2026-11-11
+- Aviso de Threads sin soporte en extensión, cola y componente local.
+- Pestaña actual abierta a enlaces HTTP(S); comprobación del paquete para evitar versiones mezcladas.
+- Repositorio organizado con guías e índice de documentación; empaquetado vigente separado de recetas históricas.
+- Pendiente de validación manual con Brave real. Ver [notas](brave-windows/CAMBIOS_1.2.4.md).
+
 ## 2026-10-28 — Retiro de Desktop independiente y documentación
 - Se retira de main la aplicación Desktop Windows independiente, sin afectar la extensión Brave/Windows ni Android.
 - Se elimina su pipeline Desktop. Los Releases Desktop históricos están pendientes de eliminación en GitHub.
