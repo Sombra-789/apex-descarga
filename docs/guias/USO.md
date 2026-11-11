@@ -2,6 +2,12 @@
 
 Guía para Windows 1.2.4. La versión Android tiene una interfaz y publicación independientes.
 
+## Tu primera descarga
+
+**Ejemplo:** tienes el enlace de un video y quieres guardarlo para verlo en tu computadora. Elige **MP4**. Si solo quieres escucharlo, elige **MP3**.
+
+El «enlace» o «URL» es la dirección que aparece en la barra superior del navegador; puedes copiarla y pegarla en Apex. El «popup» es la pequeña ventana que aparece al pulsar el icono de Apex, junto a esa barra.
+
 ## Descargar un video o audio
 
 1. Mantén Brave abierto y abre el popup de Apex.
@@ -37,3 +43,7 @@ Sin una ruta personalizada, el destino es `%USERPROFILE%\Downloads\Apex Descarga
 - No se habilitan listas de reproducción, inicio de sesión mediante cookies del navegador ni evasión de DRM.
 
 [Instalar o actualizar](INSTALACION_WINDOWS.md) · [Solucionar problemas](SOLUCION_DE_PROBLEMAS.md) · [Compatibilidad detallada](../COMPATIBILIDAD.md)
+
+## ¿Te quedaste en algún paso?
+
+Escribe a **[apexsoftware.inc07@gmail.com](mailto:apexsoftware.inc07@gmail.com)**. Indica si querías guardar video o audio, qué botón pulsaste y qué mensaje apareció. Para problemas de instalación, consulta la [guía de instalación](INSTALACION_WINDOWS.md).

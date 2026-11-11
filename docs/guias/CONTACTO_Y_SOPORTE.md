@@ -4,6 +4,16 @@
 
 Este buzón recibe **sugerencias, comentarios, quejas, informes de fallos y propuestas de mejora** sobre cualquiera de nuestros proyectos Apex Software.
 
+## Si necesitas ayuda para instalar o utilizar Apex
+
+No necesitas conocer términos técnicos. Cuéntanos qué querías hacer y en qué paso te quedaste. Puedes usar este ejemplo:
+
+> Asunto: Ayuda con Apex Descarga
+>
+> Uso Windows 11 y Brave. Estoy intentando instalar Apex / descargar un video / guardar solo el audio. Llegué al paso … y apareció el mensaje …
+
+También puedes adjuntar una captura de pantalla que muestre el problema.
+
 ## Cómo enviar un reporte útil
 
 1. Indica el **nombre del proyecto y la versión** (por ejemplo, Apex Descarga Android 1.0.1 Preview).

@@ -1,6 +1,15 @@
 # Apex Descarga
 
-Descarga video MP4 y audio MP3 mediante yt-dlp, con procesamiento local, vista previa, cola, historial y selección de carpeta. Proyecto de Apex Software Inc.
+Apex Descarga permite guardar en tu computadora un video o solo su audio a partir de un enlace compatible. En Windows se utiliza desde una extensión, es decir, un botón que se añade al navegador. Proyecto de Apex Software Inc.
+
+**¿Necesitas ayuda para instalar o descargar?** Escribe a **[apexsoftware.inc07@gmail.com](mailto:apexsoftware.inc07@gmail.com)**.
+
+## Antes de empezar
+
+- **MP4** guarda el video con su audio; **MP3** guarda solo el audio.
+- Si es tu primera vez, sigue la guía de instalación desde el principio. No necesitas saber programar.
+- Si ya usas Apex, elige la guía de actualización para conservar tu instalación.
+- No todos los sitios permiten descargar contenido. Threads no tiene soporte por ahora en Windows 1.2.4.
 
 ## Empieza aquí
 
@@ -20,7 +29,7 @@ Descarga video MP4 y audio MP3 mediante yt-dlp, con procesamiento local, vista p
 | Windows + Chrome/Edge | Configuración experimental, pendiente de pruebas manuales | [Guía de navegadores](brave-windows/GUIA_NAVEGADORES.md) |
 | **Android** | **1.0.1 Preview**, APK de pruebas independiente | [Release Android](https://github.com/Sombra-789/apex-descarga/releases/tag/android-v1.0.1-preview) |
 
-**Para obtener Windows 1.2.4:** descarga el código de main, extrae el ZIP completo y entra en `apex-descarga-main/brave-windows/`. Ejecuta `INSTALAR_POR_PRIMERA_VEZ.cmd` si nunca has instalado Apex o `ACTUALIZAR_APEX.cmd` si ya existe una instalación. Sigue la [guía completa](docs/guias/INSTALACION_WINDOWS.md) para cargar y autorizar la extensión correctamente.
+**Para obtener Windows 1.2.4:** abre el botón verde **Code** de este repositorio, elige **Download ZIP**, haz clic derecho en el archivo descargado y selecciona **Extraer todo**. Abre la carpeta extraída, después `apex-descarga-main` y luego `brave-windows`. Ejecuta `INSTALAR_POR_PRIMERA_VEZ.cmd` si nunca has instalado Apex o `ACTUALIZAR_APEX.cmd` si ya existe una instalación. Sigue la [guía completa](docs/guias/INSTALACION_WINDOWS.md) para cargar y autorizar la extensión correctamente.
 
 La versión anterior **Windows 1.2.3** conserva sus pruebas manuales. Sus Releases no contienen los cambios de 1.2.4. [Versiones y descargas](docs/VERSIONES_Y_DESCARGAS.md).
 
