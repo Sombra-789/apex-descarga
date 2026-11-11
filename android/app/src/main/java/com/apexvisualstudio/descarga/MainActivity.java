@@ -164,13 +164,13 @@ public final class MainActivity extends Activity {
             ImageView logo=new ImageView(this);logo.setImageResource(R.drawable.apex_brand);
             logo.setScaleType(ImageView.ScaleType.FIT_CENTER);
             logo.setBackgroundColor(Color.TRANSPARENT);
-            logo.setContentDescription("Logotipo Apex Visual Studio");
+            logo.setContentDescription("Logotipo Apex Software Inc.");
             logo.setOnClickListener(v->showLogo());
             header.addView(logo,new LinearLayout.LayoutParams(dp(70),dp(62)));
         }
         LinearLayout headerText=vert();
         headerText.addView(ui.heading("APEX DESCARGA"));
-        headerText.addView(ui.text("BY APEX VISUAL STUDIO  ·  UI PRO 1.0.1",10,ui.accent,true));
+        headerText.addView(ui.text("APEX SOFTWARE INC.  ·  UI PRO 1.0.1",10,ui.accent,true));
         header.addView(headerText,new LinearLayout.LayoutParams(0,-2,1));
         root.addView(header);
         engineStatus=ui.chip("● Preparando motor local…",ui.accent);
@@ -432,7 +432,7 @@ public final class MainActivity extends Activity {
         }catch(SecurityException ex){toast("Android no otorgó acceso permanente a la carpeta");}
     }
     private void showLogo(){ImageView image=new ImageView(this);image.setImageResource(R.drawable.apex_brand);image.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        new AlertDialog.Builder(this).setTitle("Apex Visual Studio").setView(image).setPositiveButton("Cerrar",(d,w)->d.dismiss()).show();}
+        new AlertDialog.Builder(this).setTitle("Apex Software Inc.").setView(image).setPositiveButton("Cerrar",(d,w)->d.dismiss()).show();}
     private void paste(){
         android.content.ClipboardManager clipboard=(android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
         if(clipboard!=null&&clipboard.hasPrimaryClip()){

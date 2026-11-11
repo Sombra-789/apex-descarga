@@ -7,4 +7,4 @@
 
 Este ZIP no incluye los binarios de terceros. Gradle los obtiene al compilar. Si distribuyes APK, adjunta licencias y avisos completos de las bibliotecas empaquetadas y revisa los términos de cada componente.
 
-El logotipo Apex Visual Studio fue aportado por el usuario y se utiliza aquí para construir su aplicación.
+El logotipo Apex Software Inc. fue aportado por el usuario y se utiliza aquí para construir su aplicación.

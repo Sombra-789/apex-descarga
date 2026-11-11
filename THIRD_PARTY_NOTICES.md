@@ -17,7 +17,7 @@ El repositorio incluye **código fuente de Apex** y recursos gráficos del proye
 1. Inspeccionar el árbol de dependencias de Gradle, los binarios empaquetados (incluida configuración real de FFmpeg) y licencias exactas.
 2. Facilitar el texto íntegro de las licencias aplicables y avisos de copyright, así como el código fuente correspondiente exigido por GPL/LGPL cuando proceda.
 3. Confirmar los requisitos de publicación y atribución de cualquier imagen/logo/icono; el logotipo Apex fue aportado por el propietario.
-4. No afirmar que las bibliotecas de terceros son propiedad de Apex Visual Studio, ni sugerir afiliación con los servicios compatibles.
+4. No afirmar que las bibliotecas de terceros son propiedad de Apex Software Inc., ni sugerir afiliación con los servicios compatibles.
 5. No distribuir el APK como release definitivo hasta completar auditoría, pruebas y firma.
 
 Esto es una guía técnica, no asesoría jurídica.

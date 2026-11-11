@@ -1,6 +1,6 @@
 # Cambios 0.3.0 (beta)
 
-- Branding de Apex Visual Studio; eliminado el borde del logotipo en la cabecera y opción de ocultarlo.
+- Branding de Apex Software Inc.; eliminado el borde del logotipo en la cabecera y opción de ocultarlo.
 - Cinco temas predefinidos, más personalización HEX de tres colores, persistidos localmente.
 - Vista previa mejorada con título, duración, resoluciones (cuando existan) y miniatura de tamaño limitado.
 - Descarga por cola con estados persistentes, cancelación y reintentos de formato para MP4.

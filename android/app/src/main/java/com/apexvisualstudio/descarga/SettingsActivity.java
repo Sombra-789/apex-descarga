@@ -154,7 +154,7 @@ public final class SettingsActivity extends Activity {
             }catch(Exception ex){runOnUiThread(()->engineLabel.setText("No disponible: "+brief(ex)));}
         });
         ui.addGap(root,15);
-        root.addView(ui.caption("APEX DESCARGA · ANDROID UI PRO 1.0.1 · BY APEX VISUAL STUDIO"));
+        root.addView(ui.caption("APEX DESCARGA · ANDROID UI PRO 1.0.1 · APEX SOFTWARE INC."));
     }
     private CheckBox checkbox(String text,boolean checked){
         CheckBox c=new CheckBox(this);c.setText(text);c.setTextColor(ApexUi.WHITE);c.setTextSize(13);

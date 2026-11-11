@@ -1,6 +1,6 @@
 # Política técnica de privacidad (provisional para la versión candidata)
 
-**Apex Descarga** no requiere crear una cuenta con Apex Visual Studio. En las versiones fuente examinadas, no se incluyeron anuncios, SDK de analítica propios ni un servidor central de telemetría de Apex Visual Studio. Esta declaración describe solo el código presente; debe verificarse antes de difundir un release público.
+**Apex Descarga** no requiere crear una cuenta con Apex Software Inc.. En las versiones fuente examinadas, no se incluyeron anuncios, SDK de analítica propios ni un servidor central de telemetría de Apex Software Inc.. Esta declaración describe solo el código presente; debe verificarse antes de difundir un release público.
 
 - **Almacenamiento local:** preferencias, historial/cola y referencias de archivos se guardan en el dispositivo o navegador según la versión. En Android, la aplicación tiene `allowBackup=false`.
 - **Conexiones externas:** al analizar o descargar un enlace, el dispositivo se conecta a la plataforma de origen y puede revelar dirección IP, agente de usuario, URL y metadatos de la solicitud a esa plataforma. Las miniaturas pueden solicitarse a la misma plataforma. Las actualizaciones de yt-dlp se consultan desde repositorios externos de su proyecto.

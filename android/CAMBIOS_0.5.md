@@ -1,6 +1,6 @@
 # Apex Descarga Android 0.5.0 — cierre de funciones
 
-**Apex Visual Studio** · Proyecto fuente para Android · Beta previa a estabilización 1.0.
+**Apex Software Inc.** · Proyecto fuente para Android · Beta previa a estabilización 1.0.
 
 Esta versión **continúa 0.4**, con el mismo `applicationId`, mismas dependencias probadas y claves locales para configuración, cola y biblioteca. No está compilada ni validada en un teléfono por el entorno de desarrollo que generó este paquete.
 

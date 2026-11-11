@@ -11,7 +11,7 @@ public final class PrivacyTerms {
         "1. Uso autorizado. Descarga únicamente material propio o para el que tengas permiso. " +
         "Respeta los derechos de autor y las condiciones de cada plataforma. Apex Descarga no está diseñada para eludir DRM.\n\n" +
         "2. Privacidad. Esta versión no incorpora cuentas, publicidad, analítica ni servidores " +
-        "de recopilación de Apex Visual Studio. No recopilamos ni vendemos información personal " +
+        "de recopilación de Apex Software Inc.. No recopilamos ni vendemos información personal " +
         "a través de la aplicación. Tus preferencias, aceptación de condiciones, cola y biblioteca multimedia " +
         "se almacenan localmente en tu dispositivo.\n\n" +
         "3. Servicios externos. Para consultar o descargar contenido, yt-dlp se conecta directamente " +
@@ -20,7 +20,7 @@ public final class PrivacyTerms {
         "Apex puede buscar actualizaciones estables de yt-dlp por Wi-Fi si dejas " +
         "activada esta opción. Puedes desactivarla en el apartado Apariencia y motor. " +
         "El análisis previo puede solicitar miniaturas del sitio original.\n\n" +
-        "4. Archivos externos. El contenido proviene de terceros. Apex Descarga y Apex Visual Studio " +
+        "4. Archivos externos. El contenido proviene de terceros. Apex Descarga y Apex Software Inc. " +
         "no garantizan que los archivos descargados estén libres de virus, malware o contenido dañino. " +
         "Revisa los archivos con herramientas de seguridad antes de abrirlos. " +
         "Cada usuario asume los riesgos derivados del uso de archivos externos, " +
