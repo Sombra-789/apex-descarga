@@ -1,5 +1,23 @@
 # Compatibilidad y límites
 
+## Limitaciones actuales
+
+- **No admite todos los sitios ni todos los enlaces.** La disponibilidad depende del sitio de origen y del motor de descarga; un servicio puede dejar de funcionar si cambia.
+- **Threads no está soportado por ahora en Windows 1.2.4.** Apex muestra un aviso antes de intentar descargar.
+- **No es un descargador general de archivos.** Su objetivo es guardar video y audio compatibles, no texto, imágenes o documentos de cualquier página.
+- **La calidad depende de la fuente.** Elegir una resolución alta no mejora un video que originalmente tiene menor calidad.
+- **MP3 y combinación de audio/video requieren FFmpeg.** Sin esa herramienta, algunas opciones no estarán disponibles.
+- **No inicia sesión con cookies del navegador ni evita las protecciones DRM.** El contenido privado o que exige acceso puede no descargarse.
+- **No descarga listas de reproducción.** En Windows procesa un trabajo a la vez; el navegador debe permanecer abierto.
+- **Chrome y Edge siguen siendo experimentales.** Android es una edición Preview con versión propia; los cambios de Windows no se aplican automáticamente al teléfono.
+- **Las pruebas son limitadas.** Windows 1.2.4 aún necesita aceptación manual completa en Brave; no se garantiza funcionamiento en todos los equipos o sitios.
+
+## Abierto a futuras actualizaciones
+
+**Apex Descarga sigue abierto a futuras actualizaciones.** Pueden evaluarse correcciones de errores, mejoras de compatibilidad, ajustes de instalación y facilidad de uso, y nuevas funciones según las necesidades de los usuarios y las pruebas realizadas.
+
+Las sugerencias se reciben en **[apexsoftware.inc07@gmail.com](mailto:apexsoftware.inc07@gmail.com)**. Una propuesta no implica que ya esté en desarrollo: por ahora no se anuncian funciones ni fechas de publicación comprometidas.
+
 ## Windows 1.2.4
 
 «Pestaña actual» copia enlaces HTTP(S). Aceptar una dirección no garantiza una descarga: el análisis y la extracción dependen de yt-dlp y del sitio. Usa el enlace a un contenido concreto.

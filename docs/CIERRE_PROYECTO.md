@@ -1,4 +1,10 @@
-# Cierre del desarrollo principal — Apex Descarga
+# Cierre de la etapa inicial y continuidad — Apex Descarga
+
+**Estado actual — 11 de noviembre de 2026:** Apex Descarga sigue abierto a futuras actualizaciones. El cierre de la etapa inicial no impide evaluar correcciones, mejoras de compatibilidad y nuevas funciones. No se anuncian fechas ni funciones comprometidas. Consulta las [limitaciones vigentes](COMPATIBILIDAD.md) y envía propuestas a [apexsoftware.inc07@gmail.com](mailto:apexsoftware.inc07@gmail.com).
+
+## Registro histórico de la etapa inicial
+
+Los estados de versiones y decisiones que siguen se conservan como historia; para instalar la edición actual, consulta [versiones y descargas](VERSIONES_Y_DESCARGAS.md).
 
 **Decisión del responsable:** el proyecto se considera completado en su etapa de desarrollo principal. A partir de ahora se mantiene para correcciones y actualizaciones menores.
 
